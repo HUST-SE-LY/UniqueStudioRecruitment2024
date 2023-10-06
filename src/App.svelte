@@ -18,7 +18,7 @@
       target="_blank"
     >
       <div class="gap-[0.5rem] flex items-center">
-        <img src={logo} alt="UniqueStudio" />
+        <img draggable={false} src={logo} alt="UniqueStudio" />
         <p class="text-white mb-[0.5rem] text-lg">联创团队</p>
       </div>
     </a>
