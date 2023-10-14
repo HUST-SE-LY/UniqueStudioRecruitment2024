@@ -4,6 +4,6 @@
   import cx from 'clsx'
 </script>
 
-<div class={cx(['rounded-[8px] w-fit p-[0.25rem_2rem] cursor-pointer hover:opacity-80 transition-all', highlight ? 'bg-[#0A84FF] text-white' : 'bg-[#F3F3F5]'])}>
+<div class={cx(['rounded-[8px] w-fit p-[0.25rem_2rem] cursor-pointer hover:opacity-80 transition-all', highlight ? ' bg-blue-300 text-white' : 'bg-[#F3F3F5]'])}>
   {content}
 </div>

@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import { fade, fly } from "svelte/transition";
   import UserInfoTitle from "../components/user/UserInfoTitle.svelte";
   import SingleInputInfo from "../components/user/SingleInputInfo.svelte";
@@ -6,14 +6,19 @@
   import edit from "/src/assets/edit.svg";
   import cx from "clsx";
   import Button from "../components/public/Button.svelte";
+  import { DEPARTMENTS, GENDERS, GRADE, RANK } from "../config/const";
+  import type { College } from "../types";
   let editMode = false;
   let name = "ccq";
   let gender = "男";
   let grade = "大一";
-  let college = "软件学院";
-  let major = "软件工程";
   let gpa = "前100%";
   let group = "Web";
+  let colleges = Object.keys(DEPARTMENTS);
+  let college = "";
+  //this asset would be wrong because I just don't want to see TypeError
+  $: majors = DEPARTMENTS[college as College] || [];
+  let major = ''
 </script>
 
 <div class="h-full w-[60%] mx-auto flex flex-col">
@@ -32,12 +37,12 @@
           editMode = !editMode;
         }}
         class={cx([
-          "ml-auto cursor-pointer border-[#0A84FF] border-[1px] rounded-[0.5rem] p-[0.25rem_1rem] flex gap-[0.25rem] items-center",
+          "ml-auto cursor-pointer border-blue-300 border-[1px] rounded-[0.5rem] p-[0.25rem_1rem] flex gap-[0.25rem] items-center",
           editMode && "hidden",
         ])}
       >
         <img src={edit} alt="edit" />
-        <p class="text-[#0A84FF]">编辑</p>
+        <p class="text-blue-300">编辑</p>
       </div>
     </div>
 
@@ -48,22 +53,25 @@
         isNecessary
         name="性别"
         bind:content={gender}
-        selectItems={["男", "女", "其他"]}
+        selectItems={GENDERS}
       />
       <SingleSelectInfo
         {editMode}
         isNecessary
         name="年级"
         bind:content={grade}
-        selectItems={["大一", "大二", "大三", "大四", "研究生"]}
+        selectItems={GRADE}
       />
-      <SingleInputInfo
+      <SingleSelectInfo
+        selectItems={colleges}
         {editMode}
         isNecessary
         name="学院"
         bind:content={college}
       />
-      <SingleInputInfo
+      <SingleSelectInfo
+        placeholder={majors.length ? '' : '请选择学院'}
+        selectItems={majors}
         {editMode}
         isNecessary
         name="专业"
@@ -74,7 +82,7 @@
         isNecessary
         name="加权"
         bind:content={gpa}
-        selectItems={["前10%", "前20%", "前50%", "前100%", "未知"]}
+        selectItems={RANK}
       />
       <SingleInputInfo
         {editMode}
@@ -111,14 +119,6 @@
           disabled={!editMode}
           placeholder="请输入"
           class="w-full transition-all outline-none focus:border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
-        />
-      </div>
-      <div class="col-span-2">
-        <SingleInputInfo
-          {editMode}
-          isNecessary
-          name="掌握技能"
-          bind:content={major}
         />
       </div>
     </div>

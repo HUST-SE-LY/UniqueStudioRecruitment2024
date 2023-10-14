@@ -5,8 +5,9 @@
   export let isNecessary: boolean = false;
   export let name: string;
   export let content: string;
-  export let selectItems: string[];
+  export let selectItems: readonly string[];
   export let editMode: boolean;
+  export let placeholder: string = "";
   let showItems = false;
 </script>
 
@@ -21,7 +22,7 @@
         showItems = !showItems;
       }}
       class={cx([
-        "p-[4px_12px] relative w-full rounded-[8px] bg-[#FAFAFA] h-[36px] transition-all outline-none focus:border-[1px] focus:border-[#165DFF]",
+        "p-[4px_12px] text-text-1 relative w-full rounded-[8px] bg-gray-50 h-[36px] transition-all outline-none focus:border-[1px] focus:border-[#165DFF]",
         editMode && "cursor-pointer",
       ])}
     >
@@ -38,9 +39,16 @@
     </div>
     {#if showItems}
       <div
-        class="absolute z-10 top-[110%] p-[0.75rem_1rem] rounded-[4px] bg-white w-full border shadow-gray-200 shadow-lg left-0"
+        class="absolute z-10 top-[110%] max-h-[300px] overflow-y-auto p-[0.75rem_1rem] rounded-[4px] bg-white w-full border-gray-150 border-[1px] shadow-gray-200 shadow-lg shadow-gray-150 left-0"
         transition:slide
       >
+        {#if placeholder}
+          <p
+            class="p-[0.5rem_0.75rem] transition-all rounded-[0.5rem] cursor-pointer opacity-50"
+          >
+            {placeholder}
+          </p>
+        {/if}
         {#each selectItems as item, index}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -49,7 +57,7 @@
               content = item;
               showItems = false;
             }}
-            class="p-[0.5rem_0.75rem] transition-all rounded-[0.5rem] cursor-pointer hover:bg-gray-100"
+            class="p-[0.5rem_0.75rem] transition-all rounded-[0.5rem] cursor-pointer hover:bg-gray-150"
           >
             {item}
           </p>
