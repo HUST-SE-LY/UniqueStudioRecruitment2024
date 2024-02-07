@@ -118,7 +118,7 @@
         <textarea
           disabled={!editMode}
           placeholder="请输入"
-          class="w-full transition-all outline-none focus:border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
+          class="w-full transition-all outline-none border-transparent border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
         />
       </div>
     </div>
@@ -141,8 +141,8 @@
     </div>
     {#if editMode}
       <div class="float-right mt-[1rem] flex gap-[1rem]">
-        <Button content="取消" />
-        <Button content="提交" highlight />
+        <Button>取消</Button>
+        <Button highlight>提交</Button>
       </div>
     {/if}
   </div>

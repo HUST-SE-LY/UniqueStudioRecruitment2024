@@ -10,16 +10,24 @@ export default {
       current: 'currentColor',
       black: "#000000",
       blue: {
+        '100': '#F2F6FF',
         '400': '#165DFF',//主题蓝
-        '300': '#0A84FF'//蓝色
+        '300': '#0A84FF',//蓝色
+        'dash': '#BDD3FF'//timeline dash
+        
+      },
+      border: {
+        '2': '#E5E6EB'
       },
       gray: {
         '50': '#FAFAFA',
         '100': '#F3F3F5',
         '150': '#F2F3F5',
+        '300': '#8D8D8D',
         'blue': '#F2F6FF',//蓝底色
         'red': '#FFEEE7',//红底色
-        'green': '#E8FFEA'//绿底色
+        'green': '#E8FFEA',//绿底色
+        'orange': '#FFF3E8',
       },
       red: {
         'warning': '#F53F3F'//警示红
@@ -31,10 +39,15 @@ export default {
       text: {
         '1': '#1D2129',//一级文字
         '2': '#282828',
+        '3': '#86909C',
+      },
+      orange: '#F77234',
+    },
+    boxShadow: {
+      'card': '0px 4px 20px 0px #1A1B2B1A',
+      'drop': '0px 4px 28px 0px #1A1B2B52'
+    },
 
-
-      }
-    }
   },
   plugins: [],
 }

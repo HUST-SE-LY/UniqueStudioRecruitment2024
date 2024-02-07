@@ -1,7 +1,10 @@
+import type { TimeLineNode } from "../types";
+
 export enum ProcessState {
   OUT = "已淘汰",
   PROCESSING = "进行中",
-  PASS = '已通过'
+  PASS = '已通过',
+  OVER = "已结束",
 }
 
 export enum Group {
@@ -169,6 +172,35 @@ export const DEPARTMENTS = {
   法医学系: ['法医学'],
   网络空间安全学院: ['信息安全', '网络空间安全','密码学'],
 } as const;
+
+export const TIMELINE = [{
+    name: "报名",
+    show: true,
+},{
+    name: '笔试/问卷',
+    show: true,
+},{
+    name: '面试时间选择',
+    show: false,
+},{
+    name: '面试',
+    show: true,
+},{
+    name: '熬测',
+    show: true,
+    info: "熬测时请携带电脑"
+},{
+    name: '群面时间选择',
+    show: false,
+},{
+    name: "群面",
+    show: true
+},{
+    name: "通过",
+    show: true,
+}] as const;
+
+export const AVATARS = ['/INTJ.svg', '/INTP.svg', '/ENTJ.svg', '/ENTP.svg', '/INFJ.svg', '/INFP.svg', '/ENFJ.svg', '/ENFP.svg', '/ISTJ.svg', '/ISFJ.svg', '/ESTJ.svg','/ESFJ.svg', '/ISTP.svg', '/ISFP.svg', '/ESTP.svg', '/ESFP.svg']
 
 
 

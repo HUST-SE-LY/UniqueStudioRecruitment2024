@@ -2,6 +2,7 @@
   import { slide } from "svelte/transition";
   import arrow from "/src/assets/arrow.svg";
   import cx from "clsx";
+  import { onMount } from "svelte";
   export let isNecessary: boolean = false;
   export let name: string;
   export let content: string;
@@ -9,9 +10,20 @@
   export let editMode: boolean;
   export let placeholder: string = "";
   let showItems = false;
+  onMount(() => {
+    const close = () => {
+      showItems = false;
+    }
+    document.addEventListener('click', close);
+    return () => {
+      document.removeEventListener('click', close);
+    }
+  })
 </script>
 
-<div class="flex gap-[1rem] items-center">
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div on:click={e => e.stopPropagation()} class="flex gap-[1rem] items-center">
   <p class="opacity-50 shrink-0">{isNecessary ? "*" : ""}{name}</p>
   <div class="relative w-full">
     <!-- svelte-ignore a11y-click-events-have-key-events -->

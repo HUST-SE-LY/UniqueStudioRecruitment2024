@@ -1,4 +1,4 @@
-import { GROUPS, RANK, DEPARTMENTS, GENDERS, GRADE } from "../config/const";
+import { GROUPS, RANK, DEPARTMENTS, GENDERS, GRADE, TIMELINE } from "../config/const";
 
 export type Major = (typeof DEPARTMENTS)[keyof typeof DEPARTMENTS];
 
@@ -22,4 +22,16 @@ export interface UserInfo {
   mail: string;
   introduction: string;
   grade: Grade;
+}
+
+export type UserStep =  typeof TIMELINE[number]['name']
+
+export type Periods = "morning" | "afternoon" | "evening"
+
+export type InterviewType = "面试" | "群面"
+
+export type TimeLineNode = {
+  name: string;
+  show?: boolean;
+  info?: string;
 }
