@@ -1,3 +1,4 @@
+// ly: shit functions aiming to switch ISO 8601 to daily expression
 export const formatDate = (dateStr: string) => {
   const date = new Date(dateStr);
   const options = {
@@ -11,6 +12,20 @@ export const formatDate = (dateStr: string) => {
 
   return formattedDate;
 };
+
+export const formatTime = (dateStr: string) => {
+  const date = new Date(dateStr);
+  const options = {
+    hour: "numeric" as const,
+    minute: "numeric" as const,
+  };
+  const locale = "zh-CN";
+
+  const formattedDate = date.toLocaleTimeString(locale, options);
+
+  return formattedDate;
+};
+
 
 
 

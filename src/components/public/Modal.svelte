@@ -1,4 +1,5 @@
 <script lang="ts">
+  //ly: maybe it would be better to encapsulate more UI but to make style flexible i just encapsulate minium UI:)
   import cx from "clsx";
   import { fade, fly } from "svelte/transition";
   export let className = "";
@@ -14,7 +15,6 @@
     on:click={onCancel}
     class={cx([
       "w-screen fixed z-[100] top-0 left-0 h-screen flex justify-center items-center bg-black/60 transition-all",
-      visible ? "opacity-100" : "opacity-0 pointer-events-none",
     ])}
   >
     <div

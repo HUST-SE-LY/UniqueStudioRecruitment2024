@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* ly: why tailwind doesn't provid a fucking class for scrollbar?????? */
+.scrollbar-hidden {
+
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}

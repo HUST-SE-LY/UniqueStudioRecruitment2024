@@ -1,6 +1,7 @@
 <script lang="ts">
   import cx from "clsx";
   import { scale } from "svelte/transition";
+  //ly: now i just finished top & bottom props cuz i'm lazy :)
   export let direct: "left" | "right" | "top" | "bottom" = "bottom";
   export let className:string = ""
   export let style:'white'|'black' = 'black'

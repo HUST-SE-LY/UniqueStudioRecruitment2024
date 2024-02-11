@@ -1,104 +1,186 @@
 <script lang="ts">
-  import type { Periods } from "../../../types";
-  import { formatDate } from "../../../utils/formmatDate";
+  //ly: i have spent so much time on this shit component, WTF!!!
+  import type { InterviewTime, Periods, SingleTime } from "../../../types";
+  import { formatDate, formatTime } from "../../../utils/formmatDate";
   import { transferPeriod } from "../../../utils/transferPeriod";
   import checkedBox from "../../../assets/checkedBox.svg";
   import cx from "clsx";
   import checkbox from "../../../assets/checkbox.svg";
   import { slide } from "svelte/transition";
   import Button from "../../public/Button.svelte";
-  interface SingleTime {
-    date: string;
-    period: "morning" | "afternoon" | "evening";
-  }
+  import arrow from "../../../assets/arrow.svg";
+  import { parseInterviewTime } from "../../../utils/parseInterviewTime";
+  import CheckBox from "../../../icons/CheckBox.svelte";
+  import { onMount } from "svelte";
+  import { Message } from "../../../utils/Message";
+
+  //ly: type 'SingleTime' is the return-type of backend, type 'InterviewTime' is the useful type when rendering UI
   export let times: SingleTime[] = [
     {
       date: "2023-01-25T00:21:45.316409+08:00",
       period: "evening",
+      start: "2023-01-25T19:30:45.316409+08:00",
+      end: "2023-01-25T20:00:45.316409+08:00" ,
+      uid: 'a'
     },
     {
       date: "2023-01-25T00:21:45.316409+08:00",
       period: "morning",
+      start: "2023-01-25T09:30:45.316409+08:00",
+      end: "2023-01-25T10:00:45.316409+08:00" ,
+      uid: 'b'
     },
     {
       date: "2023-01-25T00:21:45.316409+08:00",
       period: "afternoon",
+      start: "2023-01-25T19:30:45.316409+08:00",
+      end: "2023-01-25T20:00:45.316409+08:00" ,
+      uid: 'c'
     },
-    {
-      date: "2023-01-26T00:21:45.316409+08:00",
-      period: "morning",
-    },
-    {
-      date: "2023-01-27T00:21:45.316409+08:00",
-      period: "morning",
-    },
-    {
-      date: "2023-01-28T00:21:45.316409+08:00",
-      period: "morning",
-    },
-    {
-      date: "2023-01-29T00:21:45.316409+08:00",
-      period: "morning",
-    },
-    {
-      date: "2023-01-30T00:21:45.316409+08:00",
-      period: "morning",
-    },
-    {
-      date: "2023-01-31T00:21:45.316409+08:00",
-      period: "morning",
-    },
+
   ];
-  let timeMap = new Map<string, Periods[]>();
-  times.forEach((time) => {
-    timeMap.has(formatDate(time.date))
-      ? timeMap.set(formatDate(time.date), [
-          time.period,
-          ...(timeMap.get(formatDate(time.date)) as Periods[]),
-        ])
-      : timeMap.set(formatDate(time.date), [time.period]);
-  });
+  let timeTrees = parseInterviewTime(times);
   let showSelector = false;
+  let curDate: string | undefined = undefined;
+  let curPeriods: InterviewTime['detail'] | undefined = undefined;
+  let curTimes: InterviewTime['detail'][number]['time'] | undefined = undefined;
+  let selectedTimes: string[] = [];
+  const handleDateClick = (date: string, detail: InterviewTime['detail']) => {
+    if (curDate === date) {
+      curDate = undefined;
+      curPeriods = undefined;
+      curTimes = undefined;
+      return
+    }
+    curDate = date;
+    curPeriods = detail;
+    curTimes = undefined;
+  };
+  const handlePeriodClick = (detail: InterviewTime['detail'][number]) => {
+    curTimes = detail.time;
+  };
+  const selectTime = (uuid: string) => {
+    if(selectedTimes.includes(uuid)) {
+      selectedTimes = [...selectedTimes.filter(el => el!==uuid)];
+    } else {
+      selectedTimes = [...selectedTimes, uuid]
+    }
+    Message.success('选择成功')
+  }
+  const transferTime = (uuid: string) => {
+    const interviewTime = times.find(el => el.uid === uuid)
+    if(interviewTime) {
+      const date = formatDate(interviewTime.date);
+      const startTime = formatTime(interviewTime.start)
+      const endTime = formatTime(interviewTime.end)
+      return { date, startTime, endTime }
+    }
+  }
+  const handleOpen = (e:MouseEvent) => {
+    e.stopPropagation();
+      curDate = undefined;
+      curPeriods = undefined;
+      curTimes = undefined;
+
+    showSelector = !showSelector
+  }
+  onMount(() => {
+    function hide() {
+      showSelector = false;
+    }
+    document.addEventListener("click", hide);
+    return () => {
+      document.removeEventListener("click", hide);
+    }
+  })
 </script>
 
-<div class="w-full relative">
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div on:click={(e) => e.stopPropagation()} class="w-full select-none relative">
   <div
-    on:click={() => {
-      showSelector = !showSelector;
-    }}
-    class="w-full h-[36px] rounded-[10px] leading-[36px] px-[16px] border-blue-400 border-[1px] bg-white cursor-pointer"
+    on:click={handleOpen}
+    class="w-full scrollbar-hidden whitespace-nowrap  items-center h-[36px] flex rounded-[10px] leading-[36px] pl-[16px] pr-[24px] border-blue-400 border-[1px] bg-white cursor-pointer"
   >
-    点击查看和选择面试时间
+   <div class="flex gap-[8px] flex-nowrap scrollbar-hidden overflow-x-auto overflow-y-hidden">
+        {#each selectedTimes as time}
+      <div class="h-[28px] leading-[28px] flex-shrink-0 whitespace-nowrap px-[8px] rounded-[4px] bg-gray-150">
+        <span>{transferTime(time)?.date}</span>
+        <span>({transferTime(time)?.startTime} - {transferTime(time)?.endTime})</span>
+      </div>
+    {/each}
+   </div>
+
+    <img src={arrow} class={cx(["absolute right-[8px] transition-all", showSelector || 'rotate-180'])} alt="arrow" />
   </div>
   {#if showSelector}
     <div
       transition:slide
       class={cx([
-        "absolute w-full bg-white p-[32px_16px] left-0 top-[40px] rounded-[8px]",
+        "absolute w-full p-[8px_16px] left-0 top-[40px] rounded-[8px]",
       ])}
     >
-      <div class="flex flex-wrap gap-[2rem]">
-        {#each timeMap as [date, periods]}
-          <div class="group">
+      <div class="flex">
+        <div
+          class="w-1/3 py-[8px] border-[1px] border-gray-150 bg-white rounded-l-md"
+        >
+          {#each timeTrees as {date, detail}}
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
             <div
-              class="bg-blue-100 group-hover:bg-blue-300 group-hover:text-white transition-all rounded-[11px] w-[99px] p-[8px_16px] text-center"
+              on:click={() => handleDateClick(date, detail)}
+              class={cx(["h-[46px] hover:bg-gray-100 cursor-pointer p-[12px_14px] flex items-center", curDate === date && 'bg-gray-100'])}
             >
-              {date}
+              <p class="ml-[8px]">{formatDate(date)}</p>
+              <img class="rotate-90 ml-auto" src={arrow} alt="arrow" />
             </div>
-            <div class="mt-[8px] h-[96px] rounded-[11px] py-[12px] bg-blue-100">
-              {#each periods as period}
-                <div class="flex gap-[8px] items-center mx-auto w-fit">
-                  <img class="cursor-pointer" src={checkedBox} alt="checkBox" />
-                  <p>{transferPeriod(period)}</p>
-                </div>
-              {/each}
-            </div>
+          {/each}
+        </div>
+        <!-- svelte-ignore a11y-no-static-element-interactions -->
+        {#if curDate && curPeriods}
+          <!-- svelte-ignore a11y-click-events-have-key-events -->
+          <div
+            transition:slide={{ axis: "x" }}
+            class="bg-white py-[8px] w-1/3 border-[1px] border-gray-150"
+          >
+            {#each curPeriods as period}
+              <div
+                on:click={() => handlePeriodClick(period)}
+                class={cx(["h-[46px] hover:bg-gray-100 cursor-pointer p-[12px_14px] flex items-center", curTimes === period.time && 'bg-gray-100'])}
+              >
+                <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">
+                  {transferPeriod(period.period)}
+                </p>
+                <img
+                  class="rotate-90 ml-auto flex-shrink-0"
+                  src={arrow}
+                  alt="arrow"
+                />
+              </div>
+            {/each}
           </div>
-        {/each}
+        {/if}
+        {#if curDate && curPeriods && curTimes}
+          <div
+            transition:slide={{ axis: "x" }}
+            class="bg-white py-[8px] w-1/3 border-[1px] rounded-r-md border-gray-150"
+          >
+            {#each curTimes as time}
+              <!-- svelte-ignore a11y-click-events-have-key-events -->
+              <!-- svelte-ignore a11y-no-static-element-interactions -->
+              <div
+                on:click={() => selectTime(time.uuid)}
+                class="h-[46px] hover:bg-gray-100 cursor-pointer p-[12px_14px] flex items-center"
+              >
+                <CheckBox isSelected={selectedTimes.includes(time.uuid)} />
+                <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">
+                  {`${formatTime(time.startTime)} - ${formatTime(time.endTime)}`}
+                </p>
+              </div>
+            {/each}
+          </div>
+        {/if}
       </div>
-      <Button highlight className="float-right mt-[3rem] w-[104px] text-center p-0 h-[32px] text-xs leading-[32px]">确认</Button>
     </div>
   {/if}
 </div>

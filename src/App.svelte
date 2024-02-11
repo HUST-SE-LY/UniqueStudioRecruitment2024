@@ -11,9 +11,15 @@
   import Button from "./components/public/Button.svelte";
   import Popover from "./components/public/Popover.svelte";
   import AvatarSelector from "./components/header/AvatarSelector.svelte";
+  import { onMount } from "svelte";
   let showAvatarDetail = false;
   let showAvatarSelector = false;
   let selectedAvatar: string;
+  //this is the test cookie
+  onMount(() => {
+    document.cookie = 'SSO_SESSION=unique_web_candidate;';
+  })
+  
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->

@@ -7,12 +7,17 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint-staged": "pnpm exec lint-staged",
+    "prepare": "husky init"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "@tsconfig/svelte": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
     "postcss": "^8.4.31",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.6",
@@ -23,6 +28,14 @@
   },
   "dependencies": {
     "clsx": "^2.0.0",
+    "husky": "^9.0.10",
+    "lint-staged": "^15.2.2",
     "svelte-spa-router": "^3.3.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   }
 }

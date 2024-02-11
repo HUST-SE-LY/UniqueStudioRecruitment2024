@@ -8,6 +8,8 @@
   import Button from "../components/public/Button.svelte";
   import { DEPARTMENTS, GENDERS, GRADE, RANK } from "../config/const";
   import type { College } from "../types";
+  import { onMount } from "svelte";
+  import { getInfo } from "../requests/user/getInfo";
   let editMode = false;
   let name = "ccq";
   let gender = "男";
@@ -16,9 +18,12 @@
   let group = "Web";
   let colleges = Object.keys(DEPARTMENTS);
   let college = "";
-  //this asset would be wrong because I just don't want to see TypeError
+  //ly:this asset would be wrong but I just don't want to see TypeError :)
   $: majors = DEPARTMENTS[college as College] || [];
   let major = ''
+  onMount(() => {
+    getInfo()
+  })
 </script>
 
 <div class="h-full w-[60%] mx-auto flex flex-col">
