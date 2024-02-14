@@ -14,7 +14,7 @@
       setTimeout(() => {
         open = false;
         resolve();
-      },1500)
+      },15000)
     ).then(() => {
       return setTimeout(onClose, 500)
     })
@@ -22,6 +22,7 @@
 </script>
 
 <!-- ly: svelte would not apply translate-x-[-50%] when transition-in begins, so i use animate-fly-in, actually it is dumb:( -->
+<!-- ly:sometimes(i don't know when) UI would shake when flies in but i don't use know why, its fucking confusing. :( -->
 {#if open}
   <div
     out:fade

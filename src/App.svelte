@@ -6,20 +6,39 @@
   import cx from "clsx";
   import { slide } from "svelte/transition";
   import Modal from "./components/public/Modal.svelte";
-  import close from "./assets/close.svg";
-  import { AVATARS } from "./config/const";
-  import Button from "./components/public/Button.svelte";
-  import Popover from "./components/public/Popover.svelte";
   import AvatarSelector from "./components/header/AvatarSelector.svelte";
   import { onMount } from "svelte";
+  import { getInfo } from "./requests/user/getInfo";
+  import { userInfo } from "./stores/userInfo";
+  import { Message } from "./utils/Message";
+  import { recruitment } from "./stores/recruitment";
+  import { getLatestRecruitment } from "./requests/recruitment/getLatest";
   let showAvatarDetail = false;
   let showAvatarSelector = false;
-  let selectedAvatar: string;
-  //this is the test cookie
+  let isLoading = true;
+  $userInfo ||
+    getInfo()
+      .then((res) => {
+        userInfo.setInfo(res.data);
+      })
+      .catch(() => {
+        Message.error("获取信息失败");
+      })
+      .finally(() => {
+        isLoading = false;
+      });
+  $recruitment ||
+    getLatestRecruitment()
+      .then((res) => {
+        recruitment.setRecruitments(res.data);
+      })
+      .catch(() => {
+        Message.error("获取信息失败");
+      });
+  //ly: this is the test cookie
   onMount(() => {
-    document.cookie = 'SSO_SESSION=unique_web_candidate;';
-  })
-  
+    document.cookie = "SSO_SESSION=unique_web_candidate;";
+  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -56,40 +75,46 @@
         ])}
       />
     </div>
-    <div class="relative ml-auto mr-[2rem] flex-shrink-0 self-center">
+    {#if $userInfo}
       <div
-        on:click={() => (showAvatarDetail = !showAvatarDetail)}
-        class=" bg-white w-[40px] h-[40px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
+        class="relative select-none ml-auto mr-[2rem] flex-shrink-0 self-center"
       >
-        B
-      </div>
-      {#if showAvatarDetail}
         <div
-          transition:slide
-          class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-0"
+          on:click={() => (showAvatarDetail = !showAvatarDetail)}
+          class=" bg-white w-[40px] h-[40px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
         >
-          <button
-            on:click={() => {
-              showAvatarDetail = false;
-              showAvatarSelector = true;
-            }}
-            class="h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
-            >更换头像</button
-          >
-          <button
-            class="text-red-warning h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
-            >退出登录</button
-          >
+          {$userInfo.name[0]}
         </div>
-      {/if}
-    </div>
+        {#if showAvatarDetail}
+          <div
+            transition:slide
+            class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-0"
+          >
+            <button
+              on:click={() => {
+                showAvatarDetail = false;
+                showAvatarSelector = true;
+              }}
+              class="h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
+              >更换头像</button
+            >
+            <button
+              class="text-red-warning h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
+              >退出登录</button
+            >
+          </div>
+        {/if}
+      </div>
+    {/if}
   </div>
   <div
     class="bg-[rgba(53,100,221,1)] fixed top-0 left-0 -z-10 overflow-hidden w-full h-[15rem]"
   >
     <img src={groups} alt="groups_logo" class="select-none w-full" />
   </div>
-  <Router {routes} />
+  {#if $userInfo}
+    <Router {routes} />
+  {/if}
 </div>
 
 <Modal

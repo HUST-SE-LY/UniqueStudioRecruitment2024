@@ -1,9 +1,10 @@
 <script lang="ts">
-  import type { Group } from "../../config/const";
+  import clsx from "clsx";
+  import type { GROUP, Group } from "../../config/const";
   export let title:string;
-  export let group:Group;
+  export let group:GROUP|null;
 </script>
 
-<div class=" text-text-1 text-[24px]">
-  {title} | {group}组
+<div class="select-none text-text-1 text-[24px]">
+  {title} | <span class={clsx(group || 'text-text-3')}>{group ? `${group}组` : '未选择'}</span>
 </div>

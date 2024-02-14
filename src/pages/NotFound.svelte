@@ -1,7 +1,6 @@
 <script>
 
   import { fade, fly } from "svelte/transition";
-
 </script>
 <div class="h-full mt-[1rem] w-[60%] mx-auto flex flex-col">
   <p in:fade class="text-[26px] text-white">未知页面</p>

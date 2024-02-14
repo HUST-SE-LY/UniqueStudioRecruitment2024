@@ -5,7 +5,7 @@ export enum ProcessState {
   OVER = "已结束",
 }
 
-export enum Group {
+export enum GROUP {
   WEB = "Web",
   GAME = "Game",
   LAB = "Lab",
@@ -16,23 +16,40 @@ export enum Group {
   DESIGN = "Design",
 }
 
-//
-export enum Step {
-  报名 = "报名",
-  笔试 = "笔试",
-  组面时间选择 = "组面时间选择",
-  组面 = "组面",
-  熬测 = "熬测",
-  群面时间选择 = "群面时间选择",
-  群面 = "群面",
-  通过 = "通过",
-}
+export const Group = {
+  web: GROUP.WEB,
+  lab: GROUP.LAB,
+  ai: GROUP.AI,
+  game: GROUP.GAME,
+  pm: GROUP.PM,
+  android: GROUP.ANDROID,
+  ios: GROUP.IOS,
+  design: GROUP.DESIGN,
+};
+
+//ly: what a dumb translation!
+export const Step = {
+  SignUp: "报名",
+  WrittenTest: "笔试/问卷",
+  GroupTimeSelection: "组面时间选择",
+  GroupInterview: "组面",
+  StressTest: "熬测",
+  TeamTimeSelection: "群面时间选择",
+  TeamInterview: "群面",
+  Pass: "通过",
+} as const;
+
+export const RecruitmentName = {
+  A: "秋季招新",
+  S: "夏令营招新",
+  C: "春季招新",
+};
 
 export const GRADE = ["大一", "大二", "大三", "大四", "研究生"] as const;
 
-export const RANK = ["暂无", "前10%", "前25%", "前50%", "前100%"] as const;
+export const RANK = ["暂无", "10%", "25%", "50%", "100%"] as const;
 
-export const GENDERS = ["其他", "男", "女"] as const;
+export const GENDERS = ["男", "女", "其他"] as const;
 
 export const GROUPS = [
   "AI",
@@ -213,7 +230,7 @@ export const TIMELINE = [
     show: true,
   },
   {
-    name: "面试时间选择",
+    name: "组面时间选择",
     show: false,
   },
   {

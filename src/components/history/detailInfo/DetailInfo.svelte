@@ -32,7 +32,7 @@
         download>笔试/问卷链接</a
       >
     </p>
-  {:else if step === "面试时间选择"}
+  {:else if step === "组面时间选择"}
     <TimeSelector />
   {:else if step === "面试"}
     <InterviewInfo />
@@ -60,7 +60,7 @@
 {#if step !== "通过"}
   <Button
     highlight
-    className="w-[102px] h-[36px] text-sm text-center leading-[36px]  rounded-full text-white mt-[1rem] float-right"
+    className="w-[102px] h-[36px] text-sm text-center leading-[36px]  rounded-full text-white mt-[1rem]"
     >更新信息</Button
   >
 {/if}

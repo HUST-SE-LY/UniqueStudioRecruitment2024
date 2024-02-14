@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 interface ResponseType<T> {
   code: number;
   data: T;

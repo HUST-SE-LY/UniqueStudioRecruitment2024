@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
   import { fade, fly } from "svelte/transition";
   import UserInfoTitle from "../components/user/UserInfoTitle.svelte";
   import SingleInputInfo from "../components/user/SingleInputInfo.svelte";
@@ -6,24 +6,21 @@
   import edit from "/src/assets/edit.svg";
   import cx from "clsx";
   import Button from "../components/public/Button.svelte";
+  import word from '../assets/word.svg'
   import { DEPARTMENTS, GENDERS, GRADE, RANK } from "../config/const";
   import type { College } from "../types";
   import { onMount } from "svelte";
   import { getInfo } from "../requests/user/getInfo";
+  import { userInfo } from "../stores/userInfo";
   let editMode = false;
-  let name = "ccq";
-  let gender = "男";
-  let grade = "大一";
-  let gpa = "前100%";
-  let group = "Web";
   let colleges = Object.keys(DEPARTMENTS);
   let college = "";
+  let {rank,referrer, major,institute,group, grade, intro } = $userInfo.applications[0]
   //ly:this asset would be wrong but I just don't want to see TypeError :)
   $: majors = DEPARTMENTS[college as College] || [];
-  let major = ''
   onMount(() => {
-    getInfo()
-  })
+    getInfo();
+  });
 </script>
 
 <div class="h-full w-[60%] mx-auto flex flex-col">
@@ -52,17 +49,16 @@
     </div>
 
     <div class="grid grid-cols-2 mb-[2rem] w-full gap-[2rem]">
-      <SingleInputInfo {editMode} isNecessary name="姓名" bind:content={name} />
+      <SingleInputInfo necessary name="姓名" bind:content={$userInfo.name} />
       <SingleSelectInfo
-        {editMode}
-        isNecessary
+        necessary
         name="性别"
-        bind:content={gender}
+        bind:content={GENDERS[$userInfo.gender - 1]}
         selectItems={GENDERS}
       />
       <SingleSelectInfo
+        necessary
         {editMode}
-        isNecessary
         name="年级"
         bind:content={grade}
         selectItems={GRADE}
@@ -70,41 +66,31 @@
       <SingleSelectInfo
         selectItems={colleges}
         {editMode}
-        isNecessary
+        necessary
         name="学院"
-        bind:content={college}
+        bind:content={institute}
       />
       <SingleSelectInfo
-        placeholder={majors.length ? '' : '请选择学院'}
+        placeholder={majors.length ? "" : "请选择学院"}
         selectItems={majors}
         {editMode}
-        isNecessary
+        necessary
         name="专业"
         bind:content={major}
       />
       <SingleSelectInfo
         {editMode}
-        isNecessary
+        necessary
         name="加权"
-        bind:content={gpa}
+        bind:content={rank}
         selectItems={RANK}
       />
-      <SingleInputInfo
-        {editMode}
-        isNecessary
-        name="电话"
-        bind:content={major}
-      />
-      <SingleInputInfo
-        {editMode}
-        isNecessary
-        name="邮箱"
-        bind:content={major}
-      />
-      <SingleInputInfo {editMode} name="推荐人" bind:content={major} />
+      <SingleInputInfo {editMode} necessary name="电话" bind:content={$userInfo.phone} />
+      <SingleInputInfo {editMode} necessary name="邮箱" bind:content={$userInfo.email} />
+      <SingleInputInfo {editMode} name="推荐人" bind:content={referrer} />
       <SingleSelectInfo
         {editMode}
-        isNecessary
+        necessary
         name="意向组别"
         bind:content={group}
         selectItems={[
@@ -121,6 +107,7 @@
       <div class="flex col-span-2 gap-[1rem]">
         <p class="shrink-0 opacity-50 mt-[0.75rem]">*自我介绍</p>
         <textarea
+          bind:value={intro}
           disabled={!editMode}
           placeholder="请输入"
           class="w-full transition-all outline-none border-transparent border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
@@ -140,6 +127,9 @@
           选择文件
         </div>
         <input type="file" class="hidden" />
+      {:else if $userInfo.applications[0].resume}
+        <img src={word} alt="简历" />
+        <p>{111}</p>
       {:else}
         <p class="font-bold text-lg text-gray-400 select-none">暂无简历</p>
       {/if}
