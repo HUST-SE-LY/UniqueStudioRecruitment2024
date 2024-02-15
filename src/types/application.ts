@@ -24,3 +24,13 @@ export interface Application {
   interview_selections: SingleTime[];
   comments: null;
 }
+
+export interface EditableInfo {
+  grade: string;
+  institute: string;
+  major: string;
+  rank: string;
+  group: string;
+  intro: string;
+  referrer: string;
+}

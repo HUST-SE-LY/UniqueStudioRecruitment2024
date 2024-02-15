@@ -115,7 +115,7 @@ export class Http {
     );
   }
 
-  async postFile<T>(path: string, data: FormData) {
+  async postFormData<T>(path: string, data: FormData) {
     return await this.parseFetch<T>(
       await fetch(
         this.concatUrl(path),

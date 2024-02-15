@@ -50,17 +50,3 @@
     <p class="text-gray-300 mt-[8px]">其他信息请与组长沟通</p>
   {/if}
 </div>
-{#if step === "报名"}
-  <Button
-    highlight
-    className="w-[102px] h-[36px] text-sm text-center leading-[36px]  rounded-full text-white mt-[1rem] float-right"
-    >报名</Button
-  >
-{/if}
-{#if step !== "通过"}
-  <Button
-    highlight
-    className="w-[102px] h-[36px] text-sm text-center leading-[36px]  rounded-full text-white mt-[1rem]"
-    >更新信息</Button
-  >
-{/if}

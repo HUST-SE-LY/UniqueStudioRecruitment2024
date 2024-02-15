@@ -51,17 +51,6 @@ export const RANK = ["暂无", "10%", "25%", "50%", "100%"] as const;
 
 export const GENDERS = ["男", "女", "其他"] as const;
 
-export const GROUPS = [
-  "AI",
-  "Android",
-  "Design",
-  "Game",
-  "iOS",
-  "Lab",
-  "PM",
-  "Web",
-] as const;
-
 export const DEPARTMENTS = {
   电子信息与通信学院: [
     "通信工程",

@@ -13,6 +13,7 @@
   import { Message } from "./utils/Message";
   import { recruitment } from "./stores/recruitment";
   import { getLatestRecruitment } from "./requests/recruitment/getLatest";
+  import Groups from "./icons/Groups.svelte";
   let showAvatarDetail = false;
   let showAvatarSelector = false;
   let isLoading = true;
@@ -110,7 +111,7 @@
   <div
     class="bg-[rgba(53,100,221,1)] fixed top-0 left-0 -z-10 overflow-hidden w-full h-[15rem]"
   >
-    <img src={groups} alt="groups_logo" class="select-none w-full" />
+    <Groups />
   </div>
   {#if $userInfo}
     <Router {routes} />
