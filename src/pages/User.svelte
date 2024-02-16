@@ -9,21 +9,23 @@
   import word from "../assets/word.svg";
   import { DEPARTMENTS, GENDERS, GRADE, Group, RANK } from "../config/const";
   import type { College } from "../types";
-  import { onMount } from "svelte";
-  import { getInfo } from "../requests/user/getInfo";
   import { userInfo } from "../stores/userInfo";
   import { getRecruitmentById } from "../requests/recruitment/getById";
   import { getResume } from "../requests/user/getResume";
   import { recruitment } from "../stores/recruitment";
   import Popover from "../components/public/Popover.svelte";
   import { Message } from "../utils/Message";
+  import { latestInfo } from "../stores/latestApplication";
+  import Modal from "../components/public/Modal.svelte";
+  import { checkNecessaryInfo } from "../utils/checkNecessaryInfo";
+  import { signUpRecruitment } from "../requests/application/signUpRecruitment";
   let editMode = false;
   let colleges = Object.keys(DEPARTMENTS);
-  let college = "";
+  let showSignUpModal = false;
   let resume: File;
   let fileInput: HTMLInputElement;
   let { rank, referrer, major, institute, group, grade, intro, uid } =
-    $userInfo.applications[0];
+    $latestInfo;
   //ly:this asset would be wrong but I just don't want to see TypeError :)
   $: majors = DEPARTMENTS[institute as College] || [];
   const downloadResume = () => {
@@ -31,11 +33,24 @@
   };
   const closeEditMode = () => {
     ({ rank, referrer, major, institute, group, grade, intro, uid } =
-      $userInfo.applications[0]);
+      $latestInfo);
     editMode = false;
   };
+  const signUp = () => {
+    if(!checkNecessaryInfo({rank, major, institute, group, grade, intro})) return;
+    const formData = new FormData();
+    formData.append('recruitment_id', $recruitment.uid);
+    resume && formData.append('resume', resume);
+    for(const [key, value] of Object.entries({rank, major, institute, group, grade, intro, referrer})) {
+      formData.append(key, value)
+    };
+    signUpRecruitment(formData).then(() => {
+      Message.success("报名成功 ");
+      showSignUpModal = false;
+    })
+  }
   const saveApplicationInfo = () => {
-    userInfo.updateInfo({
+    latestInfo.updateInfo({
       rank,
       referrer,
       major,
@@ -85,6 +100,7 @@
           {#if $recruitment && $recruitment.uid !== $userInfo.applications[0].recruitment_id}
             <Popover style="white" direct="top">
               <Button
+                onClick={() => (showSignUpModal = true)}
                 slot="children"
                 className="p-[7px_30px] text-sm rounded-full"
                 highlight>报名</Button
@@ -149,24 +165,15 @@
         bind:content={rank}
         selectItems={RANK}
       />
-      <SingleInputInfo
-        {editMode}
-        necessary
-        name="电话"
-        bind:content={$userInfo.phone}
-      />
-      <SingleInputInfo
-        {editMode}
-        necessary
-        name="邮箱"
-        bind:content={$userInfo.email}
-      />
+      <SingleInputInfo necessary name="电话" bind:content={$userInfo.phone} />
+      <SingleInputInfo necessary name="邮箱" bind:content={$userInfo.email} />
       <SingleInputInfo {editMode} name="推荐人" bind:content={referrer} />
       <SingleSelectInfo
         {editMode}
         necessary
         name="意向组别"
-        bind:content={Group[group]}
+        content={Group[group]}
+        onChange={(item) => (group = item.toLowerCase())}
         selectItems={[
           "AI",
           "Android",
@@ -189,12 +196,18 @@
       </div>
     </div>
     <div class="w-full h-[1px] mb-[2rem] bg-[#E5E6EB]" />
-    <UserInfoTitle title="附件简历" />
+    <Popover direct="top" style="white">
+      <UserInfoTitle slot="children" title="附件简历" />
+      <p slot="content" class="w-[102px]">
+        可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip
+      </p>
+    </Popover>
+
     <div
       class="flex justify-center bg-[#FAFAFA] rounded-[1rem] py-[2rem] items-center flex-col gap-[1rem]"
     >
       {#if editMode}
-        <p class="font-bold text-lg">上传简历</p>
+        <p class="font-bold text-lg">上传附件</p>
         {#if resume}
           <p>{resume.name}</p>
         {/if}
@@ -212,7 +225,7 @@
           type="file"
           class="hidden"
         />
-      {:else if $userInfo.applications[0].resume}
+      {:else if $recruitment && $userInfo.applications[0].recruitment_id === $recruitment.uid && $userInfo.applications[0].resume}
         <div
           on:click={downloadResume}
           class="cursor-pointer flex justify-center items-center flex-col gap-[8px]"
@@ -226,5 +239,24 @@
         <p class="font-bold text-lg text-gray-400 select-none">暂无简历</p>
       {/if}
     </div>
+    <Modal
+      className="w-[524px] flex flex-col gap-[1rem] text-center p-[20px_20px]"
+      visible={showSignUpModal}
+      onCancel={() => (showSignUpModal = false)}
+    >
+      <p>你将报名{$recruitment.name}</p>
+      <p>请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）</p>
+      <div class="flex gap-[1rem] justify-center">
+        <Button
+          onClick={signUp}
+          highlight
+          className="p-[7px_30px] text-sm rounded-full">报名</Button
+        >
+        <Button
+          onClick={() => (showSignUpModal = false)}
+          className="p-[7px_30px] text-sm rounded-full">取消</Button
+        >
+      </div>
+    </Modal>
   </div>
 </div>

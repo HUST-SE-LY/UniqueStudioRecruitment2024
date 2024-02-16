@@ -25,12 +25,12 @@ export interface Application {
   comments: null;
 }
 
-export interface EditableInfo {
-  grade: string;
-  institute: string;
-  major: string;
-  rank: string;
-  group: string;
-  intro: string;
-  referrer: string;
-}
+export type EditableInfo = Pick<
+  Application,
+  "grade" | "institute" | "major" | "rank" | "group" | "intro" | "referrer"
+>;
+
+export type NecessaryInfo = Omit<
+  EditableInfo,
+  "referrer"
+>;

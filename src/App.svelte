@@ -14,13 +14,15 @@
   import { recruitment } from "./stores/recruitment";
   import { getLatestRecruitment } from "./requests/recruitment/getLatest";
   import Groups from "./icons/Groups.svelte";
+  import { latestInfo } from "./stores/latestApplication";
   let showAvatarDetail = false;
   let showAvatarSelector = false;
   let isLoading = true;
-  $userInfo ||
+  ($userInfo && $latestInfo) ||
     getInfo()
       .then((res) => {
         userInfo.setInfo(res.data);
+        latestInfo.setApplication(res.data.applications[0]);
       })
       .catch(() => {
         Message.error("获取信息失败");

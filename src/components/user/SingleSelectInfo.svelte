@@ -9,7 +9,8 @@
   export let selectItems: readonly string[];
   export let editMode: boolean = false;
   export let placeholder: string = "";
-  export let onChange: (content?:string) => void = () => {};
+  //ly: when bind:content isn't useful, use content & onChange
+  export let onChange: (content?:string) => void = (_content?:string) => {};
   let showItems = false;
   onMount(() => {
     const close = () => {
@@ -68,7 +69,7 @@
           <p
             on:click={() => {
               content = item;
-              onChange()
+              onChange(item)
               showItems = false;
             }}
             class="p-[0.5rem_0.75rem] transition-all rounded-[0.5rem] cursor-pointer hover:bg-gray-150"

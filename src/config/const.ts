@@ -263,3 +263,12 @@ export const AVATARS = [
   "/ESTP.svg",
   "/ESFP.svg",
 ];
+
+export const NecessaryInfoTitle = {
+  grade: "年级",
+  institute: "学院",
+  major: "专业",
+  rank: "加权",
+  group: "意向组别",
+  intro: "自我介绍",
+} as const;
