@@ -19,6 +19,8 @@
   import Modal from "../components/public/Modal.svelte";
   import { checkNecessaryInfo } from "../utils/checkNecessaryInfo";
   import { signUpRecruitment } from "../requests/application/signUpRecruitment";
+  import { updateApplication } from "../requests/application/updateApplication";
+  import { parseTitle } from "../utils/parseTitle";
   let editMode = false;
   let colleges = Object.keys(DEPARTMENTS);
   let showSignUpModal = false;
@@ -37,19 +39,47 @@
     editMode = false;
   };
   const signUp = () => {
-    if(!checkNecessaryInfo({rank, major, institute, group, grade, intro})) return;
+    if (!checkNecessaryInfo({ rank, major, institute, group, grade, intro }))
+      return;
     const formData = new FormData();
-    formData.append('recruitment_id', $recruitment.uid);
-    resume && formData.append('resume', resume);
-    for(const [key, value] of Object.entries({rank, major, institute, group, grade, intro, referrer})) {
-      formData.append(key, value)
-    };
+    formData.append("recruitment_id", $recruitment.uid);
+    resume && formData.append("resume", resume);
+    for (const [key, value] of Object.entries({
+      rank,
+      major,
+      institute,
+      group,
+      grade,
+      intro,
+      referrer,
+    })) {
+      formData.append(key, value);
+    }
     signUpRecruitment(formData).then(() => {
       Message.success("报名成功 ");
       showSignUpModal = false;
-    })
-  }
-  const saveApplicationInfo = () => {
+    });
+  };
+  const saveApplicationInfo = async () => {
+    if (!checkNecessaryInfo({ rank, major, institute, group, grade, intro }))
+    return;
+    if ($recruitment && $recruitment.uid === $userInfo.applications[0].recruitment_id) {
+      const formData = new FormData();
+      formData.append("recruitment_id", $recruitment.uid);
+      resume && formData.append("resume", resume);
+      for (const [key, value] of Object.entries({
+        rank,
+        major,
+        institute,
+        group,
+        grade,
+        intro,
+        referrer,
+      })) {
+        formData.append(key, value);
+      }
+      await updateApplication($userInfo.applications[0].uid, formData);
+    }
     latestInfo.updateInfo({
       rank,
       referrer,
@@ -106,7 +136,7 @@
                 highlight>报名</Button
               >
               <p class="w-[142px]" slot="content">
-                您将报名{$recruitment.name}，基本信息，简历，作品集将会上传，请认真填写
+                你将报名{parseTitle($recruitment.name)}，基本信息，简历，作品集将会上传，请认真填写
               </p>
             </Popover>
           {/if}
@@ -169,7 +199,7 @@
       <SingleInputInfo necessary name="邮箱" bind:content={$userInfo.email} />
       <SingleInputInfo {editMode} name="推荐人" bind:content={referrer} />
       <SingleSelectInfo
-        {editMode}
+        editMode={ editMode && (!$recruitment || $userInfo.applications[0].recruitment_id !== $recruitment.uid) }
         necessary
         name="意向组别"
         content={Group[group]}
@@ -232,7 +262,7 @@
         >
           <img src={word} alt="简历" />
           {#await getRecruitmentById($userInfo.applications[0].recruitment_id) then res}
-            <p>{res.data.name}-{$userInfo.name}-简历</p>
+            <p>{parseTitle(res.data.name)}-{$userInfo.name}-简历</p>
           {/await}
         </div>
       {:else}
@@ -244,7 +274,7 @@
       visible={showSignUpModal}
       onCancel={() => (showSignUpModal = false)}
     >
-      <p>你将报名{$recruitment.name}</p>
+      <p>你将报名{parseTitle($recruitment.name)}</p>
       <p>请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）</p>
       <div class="flex gap-[1rem] justify-center">
         <Button

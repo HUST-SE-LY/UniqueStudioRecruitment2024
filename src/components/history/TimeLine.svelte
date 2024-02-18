@@ -30,7 +30,7 @@
         <div class="relative">
           <div
             class={cx([
-              " w-[8px] h-[8px] rounded-full",
+              " w-[10px] h-[10px] rounded-full",
               item.name === currentItem ? "bg-blue-400" : "bg-gray-150",
             ])}
           ></div>

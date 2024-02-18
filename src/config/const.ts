@@ -3,6 +3,7 @@ export enum ProcessState {
   PROCESSING = "进行中",
   PASS = "已通过",
   OVER = "已结束",
+  ABANDONED = "已放弃",
 }
 
 export enum GROUP {
@@ -38,6 +39,23 @@ export const Step = {
   TeamInterview: "群面",
   Pass: "通过",
 } as const;
+
+export const Period = {
+  morning: "上午",
+  afternoon: "下午",
+  evening: "晚上",
+};
+
+export const InterviewPlace = {
+  web: "811",
+  lab: "810",
+  ai: "810",
+  game: "808",
+  pm: "809",
+  android: "808",
+  ios: "808",
+  design: "809",
+};
 
 export const RecruitmentName = {
   A: "秋季招新",
@@ -223,7 +241,7 @@ export const TIMELINE = [
     show: false,
   },
   {
-    name: "面试",
+    name: "组面",
     show: true,
   },
   {

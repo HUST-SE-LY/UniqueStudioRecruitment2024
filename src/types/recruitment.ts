@@ -6,4 +6,6 @@ export interface Recruitment {
   beginning: string;
   deadline: string;
   end: string;
+  stress_test_start: string;
+  stress_test_end: string;
 }

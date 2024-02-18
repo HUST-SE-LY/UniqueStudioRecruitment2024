@@ -18,8 +18,8 @@ export interface Application {
   step: string;
   candidate_id: string;
   recruitment_id: string;
-  interview_allocations_group: string;
-  interview_allocations_team: string;
+  interview_allocations_group: SingleTime;
+  interview_allocations_team: SingleTime;
   user_detail: null;
   interview_selections: SingleTime[];
   comments: null;

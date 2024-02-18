@@ -5,11 +5,10 @@ export const formatDate = (dateStr: string) => {
     weekday: "long" as const,
     month: "long" as const,
     day: "numeric" as const,
+    timeZone: "Asia/Shanghai",
   };
   const locale = "zh-CN";
-
   const formattedDate = date.toLocaleDateString(locale, options);
-
   return formattedDate;
 };
 
@@ -18,6 +17,7 @@ export const formatTime = (dateStr: string) => {
   const options = {
     hour: "numeric" as const,
     minute: "numeric" as const,
+    timeZone: "Asia/Shanghai",
   };
   const locale = "zh-CN";
 
@@ -25,8 +25,3 @@ export const formatTime = (dateStr: string) => {
 
   return formattedDate;
 };
-
-
-
-
-

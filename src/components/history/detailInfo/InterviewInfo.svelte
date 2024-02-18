@@ -1,11 +1,19 @@
 <script lang="ts">
+  import { Group, InterviewPlace } from "../../../config/const";
   import type { InterviewType } from "../../../types";
 
-  export let time = "这周";
-  export let place = "启明学院";
+  export let time = "";
   export let group = "";
-  export let type:InterviewType = "面试"
+  export let type: InterviewType;
 </script>
 
-<p class="text-gray-300">请于<span class="text-blue-300">{time}</span></p>
-<p class="text-gray-300">于<span class="text-blue-300">{place}</span>参加联创团队{group}组{type}</p>
+{#if time}
+  <p class="text-gray-300">请于<span class="text-blue-300">{time}</span></p>
+  <p class="text-gray-300">
+    于<span class="text-blue-300"
+      >启明学院亮胜楼八楼{InterviewPlace[group]}房间</span
+    >参加{type === "group" ? `${Group[group]}组面试` : "联创团队群面"}
+  </p>
+{:else}
+  <p class="text-gray-300">面试时间暂未分配，请等待</p>
+{/if}

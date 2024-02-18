@@ -4,6 +4,7 @@ import {
   GENDERS,
   GRADE,
   TIMELINE,
+  Period,
 } from "../config/const";
 
 export type Major = (typeof DEPARTMENTS)[keyof typeof DEPARTMENTS];
@@ -18,9 +19,9 @@ export type Grade = (typeof GRADE)[number];
 
 export type UserStep = (typeof TIMELINE)[number]["name"];
 
-export type Periods = "morning" | "afternoon" | "evening";
+export type Periods = keyof typeof Period;
 
-export type InterviewType = "面试" | "群面";
+export type InterviewType = "team" | "group";
 
 export type TimeLineNode = {
   name: string;

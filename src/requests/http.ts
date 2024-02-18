@@ -130,13 +130,19 @@ export class Http {
 
   async put<T>(
     path: string,
-    data?: Record<string, any>,
+    data?: Record<string, any> | FormData,
     options?: RequestInit
   ) {
     return await this.parseFetch<T>(
-      await fetch(this.concatUrl(path), this.mergeOptions("PUT", data, options))
+      await fetch(this.concatUrl(path), this.mergeOptions("PUT", data, data instanceof FormData ? {
+        headers: {
+          credentials: "include",
+        },
+      } :options))
     );
   }
+
+
 
   async delete<T>(
     path: string,
