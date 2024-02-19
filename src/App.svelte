@@ -50,7 +50,7 @@
   class="bg-[rgba(0,0,0,0.04)] pt-[6rem] overflow-scroll min-h-screen h-full"
 >
   <div
-    class=" p-[0.5rem_4rem] fixed grid grid-cols-3 bg-[rgba(49,84,174,0.58)] w-full h-[5rem] top-0 left-0 z-20"
+    class=" py-[0.5rem] px-[4rem] max-lg:px-[3rem] fixed grid grid-cols-3 bg-[rgba(49,84,174,0.58)] w-full h-[5rem] top-0 left-0 z-20"
   >
     <a
       class="self-end flex-shrink-0"
@@ -63,7 +63,7 @@
       </div>
     </a>
     <div
-      class="self-center relative flex gap-[2rem] text-white justify-self-center"
+      class="self-center flex-shrink-0 relative flex gap-[2rem] text-white justify-self-center"
     >
       <div class="cursor-pointer" on:click={() => push("/")}>我的申请</div>
       <div class="cursor-pointer" on:click={() => push("/user")}>个人信息</div>

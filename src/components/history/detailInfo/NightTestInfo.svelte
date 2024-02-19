@@ -1,9 +1,8 @@
 <script lang="ts">
   import { InterviewPlace } from "../../../config/const";
 
-  export let time;
-
-  export let group;
+  export let time:string;
+  export let group:string;
 </script>
 
 <p>

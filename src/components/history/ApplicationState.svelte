@@ -9,5 +9,6 @@
   state === ProcessState.PROCESSING && 'bg-gray-blue text-blue-400 border-blue-400',
   state === ProcessState.PASS && 'bg-gray-green text-green-300 border-green-300',
   state === ProcessState.OVER && 'bg-gray-orange text-orange border-orange',
-  'border-[1px] px-[1rem] w-fit rounded-full select-none'
+  state === ProcessState.ABANDONED && 'bg-gray-150 text-gray-200 border-gray-200',
+  'border-[1px] px-[1rem] w-fit rounded-full select-none flex-shrink-0'
 ])}>{state}</div>

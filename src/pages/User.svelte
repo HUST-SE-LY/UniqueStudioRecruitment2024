@@ -62,8 +62,11 @@
   };
   const saveApplicationInfo = async () => {
     if (!checkNecessaryInfo({ rank, major, institute, group, grade, intro }))
-    return;
-    if ($recruitment && $recruitment.uid === $userInfo.applications[0].recruitment_id) {
+      return;
+    if (
+      $recruitment &&
+      $recruitment.uid === $userInfo.applications[0].recruitment_id
+    ) {
       const formData = new FormData();
       formData.append("recruitment_id", $recruitment.uid);
       resume && formData.append("resume", resume);
@@ -96,17 +99,17 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="h-full w-[60%] mx-auto flex flex-col">
+<div class="h-full w-[60%] max-lg:w-[80%] mx-auto flex flex-col">
   <p in:fade out:fade class="text-[26px] text-white">个人信息</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
-    class="w-[full] my-[1rem] bg-white rounded-[20px] p-[30px_60px]"
+    class="w-[full] my-[1rem] bg-white rounded-[20px] py-[30px] px-[55px] max-lg:px-[80px]"
   >
     <div class="flex items-center mb-[1rem]">
       <UserInfoTitle title="基本信息" />
       {#if editMode}
-        <div class="ml-auto mt-[1rem] flex gap-[1rem]">
+        <div class="ml-auto flex items-center gap-[1rem]">
           <Button
             onClick={closeEditMode}
             className="p-[7px_30px] text-sm rounded-full">取消</Button
@@ -136,7 +139,9 @@
                 highlight>报名</Button
               >
               <p class="w-[142px]" slot="content">
-                你将报名{parseTitle($recruitment.name)}，基本信息，简历，作品集将会上传，请认真填写
+                你将报名{parseTitle(
+                  $recruitment.name
+                )}，基本信息，简历，作品集将会上传，请认真填写
               </p>
             </Popover>
           {/if}
@@ -147,17 +152,16 @@
             editMode = !editMode;
           }}
           class={cx([
-            "ml-auto cursor-pointer border-blue-300 border-[1px] rounded-[0.5rem] p-[0.25rem_1rem] flex gap-[0.25rem] items-center",
+            "ml-auto cursor-pointer text-blue-400 text-sm bg-blue-100 rounded-full p-[7px_20px] flex gap-[0.25rem] items-center",
             editMode && "hidden",
           ])}
         >
-          <img src={edit} alt="edit" />
-          <p class="text-blue-300">编辑</p>
+          编辑信息
         </div>
       {/if}
     </div>
 
-    <div class="grid grid-cols-2 mb-[2rem] w-full gap-[2rem]">
+    <div class="lg:grid lg:grid-cols-2 mb-[2rem] w-full gap-[2rem]">
       <SingleInputInfo necessary name="姓名" bind:content={$userInfo.name} />
       <SingleSelectInfo
         necessary
@@ -199,9 +203,11 @@
       <SingleInputInfo necessary name="邮箱" bind:content={$userInfo.email} />
       <SingleInputInfo {editMode} name="推荐人" bind:content={referrer} />
       <SingleSelectInfo
-        editMode={ editMode && (!$recruitment || $userInfo.applications[0].recruitment_id !== $recruitment.uid) }
+        editMode={editMode &&
+          (!$recruitment ||
+            $userInfo.applications[0].recruitment_id !== $recruitment.uid)}
         necessary
-        name="意向组别"
+        name="组别"
         content={Group[group]}
         onChange={(item) => (group = item.toLowerCase())}
         selectItems={[
@@ -221,7 +227,7 @@
           bind:value={intro}
           disabled={!editMode}
           placeholder="请输入"
-          class="w-full transition-all outline-none border-transparent border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
+          class={cx(["w-full transition-all outline-none border-transparent border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]", editMode && 'bg-transparent border-gray-200'])}
         />
       </div>
     </div>
@@ -262,7 +268,7 @@
         >
           <img src={word} alt="简历" />
           {#await getRecruitmentById($userInfo.applications[0].recruitment_id) then res}
-            <p>{parseTitle(res.data.name)}-{$userInfo.name}-简历</p>
+            <p>{parseTitle(res.data.name)}-{$userInfo.name}-附件</p>
           {/await}
         </div>
       {:else}

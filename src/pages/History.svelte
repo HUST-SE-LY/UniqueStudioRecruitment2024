@@ -8,7 +8,9 @@
   import { parseTitle } from "../utils/parseTitle";
 </script>
 
-<div class="h-full relative my-[1rem] w-[60%] mx-auto flex flex-col">
+<div
+  class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md:w-[80%] mx-auto flex flex-col"
+>
   <p in:fade out:fade class="text-[26px] text-white">申请记录</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}

@@ -10,22 +10,25 @@
   export let editMode: boolean = false;
   export let placeholder: string = "";
   //ly: when bind:content isn't useful, use content & onChange
-  export let onChange: (content?:string) => void = (_content?:string) => {};
+  export let onChange: (content?: string) => void = (_content?: string) => {};
   let showItems = false;
   onMount(() => {
     const close = () => {
       showItems = false;
-    }
-    document.addEventListener('click', close);
+    };
+    document.addEventListener("click", close);
     return () => {
-      document.removeEventListener('click', close);
-    }
-  })
+      document.removeEventListener("click", close);
+    };
+  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div on:click={e => e.stopPropagation()} class="flex gap-[1rem] items-center">
+<div
+  on:click={(e) => e.stopPropagation()}
+  class="flex gap-[1rem] max-lg:my-[1.5rem] items-center"
+>
   <p class="opacity-50 shrink-0">{necessary ? "*" : ""}{name}</p>
   <div class="relative w-full">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -36,16 +39,21 @@
         showItems = !showItems;
       }}
       class={cx([
-        "p-[4px_12px] text-text-1 relative w-full rounded-[8px] bg-gray-50 h-[36px] transition-all outline-none focus:border-[1px] focus:border-[#165DFF]",
-        editMode && "cursor-pointer",
+        "p-[4px_12px] text-text-1 items-center  flex relative w-full rounded-[8px] bg-gray-50 h-[48px] transition-all outline-none border-[1px] border-transparent focus:border-[#165DFF]",
+        editMode &&
+          "cursor-pointer border-gray-200 bg-transparent border-[1px]",
       ])}
     >
-      {content}
+      <input
+        disabled
+        value={content}
+        class="bg-transparent pointer-events-none w-full"
+      />
       <img
         src={arrow}
         alt="arrow"
         class={cx([
-          "absolute right-[1rem] top-[50%] h-[16px] translate-y-[-8px] transition-all",
+          " h-[16px] flex-shrink-0 transition-all",
           showItems || "rotate-180",
           editMode || "hidden",
         ])}
@@ -53,7 +61,7 @@
     </div>
     {#if showItems}
       <div
-        class="absolute shadow-card z-10 top-[110%] max-h-[300px] overflow-y-auto p-[0.75rem_1rem] rounded-[4px] bg-white w-full border-gray-150 border-[1px] shadow-gray-200 shadow-lg shadow-gray-150 left-0"
+        class="absolute shadow-card z-10 top-[110%] max-h-[300px] overflow-y-auto p-[0.75rem_1rem] rounded-[4px] bg-white w-full border-gray-150 border-[1px] shadow-lg shadow-gray-150 left-0"
         transition:slide
       >
         {#if placeholder}
@@ -69,7 +77,7 @@
           <p
             on:click={() => {
               content = item;
-              onChange(item)
+              onChange(item);
               showItems = false;
             }}
             class="p-[0.5rem_0.75rem] transition-all rounded-[0.5rem] cursor-pointer hover:bg-gray-150"
