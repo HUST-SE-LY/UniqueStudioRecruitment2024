@@ -1,22 +1,23 @@
 <script lang="ts">
-  import { routes } from "./router";
-  import logo from "/src/assets/logo.svg";
-  import groups from "/src/assets/groups.svg";
-  import Router, { location, push } from "svelte-spa-router";
-  import cx from "clsx";
-  import { slide } from "svelte/transition";
-  import Modal from "./components/public/Modal.svelte";
-  import AvatarSelector from "./components/header/AvatarSelector.svelte";
-  import { onMount } from "svelte";
-  import { getInfo } from "./requests/user/getInfo";
-  import { userInfo } from "./stores/userInfo";
-  import { Message } from "./utils/Message";
-  import { recruitment } from "./stores/recruitment";
-  import { getLatestRecruitment } from "./requests/recruitment/getLatest";
-  import Groups from "./icons/Groups.svelte";
-  import { latestInfo } from "./stores/latestApplication";
+  import { routes } from './router';
+  import logo from '/src/assets/logo.svg';
+  import language from '/src/assets/language.svg'
+  import Router, { location, push } from 'svelte-spa-router';
+  import cx from 'clsx';
+  import { slide } from 'svelte/transition';
+  import Modal from './components/public/Modal.svelte';
+  import AvatarSelector from './components/header/AvatarSelector.svelte';
+  import { onMount } from 'svelte';
+  import { getInfo } from './requests/user/getInfo';
+  import { userInfo } from './stores/userInfo';
+  import { Message } from './utils/Message';
+  import { recruitment } from './stores/recruitment';
+  import { getLatestRecruitment } from './requests/recruitment/getLatest';
+  import Groups from './icons/Groups.svelte';
+  import { latestInfo } from './stores/latestApplication';
   let showAvatarDetail = false;
   let showAvatarSelector = false;
+  let showLanguageSelector = false;
   let isLoading = true;
   ($userInfo && $latestInfo) ||
     getInfo()
@@ -25,7 +26,7 @@
         latestInfo.setApplication(res.data.applications[0]);
       })
       .catch(() => {
-        Message.error("获取信息失败");
+        Message.error('获取信息失败');
       })
       .finally(() => {
         isLoading = false;
@@ -36,11 +37,11 @@
         recruitment.setRecruitments(res.data);
       })
       .catch(() => {
-        Message.error("获取信息失败");
+        Message.error('获取信息失败');
       });
   //ly: this is the test cookie
   onMount(() => {
-    document.cookie = "SSO_SESSION=unique_web_candidate;";
+    document.cookie = 'SSO_SESSION=unique_web_candidate;';
   });
 </script>
 
@@ -65,33 +66,30 @@
     <div
       class="self-center relative flex gap-[2rem] text-white justify-self-center"
     >
-      <div class="cursor-pointer" on:click={() => push("/")}>我的申请</div>
-      <div class="cursor-pointer" on:click={() => push("/user")}>个人信息</div>
+      <div class="cursor-pointer" on:click={() => push('/')}>我的申请</div>
+      <div class="cursor-pointer" on:click={() => push('/user')}>个人信息</div>
       <div
         class={cx([
-          "bg-white w-[4rem] h-[3px] rounded-full absolute bottom-[-0.5rem] transition-all",
-          $location === "/user"
-            ? "translate-x-[6rem]"
-            : $location === "/"
-              ? ""
-              : "hidden",
+          'bg-white w-[4rem] h-[3px] rounded-full absolute bottom-[-0.5rem] transition-all',
+          $location === '/user'
+            ? 'translate-x-[6rem]'
+            : $location === '/'
+              ? ''
+              : 'hidden',
         ])}
       />
     </div>
     {#if $userInfo}
       <div
-        class="relative select-none ml-auto mr-[2rem] flex-shrink-0 self-center"
+        class="relative flex items-center gap-[24px] select-none ml-auto mr-[2rem] flex-shrink-0 self-center"
       >
-        <div
-          on:click={() => (showAvatarDetail = !showAvatarDetail)}
-          class=" bg-white w-[40px] h-[40px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
-        >
-          {$userInfo.name[0]}
-        </div>
-        {#if showAvatarDetail}
+        <div>
+          <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+          <img on:click={() => showLanguageSelector = !showLanguageSelector} alt="language" class="w-[24px] cursor-pointer h-[24px]" src={language} />
+          {#if showLanguageSelector}
           <div
             transition:slide
-            class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-0"
+            class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-[64px]"
           >
             <button
               on:click={() => {
@@ -107,6 +105,34 @@
             >
           </div>
         {/if}
+        </div>
+        <div class="relative">
+          <div
+            on:click={() => (showAvatarDetail = !showAvatarDetail)}
+            class=" bg-white w-[40px] h-[40px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
+          >
+            {$userInfo.name[0]}
+          </div>
+          {#if showAvatarDetail}
+            <div
+              transition:slide
+              class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-0"
+            >
+              <button
+                on:click={() => {
+                  showAvatarDetail = false;
+                  showAvatarSelector = true;
+                }}
+                class="h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
+                >更换头像</button
+              >
+              <button
+                class="text-red-warning h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
+                >退出登录</button
+              >
+            </div>
+          {/if}
+        </div>
       </div>
     {/if}
   </div>
