@@ -21,7 +21,7 @@
   import { t } from '../../../utils/t';
   export let step: UserStep;
   export let applicationInfo: Application;
-  let selectedTimes = applicationInfo.interview_selections.map((el) => el.uid);
+  let selectedTimes = applicationInfo?.interview_selections?.map((el) => el.uid);
   const handleClick = (e) => {
     if(e.target.className.includes('go-user')) {
       push('/user');
@@ -31,7 +31,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="w-full rounded-lg p-[20px_28px] mt-[3rem] bg-blue-100">
+<div class="w-full max-sm:hidden rounded-lg p-[20px_28px] mt-[3rem] bg-blue-100">
   {#if step !== $t('history.step.Pass')}
     <p class="font-bold text-lg mb-[1rem]">
       {$t('history.currentProcess')}：{step}

@@ -1,12 +1,14 @@
 <script lang="ts">
   import { routes } from './router';
   import logo from '/src/assets/logo.svg';
+  import title from "./assets/title.svg";
   import language from '/src/assets/language.svg';
   import Router, { location, push } from 'svelte-spa-router';
   import cx from 'clsx';
   import { slide } from 'svelte/transition';
   import Modal from './components/public/Modal.svelte';
   import AvatarSelector from './components/header/AvatarSelector.svelte';
+  import menu from "./assets/menu.svg";
   import { onDestroy, onMount } from 'svelte';
   import { getInfo } from './requests/user/getInfo';
   import { userInfo } from './stores/userInfo';
@@ -19,6 +21,7 @@
   import { localeLanguage } from './stores/localeLanguage';
   import { t } from './utils/t';
   import { i18nConstants } from './config/i18n';
+
   let showAvatarDetail = false;
   let showAvatarSelector = false;
   let showLanguageSelector = false;
@@ -112,17 +115,17 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-  class="bg-[rgba(0,0,0,0.04)] pt-[6rem] overflow-scroll min-h-screen h-full"
+  class="bg-[rgba(0,0,0,0.04)] sm:pt-[6rem] overflow-scroll min-h-screen h-full"
 >
   <div
     class={cx([
-      "py-[0.5rem] px-[4rem] max-lg:px-[3rem] fixed grid grid-cols-3 bg-[rgba(49,84,174,0.58)] w-full h-[5rem] top-0 left-0 z-20",
+      "py-[0.5rem] px-[4rem] max-lg:px-[3rem] sm:fixed sm:grid sm:grid-cols-3 max-sm:flex max-sm:px-[1rem] bg-[rgba(49,84,174,0.58)] max-sm:bg-[#315ED0] w-full h-[5rem] top-0 left-0 z-20",
       hideTopBar ? 'translate-y-[-5rem]' : 'translate-y-0',
     ])}
-
   >
+    <img src={menu} alt="menu" class="sm:hidden self-center" />
     <a
-      class="self-end flex-shrink-0"
+      class="self-end flex-shrink-0 max-sm:hidden"
       href="https://hustunique.com"
       target="_blank"
     >
@@ -131,9 +134,15 @@
         <p class="text-white mb-[0.5rem] text-lg">{$t('header.team')}</p>
       </div>
     </a>
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="w-full sm:hidden flex justify-center">
+      <img
+        src={title}
+        alt="联创招新"
+        class="mx-auto h-[22px] self-center flex-shrink-0"
+      />
+    </div>
     <div
-      class="self-center flex-shrink-0 relative flex gap-[2rem] text-white justify-self-center"
+      class="self-center max-sm:hidden flex-shrink-0 relative flex gap-[2rem] text-white justify-self-center"
     >
       <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
@@ -161,7 +170,7 @@
     </div>
     {#if $userInfo}
       <div
-        class="relative flex items-center gap-[24px] select-none ml-auto mr-[2rem] flex-shrink-0 self-center"
+        class="relative flex items-center gap-[24px] select-none ml-auto sm:mr-[2rem] flex-shrink-0 self-center"
       >
         <div>
           <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
@@ -188,13 +197,14 @@
               {/each}
             </div>
           {/if}
+
         </div>
         <div class="relative">
           <!-- svelte-ignore a11y_no_static_element_interactions -->
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <div
             on:click={() => (showAvatarDetail = !showAvatarDetail)}
-            class=" bg-white w-[40px] h-[40px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
+            class=" bg-white w-[40px] h-[40px] max-sm:w-[24px] max-sm:h-[24px] max-sm:leading-[24px] max-sm:text-[8px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
           >
             {$userInfo.name[0]}
           </div>
@@ -222,7 +232,7 @@
     {/if}
   </div>
   <div
-    class="bg-[rgba(53,100,221,1)] fixed top-0 left-0 -z-10 overflow-hidden w-full h-[15rem]"
+    class="bg-[rgba(53,100,221,1)] fixed max-sm:invisible top-0 left-0 -z-10 overflow-hidden w-full h-[15rem]"
   >
     <Groups />
   </div>

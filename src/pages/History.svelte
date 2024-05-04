@@ -10,6 +10,7 @@
   import { parseTitle } from '../utils/parseTitle';
   import { t } from '../utils/t';
   import type { UserStep } from '../types';
+  import { onMount } from 'svelte';
   $: signUpStep = $t(`history.step.SignUp`) as UserStep;
   $: processing = $t('history.processState.PROCESSING') as ProcessStateType;
   $: getState = (application: Application, date: string) =>
@@ -30,10 +31,27 @@
   $: getStep = (application: Application) =>
     $t(`history.step.${application.step}`) as UserStep;
 
+  let applications = [];
+  onMount(async () => {
+    applications = await Promise.all(
+      $userInfo.applications.map(async (application) => {
+        const res = await getRecruitmentById(application.recruitment_id);
+        const processedApplication = {
+          ...application,
+          title: $parseTitle(res.data.name),
+          end: res.data.end,
+          deadline: res.data.deadline,
+          beginning: res.data.beginning,
+        };
+        return processedApplication;
+      })
+    );
+  });
+
 </script>
 
-<div class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md:w-[80%] mx-auto flex flex-col">
-  <p in:fade out:fade class="text-[26px] text-white">{$t('history.records')}</p>
+<div class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md:w-[80%] max-sm:w-[calc(100%_-_40px)] mx-auto flex flex-col">
+  <p in:fade out:fade class="text-[26px] max-sm:text-text-1 max-sm:text-[18px] text-white">{$t('history.records')}</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
@@ -47,7 +65,7 @@
           state={processing}
         />
       {/if}
-      {#each $userInfo.applications as application, i}
+      {#each applications as application, i}
         {#await getRecruitmentById(application.recruitment_id) then res}
           <SingleApplicationItem
             applicationInfo={application}
@@ -58,6 +76,7 @@
             state={getState(application, res.data.end)}
           />
         {/await}
+
       {/each}
     {/if}
   </div>

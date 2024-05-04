@@ -1,4 +1,5 @@
 import type { SingleTime } from ".";
+import type { Step } from "../config/const";
 
 export interface Application {
   uid: string;
@@ -15,7 +16,7 @@ export interface Application {
   resume: string;
   abandoned: boolean;
   rejected: boolean;
-  step: string;
+  step: Step;
   candidate_id: string;
   recruitment_id: string;
   interview_allocations_group: SingleTime;
@@ -34,3 +35,5 @@ export type NecessaryInfo = Omit<
   EditableInfo,
   "referrer"
 >;
+
+export type Step = keyof typeof Step;
