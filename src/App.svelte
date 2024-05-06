@@ -18,6 +18,7 @@
   import { LANGUAGES } from './config/const';
   import { localeLanguage } from './stores/localeLanguage';
   import { t } from './utils/t';
+  import { i18nConstants } from './config/i18n';
   let showAvatarDetail = false;
   let showAvatarSelector = false;
   let showLanguageSelector = false;
@@ -25,6 +26,7 @@
   let home: HTMLDivElement;
   let user: HTMLDivElement;
   let tabLine: HTMLDivElement;
+  const i18nKeys = Object.keys(i18nConstants) as (keyof typeof i18nConstants)[];
   ($userInfo && $latestInfo) ||
     getInfo()
       .then((res) => {
@@ -47,13 +49,8 @@
       });
   const handleRouterClick = (path: string) => {
     push(path);
-    tabLine.style.width = `${path === '/user' ? user.clientWidth : home.clientWidth}px`;
-    tabLine.style.transform =
-      path === '/user'
-        ? `translateX(${home.clientWidth + 32}px)`
-        : `translateX(0px)`;
   };
-  const unsubscribe = localeLanguage.subscribe(() => {
+  const unsubscribeLocaleLanguage = localeLanguage.subscribe(() => {
     if (tabLine && user && home) {
       Promise.resolve().then(() => {
         tabLine.style.width = `${$location === '/user' ? user.clientWidth : home.clientWidth}px`;
@@ -64,6 +61,17 @@
       });
     }
   });
+  const unsubscribeLocation = location.subscribe(() => {
+    if (tabLine && user && home) {
+      Promise.resolve().then(() => {
+        tabLine.style.width = `${$location === '/user' ? user.clientWidth : home.clientWidth}px`;
+        tabLine.style.transform =
+          $location === '/user'
+            ? `translateX(${home.clientWidth + 32}px)`
+            : `translateX(0px)`;
+      });
+    }
+  })
   //ly: this is the test cookie
   onMount(() => {
     document.cookie = 'SSO_SESSION=unique_web_candidate;';
@@ -74,10 +82,10 @@
         : `translateX(0px)`;
   });
   onDestroy(() => {
-    unsubscribe();
-  })
+    unsubscribeLocaleLanguage();
+    unsubscribeLocation()
+  });
 </script>
-
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
@@ -96,9 +104,11 @@
         <p class="text-white mb-[0.5rem] text-lg">{$t('header.team')}</p>
       </div>
     </a>
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
     <div
       class="self-center relative flex gap-[2rem] text-white justify-self-center"
     >
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
         bind:this={home}
         class="cursor-pointer"
@@ -106,6 +116,7 @@
       >
         {$t('header.applications')}
       </div>
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
       <div
         bind:this={user}
         class="cursor-pointer"
@@ -113,6 +124,7 @@
       >
         {$t('header.info')}
       </div>
+      <!-- svelte-ignore element_invalid_self_closing_tag -->
       <div
         bind:this={tabLine}
         class={cx([
@@ -137,7 +149,7 @@
               transition:slide
               class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-[64px]"
             >
-              {#each Object.keys(LANGUAGES) as key}
+              {#each i18nKeys as key}
                 <button
                   on:click={() => {
                     showLanguageSelector = false;
@@ -151,6 +163,8 @@
           {/if}
         </div>
         <div class="relative">
+          <!-- svelte-ignore a11y_no_static_element_interactions -->
+          <!-- svelte-ignore a11y_click_events_have_key_events -->
           <div
             on:click={() => (showAvatarDetail = !showAvatarDetail)}
             class=" bg-white w-[40px] h-[40px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"

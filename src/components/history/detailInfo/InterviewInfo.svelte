@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Group, InterviewPlace } from "../../../config/const";
   import type { InterviewType } from "../../../types";
+  import { t } from "../../../utils/t";
 
   export let time = "";
   export let group = "";
@@ -15,5 +16,5 @@
     >参加{type === "group" ? `${Group[group]}组面试` : "联创团队群面"}
   </p>
 {:else}
-  <p class="text-gray-300">面试时间暂未分配，请等待</p>
+  <p class="text-gray-300">{$t('history.groupInterview.noTime')}</p>
 {/if}

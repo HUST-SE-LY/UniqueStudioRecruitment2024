@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
+  import { fade, fly, slide } from "svelte/transition";
   import UserInfoTitle from "../components/user/UserInfoTitle.svelte";
   import SingleInputInfo from "../components/user/SingleInputInfo.svelte";
   import SingleSelectInfo from "../components/user/SingleSelectInfo.svelte";
@@ -97,7 +97,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="h-full w-[60%] mx-auto flex flex-col">
-  <p in:fade out:fade class="text-[26px] text-white">个人信息</p>
+  <p in:slide class="text-[26px] text-white">个人信息</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
@@ -136,7 +136,7 @@
                 highlight>报名</Button
               >
               <p class="w-[142px]" slot="content">
-                你将报名{parseTitle($recruitment.name)}，基本信息，简历，作品集将会上传，请认真填写
+                你将报名{$parseTitle($recruitment.name)}，基本信息，简历，作品集将会上传，请认真填写
               </p>
             </Popover>
           {/if}
@@ -262,7 +262,7 @@
         >
           <img src={word} alt="简历" />
           {#await getRecruitmentById($userInfo.applications[0].recruitment_id) then res}
-            <p>{parseTitle(res.data.name)}-{$userInfo.name}-简历</p>
+            <p>{$parseTitle(res.data.name)}-{$userInfo.name}-简历</p>
           {/await}
         </div>
       {:else}
@@ -274,7 +274,7 @@
       visible={showSignUpModal}
       onCancel={() => (showSignUpModal = false)}
     >
-      <p>你将报名{parseTitle($recruitment.name)}</p>
+      <p>你将报名{$parseTitle($recruitment.name)}</p>
       <p>请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）</p>
       <div class="flex gap-[1rem] justify-center">
         <Button

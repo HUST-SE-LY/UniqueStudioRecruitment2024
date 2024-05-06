@@ -22,8 +22,10 @@
   export let step: UserStep;
   export let applicationInfo: Application;
   let selectedTimes = applicationInfo.interview_selections.map((el) => el.uid);
-  const goUser = () => {
-    push('/user');
+  const handleClick = (e) => {
+    if(e.target.className.includes('go-user')) {
+      push('/user');
+    }
   }
 </script>
 
@@ -36,34 +38,37 @@
     </p>
   {/if}
   {#if step === $t('history.step.SignUp')}
-    <p>
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <p on:click={handleClick}>
       {@html $userInfo.applications[0].recruitment_id === $recruitment.uid
         ? $t('history.signUpTips.SignInTips', {
             changeInfo: `<span
-        onclick={goUser} class="text-blue-300 underline cursor-pointer">${$t('history.signUpTips.changeInfo')}</span
+         class="text-blue-300 underline cursor-pointer go-user">${$t('history.signUpTips.changeInfo')}</span
       >`,
             group: Group[$userInfo.applications[0].group],
             recruitment: $parseTitle($recruitment.name),
           })
         : $t('history.signUpTips.notSignInTips', {
             changeInfo: `<span
-        on:click={() => push("/user")}
-        class="text-blue-300 underline cursor-pointer">${$t('history.signUpTips.changeInfo')}</span
+        
+        class="text-blue-300 underline cursor-pointer go-user">${$t('history.signUpTips.changeInfo')}</span
       >`,
           })}
     </p>
-  {:else if step === '笔试/问卷'}
-    <p>各组会根据本组情况，设计笔试/问卷，这是联创团队招新的必经环节。</p>
+  {:else if step ===  $t('history.step.WrittenTest')}
+    <p>{$t('history.writeTest.tips')}</p>
     <p class="mt-[0.5rem]">
-      查看最新的<a
+      {@html $t('history.writeTest.viewLink', {
+        writtenTest: `<a
         class=" text-blue-300 underline"
         href="www.bilibili.com"
-        download>笔试/问卷链接</a
-      >
+        download>${$t('history.writeTest.writtenTest')}</a
+      >`
+      })}
     </p>
-  {:else if step === '组面时间选择'}
+  {:else if step === $t('history.step.GroupTimeSelection')}
     {#await getInterviewTimes(applicationInfo.recruitment_id, applicationInfo.group)}
-      <p>获取可供选择的时间中</p>
+      <p>{$t('history.groupInterviewTimeSelector.loading')}</p>
     {:then res}
       <TimeSelector
         type="group"
@@ -72,7 +77,7 @@
         bind:selectedTimes
       />
     {/await}
-  {:else if step === '组面'}
+  {:else if step === $t('history.step.GroupInterview')}
     <InterviewInfo
       group={applicationInfo.group}
       time={applicationInfo.interview_allocations_group.uid
@@ -84,15 +89,15 @@
         : ''}
       type="group"
     />
-  {:else if step === '熬测'}
+  {:else if step === $t('history.step.StressTest')}
     <NightTestInfo
       group={applicationInfo.group}
       time={formatDate($recruitment.stress_test_start) +
         formatTime($recruitment.stress_test_start)}
     />
-  {:else if step === '群面时间选择'}
+  {:else if step === $t('history.step.TeamTimeSelection')}
     {#await getInterviewTimes(applicationInfo.recruitment_id)}
-      <p>获取可选择的时间中...</p>
+      <p>{$t('history.teamInterviewTimeSelector.loading')}</p>
     {:then res}
       <TimeSelector
         type="team"
@@ -101,7 +106,7 @@
         bind:selectedTimes
       />
     {/await}
-  {:else if step === '群面'}
+  {:else if step === $t('history.step.TeamInterview')}
     <InterviewInfo
       time={applicationInfo.interview_allocations_team.uid
         ? `${formatDate(
@@ -113,11 +118,11 @@
       type="team"
       group={applicationInfo.group}
     />
-  {:else if step === '通过'}
+  {:else if step === $t('history.step.Pass')}
     <div class="flex items-center gap-[4px]">
-      <p class="text-lg">恭喜你加入了联创团队</p>
+      <p class="text-lg">{$t('history.passTips')}</p>
       <img class="inline" src={greet} alt="欢迎" />
     </div>
-    <p class="text-gray-300 mt-[8px]">其他信息请与组长沟通</p>
+    <p class="text-gray-300 mt-[8px]">{$t('history.passSubTips')}</p>
   {/if}
 </div>

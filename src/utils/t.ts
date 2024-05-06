@@ -3,7 +3,7 @@
   import { derived, get } from "svelte/store";
   import { i18nConstants } from "../config/i18n";
 
-  const getNestedProperty = <T,>(obj: Record<string, any>, path: string) => {
+  export const getNestedProperty = <T,>(obj: Record<string, any>, path: string) => {
     return path.split(".").reduce((acc, part) => acc && acc[part], obj) as
       | T
       | undefined;
@@ -18,7 +18,6 @@
     if (!locale) throw new Error(`no translation for key "${key}"`);
     const localeTranslations = i18nConstants[locale];
     if (!localeTranslations) throw new Error("no translation for this locale");
-    console.log(localeTranslations);
     let text = getNestedProperty<string>(localeTranslations, key);
     if (!text) throw new Error(`no translation found for ${locale}.${key}`);
     vars &&

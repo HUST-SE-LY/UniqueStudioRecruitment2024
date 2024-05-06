@@ -2,11 +2,8 @@
   //ly: i have spent so much time on this shit component, WTF!!!
   import type { InterviewTime, Periods, SingleTime } from "../../../types";
   import { formatDate, formatTime } from "../../../utils/formmatDate";
-  import checkedBox from "../../../assets/checkedBox.svg";
   import cx from "clsx";
-  import checkbox from "../../../assets/checkbox.svg";
   import { slide } from "svelte/transition";
-  import Button from "../../public/Button.svelte";
   import arrow from "../../../assets/arrow.svg";
   import { parseInterviewTime } from "../../../utils/parseInterviewTime";
   import CheckBox from "../../../icons/CheckBox.svelte";
@@ -14,6 +11,7 @@
   import { Message } from "../../../utils/Message";
   import { setInterviewTimes } from "../../../requests/application/setInterviewTimes";
   import { Period, type Group } from "../../../config/const";
+  import { t } from "../../../utils/t";
 
   //ly: type 'SingleTime' is the return-type of backend, type 'InterviewTime' is the useful type when rendering UI
   export let times: SingleTime[] = [];
@@ -51,10 +49,10 @@
       type,
     })
       .then(() => {
-        Message.success("选择成功");
+        Message.success($t('history.timeSelector.chooseSuccess'));
       })
       .catch(() => {
-        Message.error("操作失败");
+        Message.error($t('history.timeSelector.chooseFailed'));
       });
   };
   const transferTime = (uuid: string) => {
@@ -131,7 +129,7 @@
           class="w-1/3 py-[8px] border-[1px] border-gray-150 bg-white rounded-l-md"
         >
           {#if timeTrees.length === 0}
-            <p class="p-[12px_14px]">暂无可选择的时间，请等待</p>
+            <p class="p-[12px_14px]">{$t('history.timeSelector.noTime')}</p>
           {/if}
           {#each timeTrees as { date, detail }}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
