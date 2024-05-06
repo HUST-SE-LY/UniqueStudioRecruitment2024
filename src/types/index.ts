@@ -5,7 +5,12 @@ import {
   GRADE,
   TIMELINE,
   Period,
+  TIMELINE_EN,
+  ProcessState,
+  ProcessStateEN,
 } from "../config/const";
+
+export type ProcessState = (typeof ProcessState)[keyof typeof ProcessState] | (typeof ProcessStateEN)[keyof typeof ProcessStateEN]
 
 export type Major = (typeof DEPARTMENTS)[keyof typeof DEPARTMENTS];
 
@@ -17,7 +22,7 @@ export type Rank = (typeof RANK)[number];
 
 export type Grade = (typeof GRADE)[number];
 
-export type UserStep = (typeof TIMELINE)[number]["name"];
+export type UserStep = (typeof TIMELINE)[number]["name"] | (typeof TIMELINE_EN)[number]["name"];
 
 export type Periods = keyof typeof Period;
 

@@ -1,23 +1,23 @@
 export const LANGUAGES = {
   "zh-CN": "简体中文",
   "en-US": "English",
-};
+} as const;
 
-export enum ProcessState {
-  OUT = "已淘汰",
-  PROCESSING = "进行中",
-  PASS = "已通过",
-  OVER = "已结束",
-  ABANDONED = "已放弃",
-}
+export const ProcessState = {
+  OUT : "已淘汰",
+  PROCESSING : "进行中",
+  PASS : "已通过",
+  OVER : "已结束",
+  ABANDONED : "已放弃",
+} as const;
 
-export enum ProcessStateEN {
-  OUT = "OUT",
-  PROCESSING = "PROCESSING",
-  PASS = "PASS",
-  OVER = "OVER",
-  ABANDONED = "ABANDONED",
-}
+export const ProcessStateEN = {
+  OUT : "OUT",
+  PROCESSING : "PROCESSING",
+  PASS : "PASS",
+  OVER : "OVER",
+  ABANDONED : "ABANDONED",
+} as const;
 
 export enum GROUP {
   WEB = "Web",
@@ -54,7 +54,7 @@ export const Step = {
 
 export const StepEn = {
   SignUp: "Sign up",
-  WrittenTest: "Written test/questionnaire",
+  WrittenTest: "Written Test/Questionnaire",
   GroupTimeSelection: "Group interview time selection",
   GroupInterview: "Group interview",
   StressTest: "Stress test",
@@ -86,13 +86,13 @@ export const InterviewPlace = {
   design: "809",
 };
 
-export const RecruitmentName = {
+export const RecruitmentNameEn = {
   A: "Fall Recruitment",
   S: "Summer Camp Recruitment",
   C: "Spring Recruitment",
 };
 
-export const RecruitmentNameEn = {
+export const RecruitmentName = {
   A: "秋季招新",
   S: "夏令营招新",
   C: "春季招新",

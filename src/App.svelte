@@ -1,13 +1,13 @@
 <script lang="ts">
   import { routes } from './router';
   import logo from '/src/assets/logo.svg';
-  import language from '/src/assets/language.svg'
+  import language from '/src/assets/language.svg';
   import Router, { location, push } from 'svelte-spa-router';
   import cx from 'clsx';
   import { slide } from 'svelte/transition';
   import Modal from './components/public/Modal.svelte';
   import AvatarSelector from './components/header/AvatarSelector.svelte';
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
   import { getInfo } from './requests/user/getInfo';
   import { userInfo } from './stores/userInfo';
   import { Message } from './utils/Message';
@@ -15,10 +15,16 @@
   import { getLatestRecruitment } from './requests/recruitment/getLatest';
   import Groups from './icons/Groups.svelte';
   import { latestInfo } from './stores/latestApplication';
+  import { LANGUAGES } from './config/const';
+  import { localeLanguage } from './stores/localeLanguage';
+  import { t } from './utils/t';
   let showAvatarDetail = false;
   let showAvatarSelector = false;
   let showLanguageSelector = false;
   let isLoading = true;
+  let home: HTMLDivElement;
+  let user: HTMLDivElement;
+  let tabLine: HTMLDivElement;
   ($userInfo && $latestInfo) ||
     getInfo()
       .then((res) => {
@@ -39,10 +45,37 @@
       .catch(() => {
         Message.error('获取信息失败');
       });
+  const handleRouterClick = (path: string) => {
+    push(path);
+    tabLine.style.width = `${path === '/user' ? user.clientWidth : home.clientWidth}px`;
+    tabLine.style.transform =
+      path === '/user'
+        ? `translateX(${home.clientWidth + 32}px)`
+        : `translateX(0px)`;
+  };
+  const unsubscribe = localeLanguage.subscribe(() => {
+    if (tabLine && user && home) {
+      Promise.resolve().then(() => {
+        tabLine.style.width = `${$location === '/user' ? user.clientWidth : home.clientWidth}px`;
+        tabLine.style.transform =
+          $location === '/user'
+            ? `translateX(${home.clientWidth + 32}px)`
+            : `translateX(0px)`;
+      });
+    }
+  });
   //ly: this is the test cookie
   onMount(() => {
     document.cookie = 'SSO_SESSION=unique_web_candidate;';
+    tabLine.style.width = `${$location === '/user' ? user.clientWidth : home.clientWidth}px`;
+    tabLine.style.transform =
+      $location === '/user'
+        ? `translateX(${home.clientWidth + 32}px)`
+        : `translateX(0px)`;
   });
+  onDestroy(() => {
+    unsubscribe();
+  })
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -60,22 +93,30 @@
     >
       <div class="gap-[0.5rem] flex items-center">
         <img draggable={false} src={logo} alt="UniqueStudio" />
-        <p class="text-white mb-[0.5rem] text-lg">联创团队</p>
+        <p class="text-white mb-[0.5rem] text-lg">{$t('header.team')}</p>
       </div>
     </a>
     <div
       class="self-center relative flex gap-[2rem] text-white justify-self-center"
     >
-      <div class="cursor-pointer" on:click={() => push('/')}>我的申请</div>
-      <div class="cursor-pointer" on:click={() => push('/user')}>个人信息</div>
       <div
+        bind:this={home}
+        class="cursor-pointer"
+        on:click={() => handleRouterClick('/')}
+      >
+        {$t('header.applications')}
+      </div>
+      <div
+        bind:this={user}
+        class="cursor-pointer"
+        on:click={() => handleRouterClick('/user')}
+      >
+        {$t('header.info')}
+      </div>
+      <div
+        bind:this={tabLine}
         class={cx([
-          'bg-white w-[4rem] h-[3px] rounded-full absolute bottom-[-0.5rem] transition-all',
-          $location === '/user'
-            ? 'translate-x-[6rem]'
-            : $location === '/'
-              ? ''
-              : 'hidden',
+          'bg-white h-[3px] rounded-full absolute bottom-[-0.5rem] transition-all',
         ])}
       />
     </div>
@@ -85,26 +126,29 @@
       >
         <div>
           <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
-          <img on:click={() => showLanguageSelector = !showLanguageSelector} alt="language" class="w-[24px] cursor-pointer h-[24px]" src={language} />
+          <img
+            on:click={() => (showLanguageSelector = !showLanguageSelector)}
+            alt="language"
+            class="w-[24px] cursor-pointer h-[24px]"
+            src={language}
+          />
           {#if showLanguageSelector}
-          <div
-            transition:slide
-            class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-[64px]"
-          >
-            <button
-              on:click={() => {
-                showAvatarDetail = false;
-                showAvatarSelector = true;
-              }}
-              class="h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
-              >更换头像</button
+            <div
+              transition:slide
+              class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-[64px]"
             >
-            <button
-              class="text-red-warning h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
-              >退出登录</button
-            >
-          </div>
-        {/if}
+              {#each Object.keys(LANGUAGES) as key}
+                <button
+                  on:click={() => {
+                    showLanguageSelector = false;
+                    localeLanguage.updateLanguage(key);
+                  }}
+                  class="h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
+                  >{LANGUAGES[key]}</button
+                >
+              {/each}
+            </div>
+          {/if}
         </div>
         <div class="relative">
           <div
@@ -124,11 +168,11 @@
                   showAvatarSelector = true;
                 }}
                 class="h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
-                >更换头像</button
+                >{$t('header.avatar')}</button
               >
               <button
                 class="text-red-warning h-[46px] hover:bg-gray-150 leading-[46px] text-center w-full"
-                >退出登录</button
+                >{$t('header.logout')}</button
               >
             </div>
           {/if}
