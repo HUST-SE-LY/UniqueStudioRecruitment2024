@@ -12,7 +12,7 @@
   import out from '../../assets/out.svg';
   import DetailInfo from './detailInfo/DetailInfo.svelte';
   import greet from '../../assets/greet.svg';
-  import type { ProcessState as ProcessStateType, UserStep } from '../../types';
+  import type { ProcessState as ProcessStateType, TimeLineNode, UserStep } from '../../types';
   import Button from '../public/Button.svelte';
   import type { Application } from '../../types/application';
   import { t } from '../../utils/t';
@@ -23,6 +23,7 @@
   export let index: number;
   export let applicationInfo: Application = null;
   let showDetail = false;
+  $: timeline = $t('history.timeLine') as unknown as TimeLineNode[]
 </script>
 
 <div
@@ -38,7 +39,7 @@
   {#if state === $t('history.processState.PROCESSING')}
     {#if showDetail}
       <TimeLine
-        items={TIMELINE}
+        items={timeline}
         className="mt-[24px] px-[12px] text-sm"
         currentItem={step}
       />

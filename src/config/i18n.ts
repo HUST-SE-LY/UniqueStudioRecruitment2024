@@ -1,4 +1,4 @@
-import { ProcessState, ProcessStateEN, RecruitmentName, RecruitmentNameEn, Step, StepEn } from "./const";
+import { Period, PeriodEn, ProcessState, ProcessStateEN, RecruitmentName, RecruitmentNameEn, Step, StepEn, TIMELINE, TIMELINE_EN } from "./const";
 
 export const i18nConstants = {
   "en-US": {
@@ -14,7 +14,9 @@ export const i18nConstants = {
       viewDetails: "View Details",
       step: StepEn,
       processState: ProcessStateEN,
+      timeLine: TIMELINE_EN,
       recruitmentName: RecruitmentNameEn,
+      period: PeriodEn,
       currentProcess: "current process",
       notApplyTips: "Unique Studio is looking forward to your joining",
       outTips: "Looking forward to meeting a better you",
@@ -31,7 +33,7 @@ export const i18nConstants = {
       },
       writeTest: {
         writtenTest: "written test/questionnaire",
-        tips: "Each group will design a written test/questionnaire based on the situation of the group. This is a necessary step for the Unique Studio to recruit new members.",
+        tips: "Each group will design a written test/questionnaire based on the situation of the group. This is a necessary step for Unique Studio to recruit new members.",
         viewLink: "View the latest {writtenTest}",
       },
       timeSelector: {
@@ -58,21 +60,26 @@ export const i18nConstants = {
       },
     },
     user: {
-      basicInfo: "basicInfo",
+      selfInfo: "Personal Information",
+      basicInfo: "Basic Information",
       edit: "edit",
       email: "email",
       recommender: "recommender",
       name: "name",
       gender: "gender",
       grade: "grader",
+      major: "major",
       college: "college",
       rank: "rank",
       phone: "phone",
       group: "intention group",
+      selfIntro: "self introduction",
       resume: "Attachments & Resume",
       noResume: "No resume yet",
       upload: "Upload Attachment",
       select: "select file",
+      save: "save",
+      cancel: "cancel",
     },
   },
   "zh-CN": {
@@ -88,7 +95,9 @@ export const i18nConstants = {
       viewDetails: "查看详情",
       step: Step,
       processState: ProcessState,
+      timeLine: TIMELINE,
       recruitmentName: RecruitmentName,
+      period: Period,
       currentProcess: "当前流程",
       notApplyTips: "联创团队期待你的加入",
       outTips: "期待与更强大的你相遇",
@@ -109,8 +118,8 @@ export const i18nConstants = {
         viewLink: "查看最新的{writtenTest}",
       },
       timeSelector: {
-        chooseSuccess: "选择成功",
-        chooseFailed: "选择失败",
+        chooseSuccess: "修改成功",
+        chooseFailed: "修改失败",
         noTime: "暂无可供选择的时间",
       },
       groupInterviewTimeSelector: {
@@ -132,21 +141,26 @@ export const i18nConstants = {
       },
     },
     user: {
+      selfInfo: "个人信息",
       basicInfo: "基本信息",
       edit: "编辑",
       email: "邮箱",
       recommender: "推荐人",
       name: "姓名",
+      major: "专业",
       gender: "性别",
       grade: "年级",
       college: "学院",
       rank: "加权排名",
       phone: "电话",
       group: "意向组别",
+      selfIntro: "自我介绍",
       resume: "附件简历",
       noResume: "暂无简历",
       upload: "上传附件",
       select: "选择文件",
+      save: "保存",
+      cancel: "取消",
     },
   },
 } as const;

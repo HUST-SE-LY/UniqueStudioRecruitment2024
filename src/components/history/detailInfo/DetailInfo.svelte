@@ -81,9 +81,9 @@
     <InterviewInfo
       group={applicationInfo.group}
       time={applicationInfo.interview_allocations_group.uid
-        ? `${formatDate(
+        ? `${$formatDate(
             applicationInfo.interview_allocations_group.date
-          )}${Period[applicationInfo.interview_allocations_group.period]}${formatTime(
+          )}${Period[applicationInfo.interview_allocations_group.period]}${$formatTime(
             applicationInfo.interview_allocations_group.start
           )}`
         : ''}
@@ -92,8 +92,8 @@
   {:else if step === $t('history.step.StressTest')}
     <NightTestInfo
       group={applicationInfo.group}
-      time={formatDate($recruitment.stress_test_start) +
-        formatTime($recruitment.stress_test_start)}
+      time={$formatDate($recruitment.stress_test_start) +
+        $formatTime($recruitment.stress_test_start)}
     />
   {:else if step === $t('history.step.TeamTimeSelection')}
     {#await getInterviewTimes(applicationInfo.recruitment_id)}
@@ -109,9 +109,9 @@
   {:else if step === $t('history.step.TeamInterview')}
     <InterviewInfo
       time={applicationInfo.interview_allocations_team.uid
-        ? `${formatDate(
+        ? `${$formatDate(
             applicationInfo.interview_allocations_team.date
-          )}${Period[applicationInfo.interview_allocations_team.period]}${formatTime(
+          )}${Period[applicationInfo.interview_allocations_team.period]}${$formatTime(
             applicationInfo.interview_allocations_team.start
           )}`
         : ''}

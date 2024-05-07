@@ -53,13 +53,13 @@ export const Step = {
 } as const;
 
 export const StepEn = {
-  SignUp: "Sign up",
-  WrittenTest: "Written Test/Questionnaire",
-  GroupTimeSelection: "Group interview time selection",
-  GroupInterview: "Group interview",
-  StressTest: "Stress test",
-  TeamTimeSelection: "Team interview time selection",
-  TeamInterview: "Team interview",
+  SignUp: "Sign Up",
+  WrittenTest: "Written Test",
+  GroupTimeSelection: "Group Interview Time Selection",
+  GroupInterview: "Group Interview",
+  StressTest: "Stress Test",
+  TeamTimeSelection: "Team Interview Time Selection",
+  TeamInterview: "Team Interview",
   Pass: "Pass",
 } as const;
 
@@ -435,7 +435,7 @@ export const TIMELINE_EN = Object.values(StepEn).map(value => {
     show: true
   };
   res.name = value;
-  if(value === "Group interview time selection" || value === "Team interview time selection") {
+  if(value === "Group Interview Time Selection" || value === "Team Interview Time Selection") {
     res.show = false;
   }
   return res;

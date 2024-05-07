@@ -12,6 +12,8 @@
   import { setInterviewTimes } from "../../../requests/application/setInterviewTimes";
   import { Period, type Group } from "../../../config/const";
   import { t } from "../../../utils/t";
+  import { derived } from "svelte/store";
+  import { localeLanguage } from "../../../stores/localeLanguage";
 
   //ly: type 'SingleTime' is the return-type of backend, type 'InterviewTime' is the useful type when rendering UI
   export let times: SingleTime[] = [];
@@ -55,15 +57,15 @@
         Message.error($t('history.timeSelector.chooseFailed'));
       });
   };
-  const transferTime = (uuid: string) => {
+  const transferTime = derived(localeLanguage, () => (uuid: string) => {
     const interviewTime = times.find((el) => el.uid === uuid);
     if (interviewTime) {
-      const date = formatDate(interviewTime.date);
-      const startTime = formatTime(interviewTime.start);
-      const endTime = formatTime(interviewTime.end);
+      const date = $formatDate(interviewTime.date);
+      const startTime = $formatTime(interviewTime.start);
+      const endTime = $formatTime(interviewTime.end);
       return { date, startTime, endTime };
     }
-  };
+  });
   const handleOpen = (e: MouseEvent) => {
     e.stopPropagation();
     curDate = undefined;
@@ -98,9 +100,9 @@
           <div
             class="h-[28px] leading-[28px] flex-shrink-0 whitespace-nowrap px-[8px] rounded-[4px] bg-gray-150"
           >
-            <span>{transferTime(time)?.date}</span>
+            <span>{$transferTime(time)?.date}</span>
             <span
-              >({transferTime(time)?.startTime} - {transferTime(time)
+              >({$transferTime(time)?.startTime} - {$transferTime(time)
                 ?.endTime})</span
             >
           </div>
@@ -141,7 +143,7 @@
                 curDate === date && "bg-gray-100",
               ])}
             >
-              <p class="ml-[8px]">{formatDate(date)}</p>
+              <p class="ml-[8px]">{$formatDate(date)}</p>
               <img class="rotate-90 ml-auto" src={arrow} alt="arrow" />
             </div>
           {/each}
@@ -162,7 +164,7 @@
                 ])}
               >
                 <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">
-                  {Period[period.period]}
+                  {$t(`history.period.${period.period}`)}
                 </p>
                 <img
                   class="rotate-90 ml-auto flex-shrink-0"
@@ -187,7 +189,7 @@
               >
                 <CheckBox isSelected={selectedTimes.includes(time.uuid)} />
                 <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">
-                  {`${formatTime(time.startTime)} - ${formatTime(
+                  {`${$formatTime(time.startTime)} - ${$formatTime(
                     time.endTime
                   )}`}
                 </p>

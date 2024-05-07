@@ -21,6 +21,7 @@
   import { signUpRecruitment } from "../requests/application/signUpRecruitment";
   import { updateApplication } from "../requests/application/updateApplication";
   import { parseTitle } from "../utils/parseTitle";
+  import { t } from "../utils/t";
   let editMode = false;
   let colleges = Object.keys(DEPARTMENTS);
   let showSignUpModal = false;
@@ -97,19 +98,19 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="h-full w-[60%] mx-auto flex flex-col">
-  <p in:slide class="text-[26px] text-white">个人信息</p>
+  <p transition:fade class="text-[26px] text-white">{$t('user.selfInfo')}</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
     class="w-[full] my-[1rem] bg-white rounded-[20px] p-[30px_60px]"
   >
     <div class="flex items-center mb-[1rem]">
-      <UserInfoTitle title="基本信息" />
+      <UserInfoTitle title={$t('user.basicInfo')} />
       {#if editMode}
         <div class="ml-auto mt-[1rem] flex gap-[1rem]">
           <Button
             onClick={closeEditMode}
-            className="p-[7px_30px] text-sm rounded-full">取消</Button
+            className="p-[7px_30px] text-sm rounded-full">{$t('user.cancel')}</Button
           >
           <!-- ly: if user applied latest recruitment, "save" button will save info to backend, or will save to localStorage and will not save resume file -->
           <Popover direct="top" style="white">
@@ -117,7 +118,7 @@
               onClick={saveApplicationInfo}
               slot="children"
               className="p-[7px_30px] text-sm rounded-full"
-              highlight>保存</Button
+              highlight>{$t('user.save')}</Button
             >
             <p slot="content" class="w-[180px]">
               {$userInfo.applications[0].recruitment_id === $recruitment.uid
@@ -152,23 +153,23 @@
           ])}
         >
           <img src={edit} alt="edit" />
-          <p class="text-blue-300">编辑</p>
+          <p class="text-blue-300">{$t('user.edit')}</p>
         </div>
       {/if}
     </div>
 
     <div class="grid grid-cols-2 mb-[2rem] w-full gap-[2rem]">
-      <SingleInputInfo necessary name="姓名" bind:content={$userInfo.name} />
+      <SingleInputInfo necessary name={$t('user.name')} bind:content={$userInfo.name} />
       <SingleSelectInfo
         necessary
-        name="性别"
+        name={$t('user.gender')}
         bind:content={GENDERS[$userInfo.gender - 1]}
         selectItems={GENDERS}
       />
       <SingleSelectInfo
         necessary
         {editMode}
-        name="年级"
+        name={$t('user.grade')}
         bind:content={grade}
         selectItems={GRADE}
       />
@@ -177,7 +178,7 @@
         {editMode}
         onChange={() => (major = "")}
         necessary
-        name="学院"
+        name={$t('user.college')}
         bind:content={institute}
       />
       <SingleSelectInfo
@@ -185,23 +186,23 @@
         selectItems={majors}
         {editMode}
         necessary
-        name="专业"
+        name={$t('user.major')}
         bind:content={major}
       />
       <SingleSelectInfo
         {editMode}
         necessary
-        name="加权"
+        name={$t('user.rank')}
         bind:content={rank}
         selectItems={RANK}
       />
-      <SingleInputInfo necessary name="电话" bind:content={$userInfo.phone} />
-      <SingleInputInfo necessary name="邮箱" bind:content={$userInfo.email} />
-      <SingleInputInfo {editMode} name="推荐人" bind:content={referrer} />
+      <SingleInputInfo necessary name={$t('user.phone')} bind:content={$userInfo.phone} />
+      <SingleInputInfo necessary name={$t('user.email')} bind:content={$userInfo.email} />
+      <SingleInputInfo {editMode} name={$t('user.recommender')} bind:content={referrer} />
       <SingleSelectInfo
         editMode={ editMode && (!$recruitment || $userInfo.applications[0].recruitment_id !== $recruitment.uid) }
         necessary
-        name="意向组别"
+        name={$t('user.group')}
         content={Group[group]}
         onChange={(item) => (group = item.toLowerCase())}
         selectItems={[
@@ -216,7 +217,7 @@
         ]}
       />
       <div class="flex col-span-2 gap-[1rem]">
-        <p class="shrink-0 opacity-50 mt-[0.75rem]">*自我介绍</p>
+        <p class="shrink-0 opacity-50 mt-[0.75rem]">*{$t('user.selfIntro')}</p>
         <textarea
           bind:value={intro}
           disabled={!editMode}
@@ -227,7 +228,7 @@
     </div>
     <div class="w-full h-[1px] mb-[2rem] bg-[#E5E6EB]" />
     <Popover direct="top" style="white">
-      <UserInfoTitle slot="children" title="附件简历" />
+      <UserInfoTitle slot="children" title={$t("user.resume")} />
       <p slot="content" class="w-[102px]">
         可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip
       </p>
