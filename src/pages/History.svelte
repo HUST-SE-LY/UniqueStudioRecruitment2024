@@ -1,15 +1,39 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
-  import { Group, ProcessState, Step } from "../config/const";
-  import SingleApplicationItem from "../components/history/SingleApplicationItem.svelte";
-  import { userInfo } from "../stores/userInfo";
-  import { getRecruitmentById } from "../requests/recruitment/getById";
-  import { recruitment } from "../stores/recruitment";
-  import { parseTitle } from "../utils/parseTitle";
+  import { fade, fly } from 'svelte/transition';
+  import { Group, ProcessState, Step } from '../config/const';
+  import SingleApplicationItem from '../components/history/SingleApplicationItem.svelte';
+  import type { Application } from '../types/application';
+  import type { ProcessState as ProcessStateType } from '../types';
+  import { userInfo } from '../stores/userInfo';
+  import { getRecruitmentById } from '../requests/recruitment/getById';
+  import { recruitment } from '../stores/recruitment';
+  import { parseTitle } from '../utils/parseTitle';
+  import { t } from '../utils/t';
+  import type { UserStep } from '../types';
+  $: signUpStep = $t(`history.step.SignUp`) as UserStep;
+  $: processing = $t('history.processState.PROCESSING') as ProcessStateType;
+  $: getState = (application: Application, date: string) =>
+    $t(
+      `history.processState.${
+        application.rejected
+          ? 'OUT'
+          : application.abandoned
+            ? 'ABANDONED'
+            : new Date().getTime() >= new Date(date).getTime()
+              ? 'OVER'
+              : application.step === 'Pass'
+                ? 'PASS'
+                : 'PROCESSING'
+      }`
+    ) as ProcessStateType;
+
+  $: getStep = (application: Application) =>
+    $t(`history.step.${application.step}`) as UserStep;
+
 </script>
 
 <div class="h-full relative my-[1rem] w-[60%] mx-auto flex flex-col">
-  <p in:fade out:fade class="text-[26px] text-white">申请记录</p>
+  <p in:fade out:fade class="text-[26px] text-white">{$t('history.records')}</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
@@ -18,9 +42,9 @@
       {#if $recruitment.uid !== $userInfo.applications[0].recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime()}
         <SingleApplicationItem
           index={0}
-          title={parseTitle($recruitment.name)}
-          step={Step["SignUp"]}
-          state={ProcessState.PROCESSING}
+          title={$parseTitle($recruitment.name)}
+          step={signUpStep}
+          state={processing}
         />
       {/if}
       {#each $userInfo.applications as application, i}
@@ -28,18 +52,10 @@
           <SingleApplicationItem
             applicationInfo={application}
             index={i}
-            title={parseTitle(res.data.name)}
+            title={$parseTitle(res.data.name)}
             group={Group[application.group]}
-            step={Step[application.step]}
-            state={application.rejected
-              ? ProcessState.OUT
-              : application.abandoned
-                ? ProcessState.ABANDONED
-                : new Date().getTime() >= new Date(res.data.end).getTime()
-                  ? ProcessState.OVER
-                  : application.step === "Pass"
-                    ? ProcessState.PASS
-                    : ProcessState.PROCESSING}
+            step={getStep(application)}
+            state={getState(application, res.data.end)}
           />
         {/await}
       {/each}

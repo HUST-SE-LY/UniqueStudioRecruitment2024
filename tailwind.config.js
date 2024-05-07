@@ -24,6 +24,7 @@ export default {
         "100": "#F3F3F5",
         "150": "#F2F3F5",
         "300": "#8D8D8D",
+        "border": "#E5E6EB",
         "blue": "#F2F6FF",//蓝底色
         "red": "#FFEEE7",//红底色
         "green": "#E8FFEA",//绿底色

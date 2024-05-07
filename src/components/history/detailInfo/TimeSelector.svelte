@@ -2,11 +2,8 @@
   //ly: i have spent so much time on this shit component, WTF!!!
   import type { InterviewTime, Periods, SingleTime } from "../../../types";
   import { formatDate, formatTime } from "../../../utils/formmatDate";
-  import checkedBox from "../../../assets/checkedBox.svg";
   import cx from "clsx";
-  import checkbox from "../../../assets/checkbox.svg";
   import { slide } from "svelte/transition";
-  import Button from "../../public/Button.svelte";
   import arrow from "../../../assets/arrow.svg";
   import { parseInterviewTime } from "../../../utils/parseInterviewTime";
   import CheckBox from "../../../icons/CheckBox.svelte";
@@ -14,6 +11,9 @@
   import { Message } from "../../../utils/Message";
   import { setInterviewTimes } from "../../../requests/application/setInterviewTimes";
   import { Period, type Group } from "../../../config/const";
+  import { t } from "../../../utils/t";
+  import { derived } from "svelte/store";
+  import { localeLanguage } from "../../../stores/localeLanguage";
 
   //ly: type 'SingleTime' is the return-type of backend, type 'InterviewTime' is the useful type when rendering UI
   export let times: SingleTime[] = [];
@@ -51,21 +51,21 @@
       type,
     })
       .then(() => {
-        Message.success("选择成功");
+        Message.success($t('history.timeSelector.chooseSuccess'));
       })
       .catch(() => {
-        Message.error("操作失败");
+        Message.error($t('history.timeSelector.chooseFailed'));
       });
   };
-  const transferTime = (uuid: string) => {
+  const transferTime = derived(localeLanguage, () => (uuid: string) => {
     const interviewTime = times.find((el) => el.uid === uuid);
     if (interviewTime) {
-      const date = formatDate(interviewTime.date);
-      const startTime = formatTime(interviewTime.start);
-      const endTime = formatTime(interviewTime.end);
+      const date = $formatDate(interviewTime.date);
+      const startTime = $formatTime(interviewTime.start);
+      const endTime = $formatTime(interviewTime.end);
       return { date, startTime, endTime };
     }
-  };
+  });
   const handleOpen = (e: MouseEvent) => {
     e.stopPropagation();
     curDate = undefined;
@@ -100,9 +100,9 @@
           <div
             class="h-[28px] leading-[28px] flex-shrink-0 whitespace-nowrap px-[8px] rounded-[4px] bg-gray-150"
           >
-            <span>{transferTime(time)?.date}</span>
+            <span>{$transferTime(time)?.date}</span>
             <span
-              >({transferTime(time)?.startTime} - {transferTime(time)
+              >({$transferTime(time)?.startTime} - {$transferTime(time)
                 ?.endTime})</span
             >
           </div>
@@ -131,7 +131,7 @@
           class="w-1/3 py-[8px] border-[1px] border-gray-150 bg-white rounded-l-md"
         >
           {#if timeTrees.length === 0}
-            <p class="p-[12px_14px]">暂无可选择的时间，请等待</p>
+            <p class="p-[12px_14px]">{$t('history.timeSelector.noTime')}</p>
           {/if}
           {#each timeTrees as { date, detail }}
             <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -143,7 +143,7 @@
                 curDate === date && "bg-gray-100",
               ])}
             >
-              <p class="ml-[8px]">{formatDate(date)}</p>
+              <p class="ml-[8px]">{$formatDate(date)}</p>
               <img class="rotate-90 ml-auto" src={arrow} alt="arrow" />
             </div>
           {/each}
@@ -164,7 +164,7 @@
                 ])}
               >
                 <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">
-                  {Period[period.period]}
+                  {$t(`history.period.${period.period}`)}
                 </p>
                 <img
                   class="rotate-90 ml-auto flex-shrink-0"
@@ -189,7 +189,7 @@
               >
                 <CheckBox isSelected={selectedTimes.includes(time.uuid)} />
                 <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">
-                  {`${formatTime(time.startTime)} - ${formatTime(
+                  {`${$formatTime(time.startTime)} - ${$formatTime(
                     time.endTime
                   )}`}
                 </p>

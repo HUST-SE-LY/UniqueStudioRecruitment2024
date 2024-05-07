@@ -1,49 +1,70 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
-  import UserInfoTitle from "../components/user/UserInfoTitle.svelte";
-  import SingleInputInfo from "../components/user/SingleInputInfo.svelte";
-  import SingleSelectInfo from "../components/user/SingleSelectInfo.svelte";
-  import edit from "/src/assets/edit.svg";
-  import cx from "clsx";
-  import Button from "../components/public/Button.svelte";
-  import word from "../assets/word.svg";
-  import { DEPARTMENTS, GENDERS, GRADE, Group, RANK } from "../config/const";
-  import type { College } from "../types";
-  import { userInfo } from "../stores/userInfo";
-  import { getRecruitmentById } from "../requests/recruitment/getById";
-  import { getResume } from "../requests/user/getResume";
-  import { recruitment } from "../stores/recruitment";
-  import Popover from "../components/public/Popover.svelte";
-  import { Message } from "../utils/Message";
-  import { latestInfo } from "../stores/latestApplication";
-  import Modal from "../components/public/Modal.svelte";
-  import { checkNecessaryInfo } from "../utils/checkNecessaryInfo";
-  import { signUpRecruitment } from "../requests/application/signUpRecruitment";
-  import { updateApplication } from "../requests/application/updateApplication";
-  import { parseTitle } from "../utils/parseTitle";
+  import { fade, fly, slide } from 'svelte/transition';
+  import UserInfoTitle from '../components/user/UserInfoTitle.svelte';
+  import SingleInputInfo from '../components/user/SingleInputInfo.svelte';
+  import SingleSelectInfo from '../components/user/SingleSelectInfo.svelte';
+  import edit from '/src/assets/edit.svg';
+  import cx from 'clsx';
+  import Button from '../components/public/Button.svelte';
+  import word from '../assets/word.svg';
+  import {
+    DEPARTMENTS,
+    DEPARTMENTS_EN,
+    GENDERS,
+    GRADE,
+    Group,
+    RANK,
+  } from '../config/const';
+  import type { College } from '../types';
+  import { userInfo } from '../stores/userInfo';
+  import { getRecruitmentById } from '../requests/recruitment/getById';
+  import { getResume } from '../requests/user/getResume';
+  import { recruitment } from '../stores/recruitment';
+  import Popover from '../components/public/Popover.svelte';
+  import { Message } from '../utils/Message';
+  import { latestInfo } from '../stores/latestApplication';
+  import Modal from '../components/public/Modal.svelte';
+  import { checkNecessaryInfo } from '../utils/checkNecessaryInfo';
+  import { signUpRecruitment } from '../requests/application/signUpRecruitment';
+  import { updateApplication } from '../requests/application/updateApplication';
+  import { parseTitle } from '../utils/parseTitle';
+  import { t } from '../utils/t';
+  import { getInfo } from '../requests/user/getInfo';
+  import { localeLanguage } from '../stores/localeLanguage';
   let editMode = false;
   let colleges = Object.keys(DEPARTMENTS);
   let showSignUpModal = false;
   let resume: File;
   let fileInput: HTMLInputElement;
-  let { rank, referrer, major, institute, group, grade, intro, uid } =
+  let { rank, referrer, major, institute, group, grade, intro, uid, is_quick } =
     $latestInfo;
   //ly:this asset would be wrong but I just don't want to see TypeError :)
   $: majors = DEPARTMENTS[institute as College] || [];
+  $: ranks = $t('user.selector.rank') as unknown as string[];
+  $: genders = $t('user.selector.gender') as unknown as string[];
+  $: grades = $t('user.selector.grade') as unknown as string[];
+  let isQuick = is_quick ? $t('user.quick') : $t('user.notQuick');
+  localeLanguage.subscribe(() => {
+    Promise.resolve().then(() => {
+      isQuick = is_quick ? $t('user.quick') : $t('user.notQuick');
+    })
+    
+  })
+  $: quicks = $t('user.selector.isQuick') as unknown as string[];
   const downloadResume = () => {
     getResume(uid);
   };
   const closeEditMode = () => {
-    ({ rank, referrer, major, institute, group, grade, intro, uid } =
+    ({ rank, referrer, major, institute, group, grade, intro, uid, is_quick } =
       $latestInfo);
     editMode = false;
   };
   const signUp = () => {
-    if (!checkNecessaryInfo({ rank, major, institute, group, grade, intro }))
+    if (!$checkNecessaryInfo({ rank, major, institute, group, grade, intro, is_quick: isQuick === $t('user.quick') ? true : false, }))
       return;
     const formData = new FormData();
-    formData.append("recruitment_id", $recruitment.uid);
-    resume && formData.append("resume", resume);
+    formData.append('recruitment_id', $recruitment.uid);
+    resume && formData.append('resume', resume);
     for (const [key, value] of Object.entries({
       rank,
       major,
@@ -56,17 +77,20 @@
       formData.append(key, value);
     }
     signUpRecruitment(formData).then(() => {
-      Message.success("报名成功 ");
+      Message.success($t('user.signUpSuccess'));
       showSignUpModal = false;
     });
   };
   const saveApplicationInfo = async () => {
-    if (!checkNecessaryInfo({ rank, major, institute, group, grade, intro }))
-    return;
-    if ($recruitment && $recruitment.uid === $userInfo.applications[0].recruitment_id) {
+    if (!$checkNecessaryInfo({ rank, major, institute, group, grade, intro, is_quick: isQuick === $t('user.quick') ? true : false, }))
+      return;
+    if (
+      $recruitment &&
+      $recruitment.uid === $userInfo.applications[0].recruitment_id
+    ) {
       const formData = new FormData();
-      formData.append("recruitment_id", $recruitment.uid);
-      resume && formData.append("resume", resume);
+      formData.append('recruitment_id', $recruitment.uid);
+      resume && formData.append('resume', resume);
       for (const [key, value] of Object.entries({
         rank,
         major,
@@ -75,10 +99,15 @@
         grade,
         intro,
         referrer,
+        is_quick: isQuick === $t('user.quick') ? 'true' : 'false',
       })) {
         formData.append(key, value);
       }
-      await updateApplication($userInfo.applications[0].uid, formData);
+      try {
+        await updateApplication($userInfo.applications[0].uid, formData);
+      } catch (_err) {
+        Message.error('user.saveFailed');
+      }
     }
     latestInfo.updateInfo({
       rank,
@@ -88,8 +117,15 @@
       group,
       grade,
       intro,
+      is_quick: isQuick === $t('user.quick') ? true : false,
     });
-    Message.success("保存成功");
+    try {
+      const res = await getInfo();
+      userInfo.setInfo(res.data);
+    } catch (_err) {
+      Message.error($t('user.uploadFailed'));
+    }
+    Message.success($t('user.saveSuccess'));
     editMode = false;
   };
 </script>
@@ -97,19 +133,20 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="h-full w-[60%] mx-auto flex flex-col">
-  <p in:fade out:fade class="text-[26px] text-white">个人信息</p>
+  <p transition:fade class="text-[26px] text-white">{$t('user.selfInfo')}</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
     class="w-[full] my-[1rem] bg-white rounded-[20px] p-[30px_60px]"
   >
     <div class="flex items-center mb-[1rem]">
-      <UserInfoTitle title="基本信息" />
+      <UserInfoTitle title={$t('user.basicInfo')} />
       {#if editMode}
         <div class="ml-auto mt-[1rem] flex gap-[1rem]">
           <Button
             onClick={closeEditMode}
-            className="p-[7px_30px] text-sm rounded-full">取消</Button
+            className="p-[7px_30px] text-sm rounded-full"
+            >{$t('user.cancel')}</Button
           >
           <!-- ly: if user applied latest recruitment, "save" button will save info to backend, or will save to localStorage and will not save resume file -->
           <Popover direct="top" style="white">
@@ -117,12 +154,12 @@
               onClick={saveApplicationInfo}
               slot="children"
               className="p-[7px_30px] text-sm rounded-full"
-              highlight>保存</Button
+              highlight>{$t('user.save')}</Button
             >
             <p slot="content" class="w-[180px]">
               {$userInfo.applications[0].recruitment_id === $recruitment.uid
-                ? "您已报名招新，数据将会保存在服务端"
-                : "当前不在招新时间段或您未报名招新，数据将保存在本地（文件不保存）"}
+                ? $t('user.saveTips')
+                : $t('user.saveTips1')}
             </p>
           </Popover>
 
@@ -133,10 +170,12 @@
                 onClick={() => (showSignUpModal = true)}
                 slot="children"
                 className="p-[7px_30px] text-sm rounded-full"
-                highlight>报名</Button
+                highlight>{$t('user.signUp')}</Button
               >
               <p class="w-[142px]" slot="content">
-                你将报名{parseTitle($recruitment.name)}，基本信息，简历，作品集将会上传，请认真填写
+                {$t('user.signUpConfirm', {
+                  recruitment: $parseTitle($recruitment.name),
+                })}
               </p>
             </Popover>
           {/if}
@@ -147,97 +186,125 @@
             editMode = !editMode;
           }}
           class={cx([
-            "ml-auto cursor-pointer border-blue-300 border-[1px] rounded-[0.5rem] p-[0.25rem_1rem] flex gap-[0.25rem] items-center",
-            editMode && "hidden",
+            'ml-auto cursor-pointer border-blue-300 border-[1px] rounded-[0.5rem] p-[0.25rem_1rem] flex gap-[0.25rem] items-center',
+            editMode && 'hidden',
           ])}
         >
           <img src={edit} alt="edit" />
-          <p class="text-blue-300">编辑</p>
+          <p class="text-blue-300">{$t('user.edit')}</p>
         </div>
       {/if}
     </div>
 
     <div class="grid grid-cols-2 mb-[2rem] w-full gap-[2rem]">
-      <SingleInputInfo necessary name="姓名" bind:content={$userInfo.name} />
+      <SingleInputInfo
+        necessary
+        name={$t('user.name')}
+        bind:content={$userInfo.name}
+      />
       <SingleSelectInfo
         necessary
-        name="性别"
+        name={$t('user.gender')}
         bind:content={GENDERS[$userInfo.gender - 1]}
-        selectItems={GENDERS}
+        selectItems={genders}
       />
       <SingleSelectInfo
         necessary
         {editMode}
-        name="年级"
+        name={$t('user.grade')}
         bind:content={grade}
-        selectItems={GRADE}
+        selectItems={grades}
       />
       <SingleSelectInfo
         selectItems={colleges}
         {editMode}
-        onChange={() => (major = "")}
+        onChange={() => (major = '')}
         necessary
-        name="学院"
+        name={$t('user.college')}
         bind:content={institute}
       />
       <SingleSelectInfo
-        placeholder={majors.length ? "" : "请选择学院"}
+        placeholder={majors.length ? '' : '请选择学院'}
         selectItems={majors}
         {editMode}
         necessary
-        name="专业"
+        name={$t('user.major')}
         bind:content={major}
       />
       <SingleSelectInfo
         {editMode}
         necessary
-        name="加权"
+        name={$t('user.rank')}
         bind:content={rank}
-        selectItems={RANK}
+        selectItems={ranks}
       />
-      <SingleInputInfo necessary name="电话" bind:content={$userInfo.phone} />
-      <SingleInputInfo necessary name="邮箱" bind:content={$userInfo.email} />
-      <SingleInputInfo {editMode} name="推荐人" bind:content={referrer} />
-      <SingleSelectInfo
-        editMode={ editMode && (!$recruitment || $userInfo.applications[0].recruitment_id !== $recruitment.uid) }
+      <SingleInputInfo
         necessary
-        name="意向组别"
+        name={$t('user.phone')}
+        bind:content={$userInfo.phone}
+      />
+      <SingleInputInfo
+        necessary
+        name={$t('user.email')}
+        bind:content={$userInfo.email}
+      />
+      <SingleInputInfo
+        {editMode}
+        name={$t('user.recommender')}
+        bind:content={referrer}
+      />
+      <SingleSelectInfo
+        editMode={editMode &&
+          (!$recruitment ||
+            $userInfo.applications[0].recruitment_id !== $recruitment.uid)}
+        necessary
+        name={$t('user.group')}
         content={Group[group]}
         onChange={(item) => (group = item.toLowerCase())}
         selectItems={[
-          "AI",
-          "Android",
-          "Design",
-          "Game",
-          "iOS",
-          "Lab",
-          "PM",
-          "Web",
+          'AI',
+          'Android',
+          'Design',
+          'Game',
+          'iOS',
+          'Lab',
+          'PM',
+          'Web',
         ]}
       />
+      <div class="col-span-2  gap-[1rem]">
+        <Popover style="white" direct="left-top" className="w-full">
+          <SingleSelectInfo
+            slot="children"
+            {editMode}
+            necessary
+            name={$t('user.isQuick')}
+            bind:content={isQuick}
+            selectItems={quicks}
+          />
+          <p slot="content" class="w-[300px]">{$t('user.isQuickTips')}</p>
+        </Popover>
+      </div>
       <div class="flex col-span-2 gap-[1rem]">
-        <p class="shrink-0 opacity-50 mt-[0.75rem]">*自我介绍</p>
+        <p class="shrink-0 opacity-50 mt-[0.75rem]">*{$t('user.selfIntro')}</p>
         <textarea
           bind:value={intro}
           disabled={!editMode}
-          placeholder="请输入"
+          placeholder={$t('user.placeholder')}
           class="w-full transition-all outline-none border-transparent border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
         />
       </div>
     </div>
     <div class="w-full h-[1px] mb-[2rem] bg-[#E5E6EB]" />
-    <Popover direct="top" style="white">
-      <UserInfoTitle slot="children" title="附件简历" />
-      <p slot="content" class="w-[102px]">
-        可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip
-      </p>
-    </Popover>
-
+    <UserInfoTitle title={$t('user.attachment')} />
     <div
       class="flex justify-center bg-[#FAFAFA] rounded-[1rem] py-[2rem] items-center flex-col gap-[1rem]"
     >
       {#if editMode}
-        <p class="font-bold text-lg">上传附件</p>
+        <p class="font-bold text-lg">{$t('user.upload')}</p>
+        <p class="px-[3rem] text-text-3 text-xs text-center">
+          {$t('user.resumePopover')}
+        </p>
         {#if resume}
           <p>{resume.name}</p>
         {/if}
@@ -245,7 +312,7 @@
           class="cursor-pointer border-[1px] border-[#0A84FF] text-[#0A84FF] p-[0.5rem_2rem] hover:bg-[#0A84FF] hover:text-white transition-all rounded-[0.5rem]"
           on:click={() => fileInput.click()}
         >
-          {resume ? "重新选择" : "选择文件"}
+          {resume ? $t('user.reselect') : $t('user.select')}
         </div>
         <input
           on:change={() => {
@@ -262,11 +329,15 @@
         >
           <img src={word} alt="简历" />
           {#await getRecruitmentById($userInfo.applications[0].recruitment_id) then res}
-            <p>{parseTitle(res.data.name)}-{$userInfo.name}-简历</p>
+            <p>
+              {$parseTitle(res.data.name)}-{$userInfo.name}-{$t('user.resume')}
+            </p>
           {/await}
         </div>
       {:else}
-        <p class="font-bold text-lg text-gray-400 select-none">暂无简历</p>
+        <p class="font-bold text-lg text-gray-400 select-none">
+          {$t('user.noResume')}
+        </p>
       {/if}
     </div>
     <Modal
@@ -274,17 +345,19 @@
       visible={showSignUpModal}
       onCancel={() => (showSignUpModal = false)}
     >
-      <p>你将报名{parseTitle($recruitment.name)}</p>
-      <p>请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）</p>
+      <p>{$t('user.signUpTips')}{$parseTitle($recruitment.name)}</p>
+      <p>{$t('user.signUpTips1')}</p>
       <div class="flex gap-[1rem] justify-center">
         <Button
           onClick={signUp}
           highlight
-          className="p-[7px_30px] text-sm rounded-full">报名</Button
+          className="p-[7px_30px] text-sm rounded-full"
+          >{$t('user.signUp')}</Button
         >
         <Button
           onClick={() => (showSignUpModal = false)}
-          className="p-[7px_30px] text-sm rounded-full">取消</Button
+          className="p-[7px_30px] text-sm rounded-full"
+          >{$t('user.cancel')}</Button
         >
       </div>
     </Modal>
