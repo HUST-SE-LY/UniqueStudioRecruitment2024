@@ -3,7 +3,6 @@ import { t } from "./t";
 
 
 export const parseTitle = derived(t, $t => {
-  // 返回一个新的函数，这个函数将使用最新的 `t`
   return (title: string) => {
     try {
       return (

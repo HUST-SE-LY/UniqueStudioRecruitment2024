@@ -1,4 +1,4 @@
-import { Period, PeriodEn, ProcessState, ProcessStateEN, RecruitmentName, RecruitmentNameEn, Step, StepEn, TIMELINE, TIMELINE_EN } from "./const";
+import { DEPARTMENTS, DEPARTMENTS_EN, GENDERS, GENDERS_EN, GRADE, GRADE_EN, NecessaryInfoTitle, NecessaryInfoTitleEn, Period, PeriodEn, ProcessState, ProcessStateEN, RANK, RANK_EN, RecruitmentName, RecruitmentNameEn, Step, StepEn, TIMELINE, TIMELINE_EN } from "./const";
 
 export const i18nConstants = {
   "en-US": {
@@ -67,10 +67,15 @@ export const i18nConstants = {
       recommender: "recommender",
       name: "name",
       gender: "gender",
-      grade: "grader",
+      grade: "grade",
       major: "major",
       college: "college",
-      saveSuccess: "Save successfully",
+      isQuick: "SpeedRun",
+      isQuickTips: "After sign up for SpeedRun, the written test process will be skipped, and there is no need to take the test after passing the group interview. If you do not pass the interview, you can continue with the normal process and participate in recruitment.",
+      quick: "yes",
+      notQuick: "no",
+      saveSuccess: "Saved successfully",
+      saveFailed: "Save failed",
       signUpSuccess: "Sign up successfully",
       rank: "rank",
       phone: "phone",
@@ -80,6 +85,8 @@ export const i18nConstants = {
       resume: "resume",
       noResume: "No resume yet",
       upload: "Upload Attachment",
+      uploadSuccess: "Upload successfully",
+      uploadFailed: "Upload failed",
       select: "select file",
       reselect: "reselect",
       save: "save",
@@ -91,7 +98,16 @@ export const i18nConstants = {
       placeholder: "input text here",
       signUpTips: "you will sign up",
       signUpTips1: "Please confirm that the basic information is filled in correctly and the attachments are uploaded correctly (it can still be modified after sign up)",
-      resumePopover: "You can upload resumes, portfolios, etc. If you want to upload multiple files, please compress them into .zip ."
+      resumePopover: "You can upload resumes, portfolios, etc. If you want to upload multiple files, please compress them into .zip .",
+      checkInfo: "{key} is needed!",
+      necessary: NecessaryInfoTitleEn,
+      selector: {
+        rank: RANK_EN,
+        department: DEPARTMENTS_EN,
+        grade: GRADE_EN,
+        gender: GENDERS_EN,
+        isQuick: ["yes", "no"],
+      }
     },
   },
   "zh-CN": {
@@ -165,6 +181,10 @@ export const i18nConstants = {
       gender: "性别",
       grade: "年级",
       college: "学院",
+      isQuick: "是否快通",
+      isQuickTips: "报名快速通道后，将跳过笔试流程，通过小组面试后无需进行熬测。若未通过面试，也可以继续进行正常流程参与招新",
+      quick: "是",
+      notQuick: "否",
       rank: "加权排名",
       phone: "电话",
       group: "意向组别",
@@ -185,6 +205,15 @@ export const i18nConstants = {
       signUpTips: "你将报名",
       signUpTips1: "请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）",
       resumePopover: "可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip",
+      checkInfo: "请填写{key}",
+      necessary: NecessaryInfoTitle,
+      selector: {
+        rank: RANK,
+        department: DEPARTMENTS,
+        grade: GRADE,
+        gender: GENDERS,
+        isQuick: ["是", "否"]
+      }
     },
   },
 } as const;
