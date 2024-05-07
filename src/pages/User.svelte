@@ -122,8 +122,8 @@
             >
             <p slot="content" class="w-[180px]">
               {$userInfo.applications[0].recruitment_id === $recruitment.uid
-                ? "您已报名招新，数据将会保存在服务端"
-                : "当前不在招新时间段或您未报名招新，数据将保存在本地（文件不保存）"}
+                ? $t('user.saveTips')
+                : $t('user.saveTips1')}
             </p>
           </Popover>
 
@@ -134,10 +134,12 @@
                 onClick={() => (showSignUpModal = true)}
                 slot="children"
                 className="p-[7px_30px] text-sm rounded-full"
-                highlight>报名</Button
+                highlight>{$t('user.signUp')}</Button
               >
               <p class="w-[142px]" slot="content">
-                你将报名{$parseTitle($recruitment.name)}，基本信息，简历，作品集将会上传，请认真填写
+                {$t('user.signUpConfirm', {
+                  recruitment: $parseTitle($recruitment.name),
+                })}
               </p>
             </Popover>
           {/if}
@@ -221,16 +223,16 @@
         <textarea
           bind:value={intro}
           disabled={!editMode}
-          placeholder="请输入"
+          placeholder={$t('user.placeholder')}
           class="w-full transition-all outline-none border-transparent border-[1px] focus:border-[#165DFF] resize-none rounded-[8px] p-[0.75rem_1rem] bg-[#FAFAFA] h-[10rem]"
         />
       </div>
     </div>
     <div class="w-full h-[1px] mb-[2rem] bg-[#E5E6EB]" />
     <Popover direct="top" style="white">
-      <UserInfoTitle slot="children" title={$t("user.resume")} />
+      <UserInfoTitle slot="children" title={$t("user.attachment")} />
       <p slot="content" class="w-[102px]">
-        可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip
+        {$t('user.resumePopover')}
       </p>
     </Popover>
 
@@ -238,7 +240,7 @@
       class="flex justify-center bg-[#FAFAFA] rounded-[1rem] py-[2rem] items-center flex-col gap-[1rem]"
     >
       {#if editMode}
-        <p class="font-bold text-lg">上传附件</p>
+        <p class="font-bold text-lg">{$t('user.upload')}</p>
         {#if resume}
           <p>{resume.name}</p>
         {/if}
@@ -246,7 +248,7 @@
           class="cursor-pointer border-[1px] border-[#0A84FF] text-[#0A84FF] p-[0.5rem_2rem] hover:bg-[#0A84FF] hover:text-white transition-all rounded-[0.5rem]"
           on:click={() => fileInput.click()}
         >
-          {resume ? "重新选择" : "选择文件"}
+          {resume ? $t('user.reselect') : $t("user.select")}
         </div>
         <input
           on:change={() => {
@@ -263,11 +265,11 @@
         >
           <img src={word} alt="简历" />
           {#await getRecruitmentById($userInfo.applications[0].recruitment_id) then res}
-            <p>{$parseTitle(res.data.name)}-{$userInfo.name}-简历</p>
+            <p>{$parseTitle(res.data.name)}-{$userInfo.name}-{$t('user.resume')}</p>
           {/await}
         </div>
       {:else}
-        <p class="font-bold text-lg text-gray-400 select-none">暂无简历</p>
+        <p class="font-bold text-lg text-gray-400 select-none">{$t('user.noResume')}</p>
       {/if}
     </div>
     <Modal
@@ -275,17 +277,17 @@
       visible={showSignUpModal}
       onCancel={() => (showSignUpModal = false)}
     >
-      <p>你将报名{$parseTitle($recruitment.name)}</p>
-      <p>请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）</p>
+      <p>{$t('user.signUpTips')}{$parseTitle($recruitment.name)}</p>
+      <p>{$t('user.signUpTips1')}</p>
       <div class="flex gap-[1rem] justify-center">
         <Button
           onClick={signUp}
           highlight
-          className="p-[7px_30px] text-sm rounded-full">报名</Button
+          className="p-[7px_30px] text-sm rounded-full">{$t('user.signUp')}</Button
         >
         <Button
           onClick={() => (showSignUpModal = false)}
-          className="p-[7px_30px] text-sm rounded-full">取消</Button
+          className="p-[7px_30px] text-sm rounded-full">{$t('user.cancel')}</Button
         >
       </div>
     </Modal>
