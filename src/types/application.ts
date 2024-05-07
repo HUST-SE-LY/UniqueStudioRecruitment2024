@@ -27,7 +27,7 @@ export interface Application {
 
 export type EditableInfo = Pick<
   Application,
-  "grade" | "institute" | "major" | "rank" | "group" | "intro" | "referrer"
+  "grade" | "institute" | "major" | "rank" | "group" | "intro" | "referrer" | "is_quick"
 >;
 
 export type NecessaryInfo = Omit<

@@ -25,6 +25,7 @@ export default {
         red: "#FFEEE7", //红底色
         green: "#E8FFEA", //绿底色
         orange: "#FFF3E8",
+        border: "#E5E6EB",
       },
       red: {
         warning: "#F53F3F", //警示红
