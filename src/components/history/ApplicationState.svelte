@@ -10,5 +10,5 @@
   state === $t('history.processState.PROCESSING') && 'bg-gray-blue text-blue-400 border-blue-400',
   state === $t('history.processState.PASS') && 'bg-gray-green text-green-300 border-green-300',
   state === $t('history.processState.OVER') && 'bg-gray-orange text-orange border-orange',
-  'border-[1px] px-[1rem] max-sm:p-[3px_12px] max-sm:text-[10px] w-fit rounded-full select-none flex-shrink-0'
+  'border-[1px] px-[1rem] max-sm:p-[3px_8px] max-sm:text-[10px] w-fit rounded-full select-none flex-shrink-0'
 ])}>{state}</div>

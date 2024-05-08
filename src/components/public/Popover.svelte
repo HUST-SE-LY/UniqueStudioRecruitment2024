@@ -48,7 +48,7 @@
     >
       <div
         class={cx([
-          'border-gray-150  w-fit text-center  text-sm p-[8px_12px] rounded-[6px]',
+          'border-gray-150  w-fit text-center text-sm p-[8px_12px] rounded-[6px]',
           style === 'black' ? 'text-white bg-black' : 'text-black bg-white',
         ])}
       >

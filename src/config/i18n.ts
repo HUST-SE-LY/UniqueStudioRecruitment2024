@@ -5,9 +5,10 @@ export const i18nConstants = {
     header: {
       team: "Unique Studio",
       applications: "Applications",
-      info: "Personal Information",
+      info: "Resume",
       avatar: "Change avatar",
       logout: "Log out",
+      language: "language",
     },
     history: {
       records: "Application Records",
@@ -58,6 +59,18 @@ export const i18nConstants = {
         noTime: "The interview time has not been allocated yet, please wait.",
         tips: "Please attend the Unique Studio team interview at {time} at Room {room}, 8th Floor, Liangsheng Building, Qiming College.",
       },
+      mobile: {
+        notSignUpTips: "Please fill in basic information, intended group, resume, etc. for sign up to help us get to know you better.",
+        signUpTips: "You have successfully registered for the {recruitment} {group} group. You can modify your personal information at any time before the registration ends.",
+        known: "I know",
+        input: "Fill out",
+        change: "Edit ",
+        viewLink: "View latest link",
+        groupInterviewTips: "Group interviews will be conducted by students from the intended group. Please select a time first.",
+        selectTime: "Select Time",
+        confirm: "confirm",
+        cancel: "cancel"
+      }
     },
     user: {
       selfInfo: "Personal Information",
@@ -117,6 +130,7 @@ export const i18nConstants = {
       info: "个人信息",
       avatar: "更换头像",
       logout: "退出登录",
+      language: "语言",
     },
     history: {
       records: "申请记录",
@@ -167,6 +181,18 @@ export const i18nConstants = {
         noTime: "面试时间暂未分配，请等待...",
         tips: "请于{time}于启明学院亮胜楼八楼{room}房间参加联创团队群面",
       },
+      mobile: {
+        known: "知道了",
+        input: "填写",
+        change: "修改",
+        notSignUpTips: "请填写基础信息、意向组别、简历等用于报名，帮助我们更好地了解你。",
+        signUpTips: "你已经成功报名{recruitment}{group}组，报名结束前你可以随时修改个人信息。",
+        viewLink: "查看最新笔试/问卷",
+        groupInterviewTips: "组面由意向组别的同学负责面试，请先选择时间",
+        selectTime: "选择时间",
+        confirm: "确定",
+        cancel: "取消"
+      }
     },
     user: {
       selfInfo: "个人信息",

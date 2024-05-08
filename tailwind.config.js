@@ -2,6 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{svelte,js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      sm: "640px",
+      md: "768px",
+      "md-lg": "910px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     colors: {
       transparent: "transparent",
       current: "currentColor",
@@ -18,8 +26,8 @@ export default {
       gray: {
         50: "#FAFAFA",
         100: "#F3F3F5",
-        150: "#F2F3F5",//浅底色
-        200: "#E5E6EB",//描边色
+        150: "#F2F3F5", //浅底色
+        200: "#E5E6EB", //描边色
         300: "#8D8D8D",
         blue: "#F2F6FF", //蓝底色
         red: "#FFEEE7", //红底色

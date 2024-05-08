@@ -24,6 +24,7 @@
   let curDate: string | undefined = undefined;
   let curPeriods: InterviewTime["detail"] | undefined = undefined;
   let curTimes: InterviewTime["detail"][number]["time"] | undefined = undefined;
+  let isMobile = false;
   export let selectedTimes: string[] = [];
   const handleDateClick = (date: string, detail: InterviewTime["detail"]) => {
     if (curDate === date) {
@@ -75,6 +76,10 @@
     showSelector = !showSelector;
   };
   onMount(() => {
+    console.log(document.body.clientWidth)
+    if(document.body.clientWidth < 640) {
+      isMobile = true
+    }
     function hide() {
       showSelector = false;
     }
@@ -123,12 +128,12 @@
     <div
       transition:slide
       class={cx([
-        "absolute w-full p-[8px_16px] left-0 top-[40px] rounded-[8px]",
+        "absolute w-full max-sm:text-sm p-[8px_16px] left-0 top-[40px] rounded-[8px]",
       ])}
     >
-      <div class="flex">
+      <div class="sm:flex">
         <div
-          class="w-1/3 py-[8px] border-[1px] border-gray-150 bg-white rounded-l-md"
+          class="w-1/3 max-sm:w-full max-sm:flex max-sm:overflow-x-auto py-[8px] border-[1px] border-gray-150 bg-white rounded-l-md"
         >
           {#if timeTrees.length === 0}
             <p class="p-[12px_14px]">{$t('history.timeSelector.noTime')}</p>
@@ -139,12 +144,12 @@
             <div
               on:click={() => handleDateClick(date, detail)}
               class={cx([
-                "h-[46px] hover:bg-gray-100 cursor-pointer p-[12px_14px] flex items-center",
+                "h-[46px] hover:bg-gray-100 max-sm:flex-shrink-0 cursor-pointer p-[12px_14px] flex items-center",
                 curDate === date && "bg-gray-100",
               ])}
             >
               <p class="ml-[8px]">{$formatDate(date)}</p>
-              <img class="rotate-90 ml-auto" src={arrow} alt="arrow" />
+              <img class="rotate-90 ml-auto max-sm:hidden" src={arrow} alt="arrow" />
             </div>
           {/each}
         </div>
@@ -152,14 +157,14 @@
         {#if curDate && curPeriods}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <div
-            transition:slide={{ axis: "x" }}
-            class="bg-white py-[8px] w-1/3 border-[1px] border-gray-150"
+            transition:slide={{ axis: isMobile ? "y" :"x" }}
+            class="bg-white py-[8px] w-1/3 max-sm:w-full max-sm:flex border-[1px] border-gray-150"
           >
             {#each curPeriods as period}
               <div
                 on:click={() => handlePeriodClick(period)}
                 class={cx([
-                  "h-[46px] hover:bg-gray-100 cursor-pointer p-[12px_14px] flex items-center",
+                  "h-[46px] hover:bg-gray-100 cursor-pointer max-sm:min-w-[33%] max-sm:flex-shrink-0 p-[12px_14px] flex items-center",
                   curTimes === period.time && "bg-gray-100",
                 ])}
               >
@@ -167,7 +172,7 @@
                   {$t(`history.period.${period.period}`)}
                 </p>
                 <img
-                  class="rotate-90 ml-auto flex-shrink-0"
+                  class="rotate-90 max-sm:hidden ml-auto flex-shrink-0"
                   src={arrow}
                   alt="arrow"
                 />
@@ -177,15 +182,15 @@
         {/if}
         {#if curDate && curPeriods && curTimes}
           <div
-            transition:slide={{ axis: "x" }}
-            class="bg-white py-[8px] w-1/3 border-[1px] rounded-r-md border-gray-150"
+            transition:slide={{ axis: isMobile ? "y" : "x" }}
+            class="bg-white py-[8px] w-1/3 max-sm:w-full max-sm:flex max-sm:overflow-x-auto border-[1px] rounded-r-md border-gray-150"
           >
             {#each curTimes as time}
               <!-- svelte-ignore a11y-click-events-have-key-events -->
               <!-- svelte-ignore a11y-no-static-element-interactions -->
               <div
                 on:click={() => selectTime(time.uuid)}
-                class="h-[46px] hover:bg-gray-100 cursor-pointer p-[12px_14px] flex items-center"
+                class="h-[46px] hover:bg-gray-100 cursor-pointer max-sm:min-w-[33%] max-sm:flex-shrink-0 p-[12px_14px] flex items-center"
               >
                 <CheckBox isSelected={selectedTimes.includes(time.uuid)} />
                 <p class="ml-[8px] w-full whitespace-nowrap overflow-x-auto">

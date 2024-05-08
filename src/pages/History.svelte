@@ -50,7 +50,7 @@
 
 </script>
 
-<div class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md:w-[80%] max-sm:w-[calc(100%_-_40px)] mx-auto flex flex-col">
+<div class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md-lg:w-[80%] max-sm:w-[calc(100%_-_40px)] mx-auto flex flex-col">
   <p in:fade out:fade class="text-[26px] max-sm:text-text-1 max-sm:text-[18px] text-white">{$t('history.records')}</p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}

@@ -26,7 +26,7 @@
 {#if open}
   <div
     out:fade
-    class="fixed animate-fly-in shadow-1 top-[5rem] left-[50%] flex items-center gap-[8px] bg-white border-[1px] border-gray-border rounded-sm h-[40px] p-[9px_16px] translate-x-[-50%]"
+    class="fixed animate-fly-in shadow-1 z-[9999] top-[5rem] left-[50%] flex items-center gap-[8px] bg-white border-[1px] border-gray-border rounded-sm h-[40px] p-[9px_16px] translate-x-[-50%]"
   >
     <img
       src={type === "warning" ? warning : type === "success" ? success : error}

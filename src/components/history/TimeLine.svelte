@@ -34,7 +34,7 @@
           <div
             class={cx([
               " w-[10px] h-[10px] rounded-full",
-              item.name === currentItem ? "bg-blue-400" : "bg-gray-150",
+              item.name === currentItem ? "bg-blue-400" : i < items.findIndex((el) => el.name === currentItem) ? 'bg-blue-400/50' : 'bg-gray-150',
             ])}
           ></div>
           <div class="absolute top-[16px] w-[96px] text-center left-[-44px]">
@@ -64,7 +64,7 @@
         <div
           class={cx([
             " w-[8px] h-[8px] rounded-full",
-            item.name === currentItem ? "bg-blue-400" : "bg-gray-150",
+            item.name === currentItem ? "bg-blue-400" : i < items.findIndex((el) => el.name === currentItem) ? 'bg-blue-400/50' : 'bg-gray-150',
           ])}
         ></div>
         <p
