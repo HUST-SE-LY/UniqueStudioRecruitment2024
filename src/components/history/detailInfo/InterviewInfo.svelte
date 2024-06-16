@@ -9,7 +9,8 @@
 </script>
 
 {#if time}
-  {#if type === 'group'}
+  <p class="max-sm:text-cente max-sm:text-smr">
+    {#if type === 'group'}
     {@html $t('history.groupInterview.tips', {
       group: Group[group],
       time: `<span class="text-blue-300">${time}</span>`,
@@ -23,6 +24,8 @@
       >${InterviewPlace[group]}</span>`,
     })}
   {/if}
+  </p>
+
 {:else}
-  <p class="text-gray-300">{$t('history.groupInterview.noTime')}</p>
+  <p class="text-gray-300 max-sm:text-center">{$t('history.groupInterview.noTime')}</p>
 {/if}

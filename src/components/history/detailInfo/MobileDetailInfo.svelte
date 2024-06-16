@@ -14,8 +14,16 @@
   import TimeSelector from './TimeSelector.svelte';
   import { getInterviewTimes } from '../../../requests/application/getInterviewTimes';
   import NightTestInfo from './NightTestInfo.svelte';
+  import greet from '../../../assets/greet.svg';
+  import { onMount } from 'svelte';
+  import { getWrittenTest } from '../../../requests/recruitment/getWrittenTest';
+  import { Message } from '../../../utils/Message';
+  import { uploadWrittenTest } from '../../../requests/application/uploadWrittenTest';
   let openGroupInterviewTimeSelector = false;
   let openTeamInterviewTimeSelector = false;
+  let writtenTestLink = '';
+  let file: File;
+  let fileInput: HTMLInputElement;
   const handleClick = (e) => {
     if (e.target.className.includes('go-user')) {
       push('/user');
@@ -25,8 +33,39 @@
   let selectedTimes = applicationInfo?.interview_selections?.map(
     (el) => el.uid
   );
+  const uploadAnswer = () => {
+    if (!file) {
+      fileInput.click();
+    } else {
+      const formData = new FormData();
+      formData.append('file', file);
+      uploadWrittenTest(applicationInfo.uid, formData)
+        .then(() => {
+          Message.success($t('history.writeTest.uploadSuccess'));
+        })
+        .catch(() => {
+          Message.error($t('history.writeTest.uploadError'));
+        });
+    }
+  };
   export let onCancel: () => void;
   export let step: UserStep;
+  onMount(() => {
+    if (step === $t('history.step.WrittenTest')) {
+      getWrittenTest(applicationInfo.recruitment_id, applicationInfo.group)
+        .then((res) => {
+          if (!res.ok) {
+            Message.error($t('history.writeTest.downloadError'));
+            return;
+          }
+          return res.blob();
+        })
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          writtenTestLink = url;
+        });
+    }
+  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -51,16 +90,36 @@
         : $t('history.mobile.input')}{$t('header.info')}</Button
     >
   {:else if step === $t('history.step.WrittenTest')}
-    <p class="text-[15px] text-text-4 my-[8px] text-center">
+    <p class="text-sm text-text-4 my-[8px] text-center">
       {$t('history.writeTest.tips')}
     </p>
-    <Button
-      highlight
-      className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
-      >{$t('history.mobile.viewLink')}</Button
-    >
+    <input
+      on:change={() => {
+        file = fileInput.files[0];
+      }}
+      bind:this={fileInput}
+      type="file"
+      class="hidden"
+    />
+    {#if writtenTestLink}
+      <Button
+        highlight
+        className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
+        ><a href={writtenTestLink} download="${$t('history.step.WrittenTest')}"
+          >{$t('history.mobile.viewLink')}</a
+        ></Button
+      >
+      <Button
+        highlight
+        className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
+        onClick={uploadAnswer}
+        >{file
+          ? $t('history.mobile.uploadWrittenTest')
+          : $t('history.mobile.selectWrittenTest')}
+      </Button>
+    {/if}
   {:else if step === $t('history.step.GroupTimeSelection')}
-    <p class="text-[15px] my-[8px] text-text-4 text-center">
+    <p class="text-sm my-[8px] text-text-4 text-center">
       {$t('history.mobile.groupInterviewTips')}
     </p>
     <Button
@@ -89,6 +148,35 @@
         $formatTime($recruitment.stress_test_start)}
     />
   {:else if step === $t('history.step.TeamTimeSelection')}
+    <p class="text-sm my-[8px] text-text-4 text-center">
+      {$t('history.mobile.TeamInterviewTips')}
+    </p>
+    <Button
+      onClick={() => (openTeamInterviewTimeSelector = true)}
+      highlight
+      className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
+      >{$t('history.mobile.selectTime')}</Button
+    >
+  {:else if step === $t('history.step.TeamInterview')}
+    <InterviewInfo
+      time={applicationInfo.interview_allocations_team.uid
+        ? `${$formatDate(
+            applicationInfo.interview_allocations_team.date
+          )}${Period[applicationInfo.interview_allocations_team.period]}${$formatTime(
+            applicationInfo.interview_allocations_team.start
+          )}`
+        : ''}
+      type="team"
+      group={applicationInfo.group}
+    />
+  {:else if step === $t('history.step.Pass')}
+    <div class="flex text-sm justify-center items-center gap-[4px]">
+      <p class="tetx-sm">{$t('history.passTips')}</p>
+      <img class="inline" src={greet} alt="欢迎" />
+    </div>
+    <p class="text-gray-300 text-sm text-center mt-[8px]">
+      {$t('history.passSubTips')}
+    </p>
   {/if}
   <Button
     onClick={onCancel}
@@ -107,6 +195,23 @@
   {:then res}
     <TimeSelector
       type="group"
+      aid={applicationInfo.uid}
+      times={res.data}
+      bind:selectedTimes
+    />
+  {/await}
+</BottomBar>
+
+<BottomBar
+  className="min-h-[300px] px-[16px]"
+  show={openTeamInterviewTimeSelector}
+  on:close={() => (openTeamInterviewTimeSelector = false)}
+>
+  {#await getInterviewTimes(applicationInfo.recruitment_id)}
+    <p>{$t('history.teamInterviewTimeSelector.loading')}</p>
+  {:then res}
+    <TimeSelector
+      type="team"
       aid={applicationInfo.uid}
       times={res.data}
       bind:selectedTimes

@@ -11,6 +11,7 @@
   import { t } from '../utils/t';
   import type { UserStep } from '../types';
   import { onMount } from 'svelte';
+  import { updateApplication } from '../requests/application/updateApplication';
   $: signUpStep = $t(`history.step.SignUp`) as UserStep;
   $: processing = $t('history.processState.PROCESSING') as ProcessStateType;
   $: getState = (application: Application, date: string) =>
@@ -33,6 +34,7 @@
 
   let applications = [];
   onMount(async () => {
+    console.log($userInfo)
     applications = await Promise.all(
       $userInfo.applications.map(async (application) => {
         const res = await getRecruitmentById(application.recruitment_id);
@@ -57,7 +59,8 @@
     out:fly={{ y: 50, duration: 500 }}
   >
     {#if $userInfo && $recruitment}
-      {#if $recruitment.uid !== $userInfo.applications[0].recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime()}
+      <!-- if user have not sign updateApplication, show this -->
+      {#if $recruitment.uid !== $userInfo.applications[0].recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime() && new Date().getTime() <= new Date($recruitment.deadline).getTime()}
         <SingleApplicationItem
           index={0}
           title={$parseTitle($recruitment.name)}
@@ -65,6 +68,7 @@
           state={processing}
         />
       {/if}
+
       {#each applications as application, i}
         {#await getRecruitmentById(application.recruitment_id) then res}
           <SingleApplicationItem
@@ -76,7 +80,6 @@
             state={getState(application, res.data.end)}
           />
         {/await}
-
       {/each}
     {/if}
   </div>

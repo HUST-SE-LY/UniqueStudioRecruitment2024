@@ -8,12 +8,11 @@ export const ProcessState = {
   PROCESSING : "进行中",
   PASS : "已通过",
   OVER : "已结束",
-  ABANDONED : "已放弃",
 } as const;
 
 export const ProcessStateEN = {
   OUT : "OUT",
-  PROCESSING : "PROCESSING",
+  PROCESSING : "ONGOING",
   PASS : "PASS",
   OVER : "OVER",
   ABANDONED : "ABANDONED",
@@ -88,7 +87,7 @@ export const InterviewPlace = {
 
 export const RecruitmentNameEn = {
   A: "Fall Recruitment",
-  S: "Summer Camp Recruitment",
+  S: "Summer Camp",
   C: "Spring Recruitment",
 };
 

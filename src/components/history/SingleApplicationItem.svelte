@@ -67,7 +67,7 @@
       <div transition:slide>
         <button
           on:click={() => (showMobileModal = true)}
-          class="bg-blue-100 mt-[8px] mb-[16px] text-blue-400 rounded-full text-xs p-[5px_12px]"
+          class="bg-blue-100 mt-[8px] sm:hidden mb-[16px] text-blue-400 rounded-full text-xs p-[5px_12px]"
           >{$t('history.viewDetails')}</button
         >
         <TimeLine

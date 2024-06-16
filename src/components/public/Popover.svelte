@@ -1,15 +1,21 @@
 <script lang="ts">
   import cx from 'clsx';
   import { scale } from 'svelte/transition';
+  import question from "../../assets/question.svg";
+  import Modal from './Modal.svelte';
+  import { isMobile } from '../../stores/isMobile';
   //ly: now i just finished top & bottom props cuz i'm lazy :)
   export let direct: 'left' | 'right' | 'top' | 'bottom' | 'left-top' =
     'bottom';
   export let style: 'white' | 'black' = 'black';
+  export let questionDirection:"front" | "end" = "front";
   export let className: String = '';
   let box: HTMLDivElement;
   let showContent = false;
+  let showModal = false;
   let timerIn: number;
   let timerOut: number;
+
   const handleMouseMoveIn = () => {
     clearTimeout(timerOut);
     timerIn = setTimeout(() => {
@@ -24,19 +30,22 @@
   };
 </script>
 
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <div
   role="tooltip"
   on:mouseenter={handleMouseMoveIn}
   on:mouseleave={handleMouseMoveOut}
   bind:this={box}
-  class={cx(['relative w-fit', className])}
+  class={cx(['relative w-fit max-sm:flex max-sm:gap-[8px]', questionDirection === "end" && "max-sm:flex-row-reverse", className])}
 >
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <img class="inline sm:hidden" on:click={() => showModal = true} src={question} alt="?" />
   <slot name="children" />
   {#if showContent}
     <div
       transition:scale
       class={cx([
-        'absolute z-[90] rounded-[6px]',
+        'absolute z-[90] max-sm:hidden rounded-[6px]',
         style === 'black' ? 'shadow-drop' : 'shadow-card',
         direct === 'bottom' &&
           'top-[calc(100%_+_12px)]  origin-[top_center] left-[50%] translate-x-[-50%] ',
@@ -68,3 +77,7 @@
     </div>
   {/if}
 </div>
+
+<Modal className="p-[1rem] text-sm text-center" onCancel={() => showModal = false} visible={showModal}>
+  <slot name="content" />
+</Modal>

@@ -91,6 +91,10 @@
       {/each}
     </div>
   {/if}
+  <div class={cx(['h-[62px] p-[20px_16px] text-red-warning'])}>
+    
+    {$t('header.logout')}
+  </div>
 </div>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->

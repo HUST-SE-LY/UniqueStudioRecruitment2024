@@ -36,6 +36,9 @@ export const i18nConstants = {
         writtenTest: "written test/questionnaire",
         tips: "Each group will design a written test/questionnaire based on the situation of the group. This is a necessary step for Unique Studio to recruit new members.",
         viewLink: "View the latest {writtenTest}",
+        downloadError: "get written test/questionnaire failed",
+        uploadSuccess: "upload success",
+        uploadError: "upload failed"
       },
       timeSelector: {
         chooseSuccess: "Selection succeed",
@@ -66,10 +69,14 @@ export const i18nConstants = {
         input: "Fill out",
         change: "Edit ",
         viewLink: "View latest link",
+        uploadWrittenTest: "Upload answers",
+        selectWrittenTest: "Select answers",
         groupInterviewTips: "Group interviews will be conducted by students from the intended group. Please select a time first.",
         selectTime: "Select Time",
         confirm: "confirm",
-        cancel: "cancel"
+        cancel: "cancel",
+        teamInterviewTips: "Team interview is the last step to join us. The purpose is to let the team members get to know you better.",
+
       }
     },
     user: {
@@ -90,6 +97,7 @@ export const i18nConstants = {
       saveSuccess: "Saved successfully",
       saveFailed: "Save failed",
       signUpSuccess: "Sign up successfully",
+      signUpFail: "Sign up failed",
       rank: "rank",
       phone: "phone",
       group: "intention group",
@@ -158,6 +166,9 @@ export const i18nConstants = {
         writtenTest: "笔试/问卷链接",
         tips: "各组会根据本组情况，设计笔试/问卷，这是联创团队招新的必经环节。",
         viewLink: "查看最新的{writtenTest}",
+        downloadError: "获取笔试/问卷失败",
+        uploadSuccess: "上传成功",
+        uploadError: "上传失败"
       },
       timeSelector: {
         chooseSuccess: "修改成功",
@@ -188,10 +199,13 @@ export const i18nConstants = {
         notSignUpTips: "请填写基础信息、意向组别、简历等用于报名，帮助我们更好地了解你。",
         signUpTips: "你已经成功报名{recruitment}{group}组，报名结束前你可以随时修改个人信息。",
         viewLink: "查看最新笔试/问卷",
+        uploadWrittenTest: "上传笔试结果",
+        selectWrittenTest: "选择笔试结果",
         groupInterviewTips: "组面由意向组别的同学负责面试，请先选择时间",
         selectTime: "选择时间",
         confirm: "确定",
-        cancel: "取消"
+        cancel: "取消",
+        teamInterviewTips: "群面是加入联创团队的最后一步，目的是让团队成员更好的了解你",
       }
     },
     user: {
@@ -202,6 +216,7 @@ export const i18nConstants = {
       recommender: "推荐人",
       saveSuccess: "保存成功",
       signUpSuccess: "报名成功",
+      signUpFail: "报名失败",
       name: "姓名",
       major: "专业",
       gender: "性别",

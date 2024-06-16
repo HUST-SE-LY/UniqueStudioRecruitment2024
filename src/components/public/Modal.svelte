@@ -14,7 +14,7 @@
     transition:fade
     on:click={onCancel}
     class={cx([
-      "w-screen fixed z-[100] top-0 left-0 h-screen flex justify-center items-center bg-black/60 transition-all",
+      "w-screen fixed z-[100] top-0 max-sm:text-sm left-0 h-screen flex justify-center items-center bg-black/60 transition-all",
     ])}
   >
     <div

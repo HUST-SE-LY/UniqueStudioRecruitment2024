@@ -14,6 +14,7 @@
   import { t } from "../../../utils/t";
   import { derived } from "svelte/store";
   import { localeLanguage } from "../../../stores/localeLanguage";
+  import { isMobile } from "../../../stores/isMobile";
 
   //ly: type 'SingleTime' is the return-type of backend, type 'InterviewTime' is the useful type when rendering UI
   export let times: SingleTime[] = [];
@@ -24,7 +25,6 @@
   let curDate: string | undefined = undefined;
   let curPeriods: InterviewTime["detail"] | undefined = undefined;
   let curTimes: InterviewTime["detail"][number]["time"] | undefined = undefined;
-  let isMobile = false;
   export let selectedTimes: string[] = [];
   const handleDateClick = (date: string, detail: InterviewTime["detail"]) => {
     if (curDate === date) {
@@ -76,10 +76,6 @@
     showSelector = !showSelector;
   };
   onMount(() => {
-    console.log(document.body.clientWidth)
-    if(document.body.clientWidth < 640) {
-      isMobile = true
-    }
     function hide() {
       showSelector = false;
     }
@@ -157,7 +153,7 @@
         {#if curDate && curPeriods}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <div
-            transition:slide={{ axis: isMobile ? "y" :"x" }}
+            transition:slide={{ axis: $isMobile ? "y" :"x" }}
             class="bg-white py-[8px] w-1/3 max-sm:w-full max-sm:flex border-[1px] border-gray-150"
           >
             {#each curPeriods as period}
@@ -182,7 +178,7 @@
         {/if}
         {#if curDate && curPeriods && curTimes}
           <div
-            transition:slide={{ axis: isMobile ? "y" : "x" }}
+            transition:slide={{ axis: $isMobile ? "y" : "x" }}
             class="bg-white py-[8px] w-1/3 max-sm:w-full max-sm:flex max-sm:overflow-x-auto border-[1px] rounded-r-md border-gray-150"
           >
             {#each curTimes as time}

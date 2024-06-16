@@ -32,6 +32,6 @@
       src={type === "warning" ? warning : type === "success" ? success : error}
       alt={type}
     />
-    <p>{content}</p>
+    <p class="whitespace-nowrap">{content}</p>
   </div>
 {/if}
