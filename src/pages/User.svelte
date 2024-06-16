@@ -327,7 +327,7 @@
         </Popover>
       </div>
       <div class="flex col-span-2 gap-[1rem]">
-        <p class="shrink-0 opacity-50 max-sm:text-xs mt-[0.75rem]">
+        <p class="shrink-0 max-sm:text-xs mt-[0.75rem]">
           <span class="text-blue-300">*</span>{$t('user.selfIntro')}
         </p>
         <textarea

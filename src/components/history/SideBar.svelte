@@ -91,8 +91,10 @@
       {/each}
     </div>
   {/if}
-  <div class={cx(['h-[62px] p-[20px_16px] text-red-warning'])}>
-    
+  <div
+    on:click={() => (window.location.href = 'https://sso2024.hustunique.com/')}
+    class={cx(['h-[62px] p-[20px_16px] text-red-warning'])}
+  >
     {$t('header.logout')}
   </div>
 </div>

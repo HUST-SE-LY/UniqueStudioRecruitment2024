@@ -19,7 +19,6 @@
   let showItems = false;
   onMount(() => {
     const close = (e) => {
-      console.log(e)
       if(e.target === input) {
         console.log(11111)
       }
@@ -38,7 +37,7 @@
   on:click={(e) => e.stopPropagation()}
   class={cx(["flex gap-[1rem] max-lg:my-[1.5rem] items-center", className])}
 >
-  <p class="opacity-50 max-sm:text-xs shrink-0">
+  <p class="max-sm:text-xs shrink-0">
     {@html necessary ? `<span class="text-blue-300">*</span>` : ''}{name}
   </p>
   <div class="relative w-full">
