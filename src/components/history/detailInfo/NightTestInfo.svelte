@@ -6,7 +6,7 @@
   export let group:string;
 </script>
 
-<p>
+<p class="max-sm:text-center max-sm:text-sm">
   {@html $t('history.stressTest.tips', {
     time: `<span class="text-blue-300">${time}</span>`,
     room: `<span class="text-blue-300">${InterviewPlace[group]}</span>`,

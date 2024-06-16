@@ -19,19 +19,62 @@
   import { formatDate, formatTime } from '../../../utils/formmatDate';
   import { parseTitle } from '../../../utils/parseTitle';
   import { t } from '../../../utils/t';
+  import { uploadWrittenTest } from '../../../requests/application/uploadWrittenTest';
+  import { Message } from '../../../utils/Message';
+  import { onMount } from 'svelte';
+  import { getWrittenTest } from '../../../requests/recruitment/getWrittenTest';
   export let step: UserStep;
   export let applicationInfo: Application;
-  let selectedTimes = applicationInfo.interview_selections.map((el) => el.uid);
+  let selectedTimes = applicationInfo?.interview_selections?.map(
+    (el) => el.uid
+  );
   const handleClick = (e) => {
-    if(e.target.className.includes('go-user')) {
+    if (e.target.className.includes('go-user')) {
       push('/user');
     }
-  }
+  };
+  let file: File;
+  let fileInput: HTMLInputElement;
+  let writtenTestLink = '';
+  const uploadAnswer = () => {
+    if (!file) {
+      fileInput.click();
+    } else {
+      const formData = new FormData();
+      formData.append('file', file);
+      uploadWrittenTest(applicationInfo.uid, formData)
+        .then(() => {
+          Message.success($t('history.writeTest.uploadSuccess'));
+        })
+        .catch(() => {
+          Message.error($t('history.writeTest.uploadError'));
+        });
+    }
+  };
+  onMount(() => {
+    console.log(step)
+    if (step === $t('history.step.WrittenTest')) {
+      getWrittenTest(applicationInfo.recruitment_id, applicationInfo.group)
+        .then((res) => {
+          if (!res.ok) {
+            Message.error($t('history.writeTest.downloadError'));
+            return;
+          }
+          return res.blob();
+        })
+        .then((blob) => {
+          const url = URL.createObjectURL(blob);
+          writtenTestLink = url;
+        });
+    }
+  });
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class="w-full rounded-lg p-[20px_28px] mt-[3rem] bg-blue-100">
+<div
+  class="w-full max-sm:hidden rounded-lg p-[20px_28px] mt-[3rem] bg-blue-100"
+>
   {#if step !== $t('history.step.Pass')}
     <p class="font-bold text-lg mb-[1rem]">
       {$t('history.currentProcess')}：{step}
@@ -55,17 +98,35 @@
       >`,
           })}
     </p>
-  {:else if step ===  $t('history.step.WrittenTest')}
+  {:else if step === $t('history.step.WrittenTest')}
     <p>{$t('history.writeTest.tips')}</p>
-    <p class="mt-[0.5rem]">
-      {@html $t('history.writeTest.viewLink', {
-        writtenTest: `<a
+    <input
+      on:change={() => {
+        file = fileInput.files[0];
+      }}
+      bind:this={fileInput}
+      type="file"
+      class="hidden"
+    />
+    {#if writtenTestLink}
+      <p class="mt-[0.5rem]">
+        {@html $t('history.writeTest.viewLink', {
+          writtenTest: `<a
         class=" text-blue-300 underline"
-        href="www.bilibili.com"
-        download>${$t('history.writeTest.writtenTest')}</a
-      >`
-      })}
-    </p>
+        href=${writtenTestLink}
+        download=${$t('history.step.WrittenTest')}>${$t('history.writeTest.writtenTest')}</a
+      >`,
+        })}
+      </p>
+      <Button
+        highlight
+        className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
+        onClick={uploadAnswer}
+        >{file
+          ? $t('history.mobile.uploadWrittenTest')
+          : $t('history.mobile.selectWrittenTest')}
+      </Button>
+    {/if}
   {:else if step === $t('history.step.GroupTimeSelection')}
     {#await getInterviewTimes(applicationInfo.recruitment_id, applicationInfo.group)}
       <p>{$t('history.groupInterviewTimeSelector.loading')}</p>

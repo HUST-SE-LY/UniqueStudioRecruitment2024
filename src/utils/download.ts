@@ -9,3 +9,5 @@ export const download = (name: string, blob: Blob) => {
   document.body.removeChild(link);
   URL.revokeObjectURL(blobUrl);
 };
+
+

@@ -5,9 +5,10 @@ export const i18nConstants = {
     header: {
       team: "Unique Studio",
       applications: "Applications",
-      info: "Personal Information",
+      info: "Resume",
       avatar: "Change avatar",
       logout: "Log out",
+      language: "language",
     },
     history: {
       records: "Application Records",
@@ -35,6 +36,9 @@ export const i18nConstants = {
         writtenTest: "written test/questionnaire",
         tips: "Each group will design a written test/questionnaire based on the situation of the group. This is a necessary step for Unique Studio to recruit new members.",
         viewLink: "View the latest {writtenTest}",
+        downloadError: "get written test/questionnaire failed",
+        uploadSuccess: "upload success",
+        uploadError: "upload failed"
       },
       timeSelector: {
         chooseSuccess: "Selection succeed",
@@ -58,6 +62,22 @@ export const i18nConstants = {
         noTime: "The interview time has not been allocated yet, please wait.",
         tips: "Please attend the Unique Studio team interview at {time} at Room {room}, 8th Floor, Liangsheng Building, Qiming College.",
       },
+      mobile: {
+        notSignUpTips: "Please fill in basic information, intended group, resume, etc. for sign up to help us get to know you better.",
+        signUpTips: "You have successfully registered for the {recruitment} {group} group. You can modify your personal information at any time before the registration ends.",
+        known: "I know",
+        input: "Fill out",
+        change: "Edit ",
+        viewLink: "View latest link",
+        uploadWrittenTest: "Upload answers",
+        selectWrittenTest: "Select answers",
+        groupInterviewTips: "Group interviews will be conducted by students from the intended group. Please select a time first.",
+        selectTime: "Select Time",
+        confirm: "confirm",
+        cancel: "cancel",
+        teamInterviewTips: "Team interview is the last step to join us. The purpose is to let the team members get to know you better.",
+
+      }
     },
     user: {
       selfInfo: "Personal Information",
@@ -77,6 +97,7 @@ export const i18nConstants = {
       saveSuccess: "Saved successfully",
       saveFailed: "Save failed",
       signUpSuccess: "Sign up successfully",
+      signUpFail: "Sign up failed",
       rank: "rank",
       phone: "phone",
       group: "intention group",
@@ -117,6 +138,7 @@ export const i18nConstants = {
       info: "个人信息",
       avatar: "更换头像",
       logout: "退出登录",
+      language: "语言",
     },
     history: {
       records: "申请记录",
@@ -144,6 +166,9 @@ export const i18nConstants = {
         writtenTest: "笔试/问卷链接",
         tips: "各组会根据本组情况，设计笔试/问卷，这是联创团队招新的必经环节。",
         viewLink: "查看最新的{writtenTest}",
+        downloadError: "获取笔试/问卷失败",
+        uploadSuccess: "上传成功",
+        uploadError: "上传失败"
       },
       timeSelector: {
         chooseSuccess: "修改成功",
@@ -167,6 +192,21 @@ export const i18nConstants = {
         noTime: "面试时间暂未分配，请等待...",
         tips: "请于{time}于启明学院亮胜楼八楼{room}房间参加联创团队群面",
       },
+      mobile: {
+        known: "知道了",
+        input: "填写",
+        change: "修改",
+        notSignUpTips: "请填写基础信息、意向组别、简历等用于报名，帮助我们更好地了解你。",
+        signUpTips: "你已经成功报名{recruitment}{group}组，报名结束前你可以随时修改个人信息。",
+        viewLink: "查看最新笔试/问卷",
+        uploadWrittenTest: "上传笔试结果",
+        selectWrittenTest: "选择笔试结果",
+        groupInterviewTips: "组面由意向组别的同学负责面试，请先选择时间",
+        selectTime: "选择时间",
+        confirm: "确定",
+        cancel: "取消",
+        teamInterviewTips: "群面是加入联创团队的最后一步，目的是让团队成员更好的了解你",
+      }
     },
     user: {
       selfInfo: "个人信息",
@@ -176,6 +216,7 @@ export const i18nConstants = {
       recommender: "推荐人",
       saveSuccess: "保存成功",
       signUpSuccess: "报名成功",
+      signUpFail: "报名失败",
       name: "姓名",
       major: "专业",
       gender: "性别",
