@@ -60,7 +60,7 @@
   >
     {#if $userInfo && $recruitment}
       <!-- if user have not sign updateApplication, show this -->
-      {#if $recruitment.uid !== $userInfo.applications[0].recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime() && new Date().getTime() <= new Date($recruitment.deadline).getTime()}
+      {#if $recruitment.uid !== $userInfo.applications[0]?.recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime() && new Date().getTime() <= new Date($recruitment.deadline).getTime()}
         <SingleApplicationItem
           index={0}
           title={$parseTitle($recruitment.name)}

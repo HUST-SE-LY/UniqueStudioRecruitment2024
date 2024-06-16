@@ -49,10 +49,11 @@
     getInfo()
       .then((res) => {
         userInfo.setInfo(res.data);
-        latestInfo.setApplication(res.data.applications[0]);
+        res.data.applications[0] &&
+          latestInfo.setApplication(res.data.applications[0]);
       })
-      .catch(() => {
-        Message.error('获取信息失败');
+      .catch((_err) => {
+        Message.error($t('header.getInfoFailed'));
       })
       .finally(() => {
         isLoading = false;
@@ -63,7 +64,7 @@
         recruitment.setRecruitments(res.data);
       })
       .catch(() => {
-        Message.error('获取信息失败');
+        Message.error($t('header.getInfoFailed'));
       });
   const handleRouterClick = (path: string) => {
     push(path);
@@ -90,7 +91,6 @@
       });
     }
   });
-  //ly: this is the test cookie
   onMount(() => {
     window.addEventListener('scroll', handleScroll, false);
     tabLine.style.width = `${$location === '/user' ? user.clientWidth : home.clientWidth}px`;
@@ -99,18 +99,11 @@
         ? `translateX(${home.clientWidth + 32}px)`
         : `translateX(0px)`;
   });
+
   onDestroy(() => {
     unsubscribeLocaleLanguage();
     unsubscribeLocation();
     window.removeEventListener('scroll', handleScroll);
-  });
-  fetch('https://dev.back.recruitment2023.hustunique.com/user/me', {
-
-    headers: {
-      'Content-Type': 'application/json',
-      credentials: 'include',
-      accept: 'application/json, text/plain, */*',
-    },
   });
 </script>
 

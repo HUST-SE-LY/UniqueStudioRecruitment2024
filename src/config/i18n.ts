@@ -9,6 +9,7 @@ export const i18nConstants = {
       avatar: "Change avatar",
       logout: "Log out",
       language: "language",
+      getInfoFailed: "get info failed"
     },
     history: {
       records: "Application Records",
@@ -139,6 +140,7 @@ export const i18nConstants = {
       avatar: "更换头像",
       logout: "退出登录",
       language: "语言",
+      getInfoFailed: "获取信息失败"
     },
     history: {
       records: "申请记录",

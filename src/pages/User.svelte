@@ -38,8 +38,9 @@
   let showSignUpModal = false;
   let resume: File;
   let fileInput: HTMLInputElement;
-  let { rank, referrer, major, institute, group, grade, intro, uid, is_quick } =
-    $latestInfo;
+  console.log($latestInfo)
+  let { rank = "", referrer = "", major = "", institute = "", group = "", grade = "", intro = "", uid = "", is_quick = false } =
+    $latestInfo || {};
   //ly:this asset would be wrong but I just don't want to see TypeError :)
   $: majors = DEPARTMENTS[institute as College] || [];
   $: ranks = $t('user.selector.rank') as unknown as string[];
@@ -56,8 +57,8 @@
     getResume(uid);
   };
   const closeEditMode = () => {
-    ({ rank, referrer, major, institute, group, grade, intro, uid, is_quick } =
-      $latestInfo);
+    ({ rank = "", referrer = "", major = "", institute = "", group = "", grade = "", intro = "", uid = "", is_quick = false } =
+      $latestInfo || {});
     editMode = false;
   };
   const signUp = () => {
@@ -193,7 +194,7 @@
               highlight>{$t('user.save')}</Button
             >
             <p slot="content" class="w-[180px]">
-              {$userInfo.applications[0].recruitment_id === $recruitment.uid
+              {$userInfo.applications[0]?.recruitment_id === $recruitment.uid
                 ? $t('user.saveTips')
                 : $t('user.saveTips1')}
             </p>
@@ -215,7 +216,7 @@
       {/if}
     </div>
     <div class="flex mb-[1rem] -translate-y-2 w-full flex-row-reverse">
-      {#if editMode && $recruitment && $recruitment.uid !== $userInfo.applications[0].recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime() && new Date().getTime() <= new Date($recruitment.deadline).getTime()}
+      {#if editMode && $recruitment && $recruitment.uid !== $userInfo.applications[0]?.recruitment_id && new Date().getTime() >= new Date($recruitment.beginning).getTime() && new Date().getTime() <= new Date($recruitment.deadline).getTime()}
         <Popover style="white" direct="top" questionDirection="end">
           <Button
             onClick={() => (showSignUpModal = true)}
@@ -291,10 +292,10 @@
       <SingleSelectInfo
         editMode={editMode &&
           (!$recruitment ||
-            $userInfo.applications[0].recruitment_id !== $recruitment.uid)}
+            $userInfo.applications[0]?.recruitment_id !== $recruitment.uid)}
         necessary
         name={$t('user.group')}
-        content={Group[group]}
+        content={Group[group] || ""}
         onChange={(item) => (group = item.toLowerCase())}
         selectItems={[
           'AI',
@@ -382,7 +383,7 @@
           type="file"
           class="hidden"
         />
-      {:else if $recruitment && $userInfo.applications[0].recruitment_id === $recruitment.uid && $userInfo.applications[0].resume}
+      {:else if $recruitment && $userInfo.applications[0]?.recruitment_id === $recruitment.uid && $userInfo.applications[0].resume}
         <div
           on:click={downloadResume}
           class="cursor-pointer flex justify-center items-center sm:flex-col gap-[8px]"

@@ -40,6 +40,7 @@ export class Http {
   ) => {
     const result = {
       method,
+      credentials: "include" as const,
       ...(this.fetchOptions
         ? Object.assign(this.fetchOptions, options)
         : options),
@@ -53,6 +54,10 @@ export class Http {
   private async parseFetch<T>(res: Response) {
     if (!res.ok) {
       const detail = (await res.json()) as ResponseType<null>;
+      if(detail.msg === "authentication failed could not get uid") {
+        window.location.href = "https://sso2024.hustunique.com/";
+        return;
+      }
       throw new Error(detail.msg);
     }
     try {
@@ -163,7 +168,6 @@ export const http = new Http({
   apiEndpoint: "https://dev.back.recruitment2023.hustunique.com",
   headers: {
     "Content-Type": "application/json",
-    credentials: "include",
     accept: "application/json, text/plain, */*"
   },
 });
