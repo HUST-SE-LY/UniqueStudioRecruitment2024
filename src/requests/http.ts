@@ -55,8 +55,7 @@ export class Http {
     if (!res.ok) {
       const detail = (await res.json()) as ResponseType<null>;
       if(detail.msg === "authentication failed could not get uid") {
-        window.location.href = "https://sso2024.hustunique.com/";
-        return;
+        window.location.href = "https://sso2024.hustunique.com/login?from=join2024.hustunique.com";
       }
       throw new Error(detail.msg);
     }

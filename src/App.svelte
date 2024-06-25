@@ -52,8 +52,10 @@
         res.data.applications[0] &&
           latestInfo.setApplication(res.data.applications[0]);
       })
-      .catch((_err) => {
-        Message.error($t('header.getInfoFailed'));
+      .catch((err) => {
+        if(err.message !== "authentication failed could not get uid") {
+          Message.error($t('header.getInfoFailed'));
+        }
       })
       .finally(() => {
         isLoading = false;
@@ -63,8 +65,10 @@
       .then((res) => {
         recruitment.setRecruitments(res.data);
       })
-      .catch(() => {
-        Message.error($t('header.getInfoFailed'));
+      .catch((err) => {
+        if(err.message !== "authentication failed could not get uid") {
+          Message.error($t('header.getInfoFailed'));
+        }
       });
   const handleRouterClick = (path: string) => {
     push(path);
