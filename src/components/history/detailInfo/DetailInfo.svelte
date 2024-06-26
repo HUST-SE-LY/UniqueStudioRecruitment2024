@@ -143,7 +143,7 @@
       time={applicationInfo.interview_allocations_group.uid
         ? `${$formatDate(
             applicationInfo.interview_allocations_group.date
-          )}${Period[applicationInfo.interview_allocations_group.period]}${$formatTime(
+          )}${$formatTime(
             applicationInfo.interview_allocations_group.start
           )}`
         : ''}
@@ -171,7 +171,7 @@
       time={applicationInfo.interview_allocations_team.uid
         ? `${$formatDate(
             applicationInfo.interview_allocations_team.date
-          )}${$t('history.period')[applicationInfo.interview_allocations_team.period]}${$formatTime(
+          )}${$formatTime(
             applicationInfo.interview_allocations_team.start
           )}`
         : ''}
