@@ -210,7 +210,7 @@
           <!-- svelte-ignore a11y_click_events_have_key_events -->
           <div
             on:click={() => $isMobile || (showAvatarDetail = !showAvatarDetail)}
-            class=" bg-white w-[40px] h-[40px] max-sm:w-[24px] max-sm:h-[24px] max-sm:leading-[24px] max-sm:text-[8px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
+            class=" bg-white w-[40px] h-[40px] max-sm:w-[32px] max-sm:h-[32px] max-sm:leading-[32px] max-sm:text-[12px] rounded-full text-text-3 cursor-pointer leading-[40px] text-center"
           >
             {$userInfo.name[0]}
           </div>
