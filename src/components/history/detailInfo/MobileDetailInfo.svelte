@@ -74,7 +74,7 @@
   <p class="text-center text-[17px] mb-[12px] font-[500]">{step}</p>
   {#if step === $t('history.step.SignUp')}
     <p class="text-sm text-center" on:click={handleClick}>
-      {@html $userInfo.applications[0].recruitment_id === $recruitment.uid
+      {@html $userInfo.applications[0]?.recruitment_id === $recruitment.uid
         ? $t('history.mobile.signUpTips', {
             group: Group[$userInfo.applications[0].group],
             recruitment: $parseTitle($recruitment.name),
