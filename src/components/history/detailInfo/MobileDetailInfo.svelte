@@ -31,7 +31,7 @@
     }
   };
   export let applicationInfo: Application;
-  selectedTimes.setTimes(applicationInfo?.interview_selections?.map(
+  $selectedTimes.length === 0 && selectedTimes.setTimes(applicationInfo?.interview_selections?.map(
     (el) => el.uid
   ));
   console.log($selectedTimes)
