@@ -19,6 +19,7 @@
   import { getWrittenTest } from '../../../requests/recruitment/getWrittenTest';
   import { Message } from '../../../utils/Message';
   import { uploadWrittenTest } from '../../../requests/application/uploadWrittenTest';
+  import { getInfo } from '../../../requests/user/getInfo';
   let openGroupInterviewTimeSelector = false;
   let openTeamInterviewTimeSelector = false;
   let writtenTestLink = '';
@@ -33,6 +34,18 @@
   let selectedTimes = applicationInfo?.interview_selections?.map(
     (el) => el.uid
   );
+  const handleOpenTeamInterviewTimeSelector = () => {
+    getInfo().then((res) => {
+      userInfo.setInfo(res.data);
+    })
+    openTeamInterviewTimeSelector = true;
+  };
+  const handleOpenGroupInterviewTimeSelector = () => {
+    getInfo().then((res) => {
+      userInfo.setInfo(res.data);
+    })
+    openGroupInterviewTimeSelector = true;
+  };
   const uploadAnswer = () => {
     if (!file) {
       fileInput.click();
@@ -123,7 +136,7 @@
       {$t('history.mobile.groupInterviewTips')}
     </p>
     <Button
-      onClick={() => (openGroupInterviewTimeSelector = true)}
+      onClick={handleOpenGroupInterviewTimeSelector}
       highlight
       className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
       >{$t('history.mobile.selectTime')}</Button
@@ -152,7 +165,7 @@
       {$t('history.mobile.TeamInterviewTips')}
     </p>
     <Button
-      onClick={() => (openTeamInterviewTimeSelector = true)}
+      onClick={handleOpenTeamInterviewTimeSelector}
       highlight
       className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
       >{$t('history.mobile.selectTime')}</Button
