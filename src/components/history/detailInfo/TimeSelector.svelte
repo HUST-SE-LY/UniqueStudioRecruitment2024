@@ -15,6 +15,7 @@
   import { derived } from "svelte/store";
   import { localeLanguage } from "../../../stores/localeLanguage";
   import { isMobile } from "../../../stores/isMobile";
+  import { selectedTimes as selectedTimeList } from "../../../stores/selectedTimes";
 
   //ly: type 'SingleTime' is the return-type of backend, type 'InterviewTime' is the useful type when rendering UI
   export let times: SingleTime[] = [];
@@ -43,8 +44,10 @@
   const selectTime = (uuid: string) => {
     if (selectedTimes.includes(uuid)) {
       selectedTimes = [...selectedTimes.filter((el) => el !== uuid)];
+      selectedTimeList.setTimes(selectedTimes)
     } else {
       selectedTimes = [...selectedTimes, uuid];
+      selectedTimeList.setTimes(selectedTimes)
     }
     setInterviewTimes({
       iids: selectedTimes,

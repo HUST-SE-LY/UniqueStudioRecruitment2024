@@ -35,9 +35,6 @@
     (el) => el.uid
   ));
   let selectedTimeList = $selectedTimes;
-  $: {
-    selectedTimeList.length && selectedTimes.setTimes(selectedTimeList)
-  }
   const uploadAnswer = () => {
     if (!file) {
       fileInput.click();
