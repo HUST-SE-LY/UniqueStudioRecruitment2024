@@ -80,11 +80,9 @@
         />
       {:else if applications.length === 0}
         <div
-          in:fly={{ y: 100 * 1, duration: 500, delay: 500 }}
-          out:fly={{ y: 50, duration: 500 }}
-          class="rounded-[20px] mt-[1rem] bg-white max-sm:rounded-[6px] p-[3rem_4rem] max-sm:p-[20px_18px] sm:shadow-card"
+          class="rounded-[20px] mt-[1rem] h-[290px] bg-white max-sm:rounded-[6px] flex justify-center items-center p-[3rem_4rem] max-sm:p-[20px_18px] sm:shadow-card"
         >
-          暂无记录
+          <p class="text-gray-250 text-2xl">{$t('history.noRecord')}</p>
         </div>
       {/if}
 
@@ -102,8 +100,6 @@
       {/each}
     {:else}
       <div
-        in:fly={{ y: 100 * 1, duration: 500, delay: 500 }}
-        out:fly={{ y: 50, duration: 500 }}
         class="rounded-[20px] mt-[1rem] h-[290px] bg-white max-sm:rounded-[6px] flex justify-center items-center p-[3rem_4rem] max-sm:p-[20px_18px] sm:shadow-card"
       >
         <p class="text-gray-250 text-2xl">{$t('history.noRecord')}</p>
