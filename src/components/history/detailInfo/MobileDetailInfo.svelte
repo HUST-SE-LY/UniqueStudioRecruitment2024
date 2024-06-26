@@ -34,6 +34,7 @@
   selectedTimes.setTimes(applicationInfo?.interview_selections?.map(
     (el) => el.uid
   ));
+  console.log($selectedTimes)
   let selectedTimeList = $selectedTimes;
   const uploadAnswer = () => {
     if (!file) {
