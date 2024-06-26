@@ -153,7 +153,7 @@
     />
   {:else if step === $t('history.step.TeamTimeSelection')}
     <p class="text-sm my-[8px] text-text-4 text-center">
-      {$t('history.mobile.TeamInterviewTips')}
+      {$t('history.mobile.teamInterviewTips')}
     </p>
     <Button
       onClick={() => (openTeamInterviewTimeSelector = true)}
