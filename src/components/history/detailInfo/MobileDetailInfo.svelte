@@ -139,7 +139,7 @@
       time={applicationInfo.interview_allocations_group.uid
         ? `${$formatDate(
             applicationInfo.interview_allocations_group.date
-          )}${$formatTime(
+          )} ${$formatTime(
             applicationInfo.interview_allocations_group.start
           )}`
         : ''}
@@ -166,7 +166,7 @@
       time={applicationInfo.interview_allocations_team.uid
         ? `${$formatDate(
             applicationInfo.interview_allocations_team.date
-          )}${$formatTime(
+          )} ${$formatTime(
             applicationInfo.interview_allocations_team.start
           )}`
         : ''}
