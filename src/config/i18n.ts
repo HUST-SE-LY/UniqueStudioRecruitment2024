@@ -38,7 +38,7 @@ export const i18nConstants = {
         writtenTest: "written test/questionnaire",
         tips: "Each group will design a written test/questionnaire based on the situation of the group. This is a necessary step for Unique Studio to recruit new members.",
         viewLink: "View the latest {writtenTest}",
-        downloadError: "get written test/questionnaire failed",
+        downloadError: "get written questionnaire failed or no questionnaire yet",
         uploadSuccess: "upload success",
         uploadError: "upload failed"
       },
@@ -170,7 +170,7 @@ export const i18nConstants = {
         writtenTest: "笔试/问卷链接",
         tips: "各组会根据本组情况，设计笔试/问卷，这是联创团队招新的必经环节。",
         viewLink: "查看最新的{writtenTest}",
-        downloadError: "获取笔试/问卷失败",
+        downloadError: "获取笔试/问卷失败或暂无笔试/问卷",
         uploadSuccess: "上传成功",
         uploadError: "上传失败"
       },
