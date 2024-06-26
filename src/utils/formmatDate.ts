@@ -25,6 +25,6 @@ export const formatTime = derived(localeLanguage, ($localeLanguage) => (dateStr:
   const locale = $localeLanguage;
 
   const formattedTime = date.toLocaleTimeString(locale, options);
-
+  console.log(locale, formattedTime);
   return formattedTime;
 });
