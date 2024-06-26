@@ -25,6 +25,7 @@
   import Modal from '../public/Modal.svelte';
   import MobileDetailInfo from './detailInfo/MobileDetailInfo.svelte';
   import { push } from 'svelte-spa-router';
+  import { recruitment } from '../../stores/recruitment';
 
   export let title: string;
   export let group: GROUP | null = null;
@@ -107,7 +108,12 @@
     <p class="text-text-4 mt-[1rem]">{$t('history.overTips')}</p>
   {:else if state === $t('history.processState.PASS')}
     <div class="flex items-center mt-[8px] gap-[4px]">
-      <p class="text-lg max-sm:text-sm">{$t('history.passTips')}</p>
+      {#if $recruitment.name.endsWith('C')}
+      <p class="text-lg max-sm:text-sm">{$t('history.passTipsSummerCamp')}</p>
+      {:else}
+        <p class="text-lg max-sm:text-sm">{$t('history.passTips')}</p>
+      {/if}
+      
       <img class="inline" src={greet} alt="欢迎" />
     </div>
   {/if}

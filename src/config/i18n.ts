@@ -25,6 +25,7 @@ export const i18nConstants = {
       outTips: "Looking forward to meeting a better you",
       passTips: "Congratulations on joining Unique Studio",
       passSubTips: "For other information, please contact the group leader",
+      passTipsSummerCamp: "Welcome to Unique Studio Summer Camp",
       overTips: "Recruitment has ended",
       notSelected: "Not selected",
       signUpTips: {
@@ -156,6 +157,7 @@ export const i18nConstants = {
       notApplyTips: "联创团队期待你的加入",
       outTips: "期待与更强大的你相遇",
       passTips: "恭喜你加入了联创团队",
+      passTipsSummerCamp: "恭喜你加入了联创夏令营",
       passSubTips: "其他信息请与组长沟通",
       overTips: "招新已结束",
       notSelected: "未选择",
