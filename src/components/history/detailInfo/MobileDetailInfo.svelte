@@ -19,6 +19,7 @@
   import { getWrittenTest } from '../../../requests/recruitment/getWrittenTest';
   import { Message } from '../../../utils/Message';
   import { uploadWrittenTest } from '../../../requests/application/uploadWrittenTest';
+  import { selectedTimes } from '../../../stores/selectedTimes';
   let openGroupInterviewTimeSelector = false;
   let openTeamInterviewTimeSelector = false;
   let writtenTestLink = '';
@@ -30,9 +31,13 @@
     }
   };
   export let applicationInfo: Application;
-  let selectedTimes = applicationInfo?.interview_selections?.map(
+  selectedTimes.setTimes(applicationInfo?.interview_selections?.map(
     (el) => el.uid
-  );
+  ));
+  let selectedTimeList = $selectedTimes;
+  $: {
+    selectedTimeList.length && selectedTimes.setTimes(selectedTimeList)
+  }
   const uploadAnswer = () => {
     if (!file) {
       fileInput.click();
@@ -198,7 +203,7 @@
       type="group"
       aid={applicationInfo.uid}
       times={res.data}
-      bind:selectedTimes
+      bind:selectedTimes={selectedTimeList}
     />
   {/await}
 </BottomBar>
@@ -215,7 +220,7 @@
       type="team"
       aid={applicationInfo.uid}
       times={res.data}
-      bind:selectedTimes
+      bind:selectedTimes={selectedTimeList}
     />
   {/await}
 </BottomBar>
