@@ -51,7 +51,6 @@
     ).catch(() => {
       return [];
     });
-    console.log(applications);
   });
 </script>
 

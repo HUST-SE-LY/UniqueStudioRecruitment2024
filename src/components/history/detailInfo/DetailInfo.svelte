@@ -52,7 +52,6 @@
     }
   };
   onMount(() => {
-    console.log(step)
     if (step === $t('history.step.WrittenTest')) {
       getWrittenTest(applicationInfo.recruitment_id, applicationInfo.group)
         .then((res) => {

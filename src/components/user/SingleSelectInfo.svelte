@@ -19,9 +19,6 @@
   let showItems = false;
   onMount(() => {
     const close = (e) => {
-      if(e.target === input) {
-        console.log(11111)
-      }
       showItems = false;
     };
     document.addEventListener('click', close);

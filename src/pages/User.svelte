@@ -38,7 +38,6 @@
   let showSignUpModal = false;
   let resume: File;
   let fileInput: HTMLInputElement;
-  console.log($latestInfo);
   let {
     rank = '',
     referrer = '',

@@ -25,7 +25,6 @@
     },
   ];
   const close = () => {
-    console.log(111);
     dispatch('hide');
   };
 </script>
