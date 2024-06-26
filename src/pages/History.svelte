@@ -32,7 +32,7 @@
     $t(`history.step.${application.step}`) as UserStep;
 
   let applications = [];
-  $userInfo &&
+  $: $userInfo &&
     Promise.all(
       $userInfo.applications.map(async (application) => {
         const res = await getRecruitmentById(application.recruitment_id);
