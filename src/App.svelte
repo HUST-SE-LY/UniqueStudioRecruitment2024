@@ -233,9 +233,8 @@
   >
     <Groups />
   </div>
-  {#if $userInfo}
     <Router {routes} />
-  {/if}
+
 </div>
 
 <div class="sm:hidden">

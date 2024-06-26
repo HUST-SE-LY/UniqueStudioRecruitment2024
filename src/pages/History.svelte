@@ -11,7 +11,6 @@
   import { t } from '../utils/t';
   import type { UserStep } from '../types';
   import { onMount } from 'svelte';
-  import { updateApplication } from '../requests/application/updateApplication';
   $: signUpStep = $t(`history.step.SignUp`) as UserStep;
   $: processing = $t('history.processState.PROCESSING') as ProcessStateType;
   $: getState = (application: Application, date: string) =>
@@ -33,27 +32,39 @@
     $t(`history.step.${application.step}`) as UserStep;
 
   let applications = [];
-  onMount(async () => {
-    console.log($userInfo)
-    applications = await Promise.all(
-      $userInfo.applications.map(async (application) => {
-        const res = await getRecruitmentById(application.recruitment_id);
-        const processedApplication = {
-          ...application,
-          title: $parseTitle(res.data.name),
-          end: res.data.end,
-          deadline: res.data.deadline,
-          beginning: res.data.beginning,
-        };
-        return processedApplication;
-      })
-    );
-  });
 
+  onMount(async () => {
+    applications = await Promise.all(
+      $userInfo
+        ? $userInfo.applications.map(async (application) => {
+            const res = await getRecruitmentById(application.recruitment_id);
+            const processedApplication = {
+              ...application,
+              title: $parseTitle(res.data.name),
+              end: res.data.end,
+              deadline: res.data.deadline,
+              beginning: res.data.beginning,
+            };
+            return processedApplication;
+          })
+        : []
+    ).catch(() => {
+      return [];
+    });
+    console.log(applications);
+  });
 </script>
 
-<div class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md-lg:w-[80%] max-sm:w-[calc(100%_-_40px)] mx-auto flex flex-col">
-  <p in:fade out:fade class="text-[26px] max-sm:text-text-1 max-sm:text-[18px] text-white">{$t('history.records')}</p>
+<div
+  class="h-full relative my-[1rem] w-[60%] max-lg:w-[70%] max-md-lg:w-[80%] max-sm:w-[calc(100%_-_40px)] mx-auto flex flex-col"
+>
+  <p
+    in:fade
+    out:fade
+    class="text-[26px] max-sm:text-text-1 max-sm:text-[18px] text-white"
+  >
+    {$t('history.records')}
+  </p>
   <div
     in:fly={{ y: 50, duration: 500, delay: 500 }}
     out:fly={{ y: 50, duration: 500 }}
@@ -67,6 +78,14 @@
           step={signUpStep}
           state={processing}
         />
+      {:else if applications.length === 0}
+        <div
+          in:fly={{ y: 100 * 1, duration: 500, delay: 500 }}
+          out:fly={{ y: 50, duration: 500 }}
+          class="rounded-[20px] mt-[1rem] bg-white max-sm:rounded-[6px] p-[3rem_4rem] max-sm:p-[20px_18px] sm:shadow-card"
+        >
+          暂无记录
+        </div>
       {/if}
 
       {#each applications as application, i}
@@ -81,6 +100,14 @@
           />
         {/await}
       {/each}
+    {:else}
+      <div
+        in:fly={{ y: 100 * 1, duration: 500, delay: 500 }}
+        out:fly={{ y: 50, duration: 500 }}
+        class="rounded-[20px] mt-[1rem] h-[290px] bg-white max-sm:rounded-[6px] flex justify-center items-center p-[3rem_4rem] max-sm:p-[20px_18px] sm:shadow-card"
+      >
+        <p class="text-gray-250 text-2xl">{$t('history.noRecord')}</p>
+      </div>
     {/if}
   </div>
 </div>

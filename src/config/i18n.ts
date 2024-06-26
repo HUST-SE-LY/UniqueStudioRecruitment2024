@@ -14,6 +14,7 @@ export const i18nConstants = {
     history: {
       records: "Application Records",
       viewDetails: "View Details",
+      noRecord: "No application record yet",
       step: StepEn,
       processState: ProcessStateEN,
       timeLine: TIMELINE_EN,
@@ -145,6 +146,7 @@ export const i18nConstants = {
     history: {
       records: "申请记录",
       viewDetails: "查看详情",
+      noRecord: "暂无申请记录",
       step: Step,
       processState: ProcessState,
       timeLine: TIMELINE,

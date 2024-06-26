@@ -28,6 +28,7 @@ export default {
         100: "#F3F3F5",
         150: "#F2F3F5", //浅底色
         200: "#E5E6EB", //描边色
+        250: "#B9B9B9",
         300: "#8D8D8D",
         blue: "#F2F6FF", //蓝底色
         red: "#FFEEE7", //红底色
