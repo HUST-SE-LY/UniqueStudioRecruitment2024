@@ -53,9 +53,10 @@
           latestInfo.setApplication(res.data.applications[0]);
       })
       .catch((err) => {
-        if(err.message !== "authentication failed could not get uid") {
-          Message.error($t('header.getInfoFailed'));
+        if(err.message === "authentication failed could not get uid") {
+          return
         }
+        Message.error($t('header.getInfoFailed'));
       })
       .finally(() => {
         isLoading = false;
@@ -66,9 +67,10 @@
         recruitment.setRecruitments(res.data);
       })
       .catch((err) => {
-        if(err.message !== "authentication failed could not get uid") {
-          Message.error($t('header.getInfoFailed'));
+        if(err.message === "authentication failed could not get uid" || err.message === `ERROR: invalid input syntax for type uuid: \\"\\" (SQLSTATE 22P02)`) {
+          return
         }
+        Message.error($t('header.getInfoFailed'));
       });
   const handleRouterClick = (path: string) => {
     push(path);

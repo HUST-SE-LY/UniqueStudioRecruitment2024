@@ -87,14 +87,14 @@ export const InterviewPlace = {
 
 export const RecruitmentNameEn = {
   A: "Fall Recruitment",
-  S: "Summer Camp",
-  C: "Spring Recruitment",
+  C: "Summer Camp",
+  S: "Spring Recruitment",
 };
 
 export const RecruitmentName = {
   A: "秋季招新",
-  S: "夏令营招新",
-  C: "春季招新",
+  S: "春季招新",
+  C: "夏令营招新",
 };
 
 export const GRADE = ["大一", "大二", "大三", "大四", "研究生"] as const;
