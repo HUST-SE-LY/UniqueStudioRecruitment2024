@@ -118,7 +118,9 @@
       return;
     if (
       $recruitment &&
-      $recruitment.uid === $userInfo.applications[0].recruitment_id
+      $recruitment.uid === $userInfo.applications[0].recruitment_id &&
+      !$userInfo.applications[0].rejected &&
+      !$userInfo.applications[0].abandoned
     ) {
       const formData = new FormData();
       formData.append('recruitment_id', $recruitment.uid);
@@ -194,7 +196,7 @@
               highlight>{$t('user.save')}</Button
             >
             <p slot="content" class="w-[180px]">
-              {$userInfo.applications[0]?.recruitment_id === $recruitment.uid
+              {$userInfo.applications[0]?.recruitment_id === $recruitment.uid && !$userInfo.applications[0]?.rejected
                 ? $t('user.saveTips')
                 : $t('user.saveTips1')}
             </p>
