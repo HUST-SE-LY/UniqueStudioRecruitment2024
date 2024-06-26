@@ -32,23 +32,22 @@
     $t(`history.step.${application.step}`) as UserStep;
 
   let applications = [];
-  Promise.all(
-    $userInfo
-      ? $userInfo.applications.map(async (application) => {
-          const res = await getRecruitmentById(application.recruitment_id);
-          const processedApplication = {
-            ...application,
-            title: $parseTitle(res.data.name),
-            end: res.data.end,
-            deadline: res.data.deadline,
-            beginning: res.data.beginning,
-          };
-          return processedApplication;
-        })
-      : []
-  ).then((res) => {
-    applications = res;
-  });
+  $userInfo &&
+    Promise.all(
+      $userInfo.applications.map(async (application) => {
+        const res = await getRecruitmentById(application.recruitment_id);
+        const processedApplication = {
+          ...application,
+          title: $parseTitle(res.data.name),
+          end: res.data.end,
+          deadline: res.data.deadline,
+          beginning: res.data.beginning,
+        };
+        return processedApplication;
+      })
+    ).then((res) => {
+      applications = res;
+    });
   onMount(async () => {
     applications = await Promise.all(
       $userInfo
