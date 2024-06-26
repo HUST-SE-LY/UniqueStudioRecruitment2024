@@ -43,11 +43,11 @@
   };
   const selectTime = (uuid: string) => {
     if (selectedTimes.includes(uuid)) {
+      selectedTimeList.setTimes([...selectedTimes.filter((el) => el !== uuid)])
       selectedTimes = [...selectedTimes.filter((el) => el !== uuid)];
-      selectedTimeList.setTimes(selectedTimes)
     } else {
+      selectedTimeList.setTimes([...selectedTimes, uuid])
       selectedTimes = [...selectedTimes, uuid];
-      selectedTimeList.setTimes(selectedTimes)
     }
     setInterviewTimes({
       iids: selectedTimes,
