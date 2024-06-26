@@ -82,7 +82,7 @@
   {#if step === $t('history.step.SignUp')}
     <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
     <p on:click={handleClick}>
-      {@html $userInfo.applications[0].recruitment_id === $recruitment.uid
+      {@html $userInfo.applications[0]?.recruitment_id === $recruitment.uid
         ? $t('history.signUpTips.SignInTips', {
             changeInfo: `<span
          class="text-blue-300 underline cursor-pointer go-user">${$t('history.signUpTips.changeInfo')}</span
