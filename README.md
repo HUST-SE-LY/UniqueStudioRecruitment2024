@@ -1,8 +1,8 @@
-# UniqueStudioRecruitment2023
+# UniqueStudioRecruitment2024
 
 联创团队hr系统选手端
 
 技术栈：
-- svelte
+- svelte@4
 - tailwindCSS
 
