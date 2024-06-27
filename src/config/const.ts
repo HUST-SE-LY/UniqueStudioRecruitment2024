@@ -4,18 +4,18 @@ export const LANGUAGES = {
 } as const;
 
 export const ProcessState = {
-  OUT : "已淘汰",
-  PROCESSING : "进行中",
-  PASS : "已通过",
-  OVER : "已结束",
+  OUT: "已淘汰",
+  PROCESSING: "进行中",
+  PASS: "已通过",
+  OVER: "已结束",
 } as const;
 
 export const ProcessStateEN = {
-  OUT : "OUT",
-  PROCESSING : "ONGOING",
-  PASS : "PASS",
-  OVER : "OVER",
-  ABANDONED : "ABANDONED",
+  OUT: "OUT",
+  PROCESSING: "ONGOING",
+  PASS: "PASS",
+  OVER: "OVER",
+  ABANDONED: "ABANDONED",
 } as const;
 
 export enum GROUP {
@@ -99,7 +99,13 @@ export const RecruitmentName = {
 
 export const GRADE = ["大一", "大二", "大三", "大四", "研究生"] as const;
 
-export const GRADE_EN = ["Freshman", "Sophomore", "Junior", "Senior", "Graduate"] as const;
+export const GRADE_EN = [
+  "Freshman",
+  "Sophomore",
+  "Junior",
+  "Senior",
+  "Graduate",
+] as const;
 
 export const RANK = ["暂无", "10%", "25%", "50%", "100%"] as const;
 
@@ -278,7 +284,14 @@ export const DEPARTMENTS_EN = {
     "电磁场与无线技术",
     "电子信息工程（信息类数理提高班）",
   ],
-  基础医学院: ["基础医学", "临床医学"],
+  基础医学院: [
+    "基础医学",
+    "临床医学",
+    "临床医学（启明本硕博）",
+    "医学影像学",
+    "医学检验技术",
+    "临床医学（八年）",
+  ],
   医药卫生管理学院: ["公共事业管理", "信息管理和信息系统"],
   土木工程与力学学院: [
     "土木工程",
@@ -428,25 +441,28 @@ export const DEPARTMENTS_EN = {
   网络空间安全学院: ["信息安全", "网络空间安全", "密码学"],
 } as const;
 
-export const TIMELINE_EN = Object.values(StepEn).map(value => {
+export const TIMELINE_EN = Object.values(StepEn).map((value) => {
   const res = {
     name: value,
-    show: true
+    show: true,
   };
   res.name = value;
-  if(value === "Group Interview Time Selection" || value === "Team Interview Time Selection") {
+  if (
+    value === "Group Interview Time Selection" ||
+    value === "Team Interview Time Selection"
+  ) {
     res.show = false;
   }
   return res;
 });
 
-export const TIMELINE = Object.values(Step).map(value => {
+export const TIMELINE = Object.values(Step).map((value) => {
   const res = {
     name: value,
-    show: true
+    show: true,
   };
   res.name = value;
-  if(value === "组面时间选择" || value === "群面时间选择") {
+  if (value === "组面时间选择" || value === "群面时间选择") {
     res.show = false;
   }
   return res;
@@ -479,7 +495,6 @@ export const NecessaryInfoTitle = {
   group: "意向组别",
   intro: "自我介绍",
 } as const;
-
 
 export const NecessaryInfoTitleEn = {
   grade: "grade",
