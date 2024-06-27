@@ -242,3 +242,14 @@
 <div class="sm:hidden">
   <SideBar {hide} on:hide={() => (hide = true)} />
 </div>
+
+<style>
+  @font-face {
+    font-family: 'PingFang';
+    src: url("/PingFangRegular.ttf");
+  }
+
+  * {
+    font-family: 'PingFang';
+  }
+</style>
