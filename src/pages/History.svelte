@@ -11,6 +11,7 @@
   import { t } from '../utils/t';
   import type { UserStep } from '../types';
   import { onMount } from 'svelte';
+  import { selectedTimes } from '../stores/selectedTimes';
   $: signUpStep = $t(`history.step.SignUp`) as UserStep;
   $: processing = $t('history.processState.PROCESSING') as ProcessStateType;
   $: getState = (application: Application, date: string) =>
@@ -48,6 +49,7 @@
     ).then((res) => {
       applications = res;
     });
+    $: $userInfo && selectedTimes.setTimes($userInfo.applications[0]?.interview_selections?.map(el => el.uid) || []);
   onMount(async () => {
     applications = await Promise.all(
       $userInfo
