@@ -34,7 +34,7 @@
   on:click={(e) => e.stopPropagation()}
   class={cx(["flex gap-[1rem] max-lg:my-[1.5rem] items-center", className])}
 >
-  <p class="max-sm:text-xs shrink-0">
+  <p class="max-sm:text-sm shrink-0">
     {@html necessary ? `<span class="text-blue-300">*</span>` : ''}{name}
   </p>
   <div class="relative w-full">
@@ -47,7 +47,7 @@
         showItems = !showItems;
       }}
       class={cx([
-        'p-[4px_12px] text-text-1 items-center max-sm:h-[42px] max-sm:text-xs flex relative w-full rounded-[8px] bg-gray-50 h-[48px] transition-all outline-none border-[1px] focus:border-[#165DFF]',
+        'p-[4px_12px] text-text-1 items-center max-sm:h-[42px] max-sm:text-sm flex relative w-full rounded-[8px] bg-gray-50 h-[48px] transition-all outline-none border-[1px] focus:border-[#165DFF]',
         editMode
           ? 'cursor-pointer border-gray-200 bg-transparent border-[1px]'
           : 'border-transparent',
