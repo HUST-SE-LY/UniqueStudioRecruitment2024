@@ -62,7 +62,7 @@
   });
   $: quicks = $t('user.selector.isQuick') as unknown as string[];
   const downloadResume = () => {
-    getResume(uid);
+    getResume(uid,  $userInfo?.applications[0]?.resume?.split('/').pop() || '个人简历');
   };
   const closeEditMode = () => {
     ({
