@@ -246,10 +246,10 @@
 <style>
   @font-face {
     font-family: 'PingFang';
-    src: url("/PingFangRegular.ttf");
+    src: url("/PingFangSC-Regular.woff2");
   }
 
   * {
-    font-family: 'PingFang';
+    font-family: 'PingFang', sans-serif;
   }
 </style>
