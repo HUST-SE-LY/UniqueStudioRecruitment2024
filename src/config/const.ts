@@ -25,6 +25,7 @@ export enum GROUP {
   AI = "AI",
   IOS = "iOS",
   ANDROID = "Android",
+  MOBILE = "Mobile",
   PM = "PM",
   DESIGN = "Design",
 }
@@ -38,6 +39,7 @@ export const Group = {
   android: GROUP.ANDROID,
   ios: GROUP.IOS,
   design: GROUP.DESIGN,
+  mobile: GROUP.MOBILE,
 };
 
 export const Step = {
@@ -82,6 +84,7 @@ export const InterviewPlace = {
   pm: "809",
   android: "808",
   ios: "808",
+  mobile: "808",
   design: "809",
 };
 

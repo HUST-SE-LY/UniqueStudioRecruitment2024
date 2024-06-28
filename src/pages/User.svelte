@@ -321,11 +321,10 @@
           onChange={(item) => (group = item.toLowerCase())}
           selectItems={[
             'AI',
-            'Android',
             'Design',
             'Game',
-            'iOS',
             'Lab',
+            'Mobile',
             'PM',
             'Web',
           ]}
