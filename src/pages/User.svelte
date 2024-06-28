@@ -183,7 +183,6 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-
 <div class="h-full w-[60%] max-xl:w-[80%] max-sm:w-full mx-auto flex flex-col">
   <p transition:fade class="text-[26px] max-sm:hidden text-white">
     {$t('user.selfInfo')}
@@ -274,6 +273,7 @@
           selectItems={grades}
         />
         <SingleSelectInfo
+          edit
           selectItems={colleges}
           {editMode}
           onChange={() => (major = '')}
@@ -282,6 +282,7 @@
           bind:content={institute}
         />
         <SingleSelectInfo
+          edit
           placeholder={majors.length ? '' : '请选择学院'}
           selectItems={majors}
           {editMode}

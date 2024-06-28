@@ -11,12 +11,19 @@
   export let selectItems: readonly string[];
   export let editMode: boolean = false;
   export let placeholder: string = '';
-  export let className:string = "";
-  let input:HTMLDivElement;
+  export let className: string = '';
+  export let edit = false;
+  let input: HTMLInputElement;
   //ly: when bind:content isn't useful, use content & onChange
   export let onChange: (content?: string) => void = (_content?: string) => {};
-  
+  $: {
+    onChange(content)
+  }
   let showItems = false;
+  const handleEdit = () => {
+    showItems = false;
+    input.focus();
+  }
   onMount(() => {
     const close = (e) => {
       showItems = false;
@@ -32,7 +39,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   on:click={(e) => e.stopPropagation()}
-  class={cx(["flex gap-[1rem] max-lg:my-[1.5rem] items-center", className])}
+  class={cx(['flex gap-[1rem] max-lg:my-[1.5rem] items-center', className])}
 >
   <p class="max-sm:text-sm shrink-0">
     {@html necessary ? `<span class="text-blue-300">*</span>` : ''}{name}
@@ -41,7 +48,6 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <div
-      bind:this={input}
       on:click={() => {
         if (!editMode) return;
         showItems = !showItems;
@@ -54,9 +60,10 @@
       ])}
     >
       <input
-        disabled
-        value={content}
-        class="bg-transparent pointer-events-none w-full"
+        disabled={!edit}
+        bind:this={input}
+        bind:value={content}
+        class={cx(["bg-transparent outline-none w-full", (!edit || ($isMobile && !showItems)) && 'pointer-events-none'])}
       />
       <img
         src={arrow}
@@ -99,12 +106,26 @@
   </div>
 </div>
 
-<BottomBar on:close={() => showItems = false} show={$isMobile && showItems} className="h-[200px] overflow-y-auto ">
+<BottomBar
+  on:close={() => (showItems = false)}
+  show={$isMobile && showItems}
+  className="h-[200px] overflow-y-auto "
+>
   {#if placeholder}
     <p
-      class="p-[1rem_0.75rem] transition-all  text-sm rounded-[0.5rem] cursor-pointer opacity-50"
+      class="p-[1rem_0.75rem] transition-all text-sm rounded-[0.5rem] cursor-pointer opacity-50"
     >
       {placeholder}
+    </p>
+  {/if}
+  {#if edit}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
+    <p
+      on:click={handleEdit}
+      class="p-[1rem_0.75rem] mx-[3rem] text-center transition-all border-b-[1px] border-b-gray-150 rounded-[0.5rem] cursor-pointer hover:bg-gray-150"
+    >
+      编辑
     </p>
   {/if}
   {#each selectItems as item, index}
