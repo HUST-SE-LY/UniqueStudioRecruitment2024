@@ -314,7 +314,7 @@
         <SingleSelectInfo
           editMode={editMode &&
             (!$recruitment ||
-              $userInfo.applications[0]?.recruitment_id !== $recruitment.uid)}
+              $userInfo?.applications[0]?.recruitment_id !== $recruitment.uid)}
           necessary
           name={$t('user.group')}
           content={Group[group] || ''}
