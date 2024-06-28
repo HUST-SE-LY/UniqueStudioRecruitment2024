@@ -273,7 +273,6 @@
           selectItems={grades}
         />
         <SingleSelectInfo
-          edit
           selectItems={colleges}
           {editMode}
           onChange={() => (major = '')}
@@ -282,7 +281,6 @@
           bind:content={institute}
         />
         <SingleSelectInfo
-          edit
           placeholder={majors.length ? '' : '请选择学院'}
           selectItems={majors}
           {editMode}
