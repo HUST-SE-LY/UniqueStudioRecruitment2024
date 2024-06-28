@@ -220,7 +220,7 @@
               class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-0"
             >
               <button
-                on:click={() => window.location.href = "https://sso2024.hustunique.com/login?logout=true"}
+                on:click={() => window.location.href = "https://sso2024.hustunique.com/login?logout=true&from=join2024.hustunique.com"}
                 class="text-red-warning max-md:h-[32px] h-[46px] hover:bg-gray-150 leading-[46px] max-md:leading-[32px] text-center w-full"
                 >{$t('header.logout')}</button
               >
