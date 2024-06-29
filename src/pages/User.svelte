@@ -399,7 +399,14 @@
           </div>
           <input
             on:change={() => {
-              resume = fileInput.files[0];
+              const file = fileInput.files[0];
+              if(file && file.size > 20 * 1024 * 1024) {
+                fileInput.value = '';
+                Message.error($t('user.resumeTooLarge'))
+              } else {
+                resume = fileInput.files[0];
+              }
+             
             }}
             bind:this={fileInput}
             type="file"

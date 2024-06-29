@@ -108,6 +108,7 @@ export const i18nConstants = {
       attachment: "Attachments & Resume",
       resume: "resume",
       noResume: "No resume yet",
+      resumeTooLarge: "size of resume is too large",
       upload: "Upload Attachment",
       uploadSuccess: "Upload successfully",
       uploadFailed: "Upload failed",
@@ -122,7 +123,7 @@ export const i18nConstants = {
       placeholder: "input text here",
       signUpTips: "you will sign up",
       signUpTips1: "Please confirm that the basic information is filled in correctly and the attachments are uploaded correctly (it can still be modified after sign up)",
-      resumePopover: "You can upload resumes, portfolios, etc. If you want to upload multiple files, please compress them into .zip .",
+      resumePopover: "You can upload resumes, portfolios, etc. If you want to upload multiple files, please compress them into .zip . Maximum size is 20MB",
       checkInfo: "{key} is needed!",
       necessary: NecessaryInfoTitleEn,
       selector: {
@@ -239,6 +240,7 @@ export const i18nConstants = {
       attachment: "附件简历",
       resume: "简历",
       noResume: "暂无简历",
+      resumeTooLarge: "简历过大",
       upload: "上传附件",
       select: "选择文件",
       reselect: "重新选择",
@@ -251,7 +253,7 @@ export const i18nConstants = {
       signUpConfirm: "你将报名{recruitment}，基本信息，简历，作品集将会上传，请认真填写",
       signUpTips: "你将报名",
       signUpTips1: "请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）",
-      resumePopover: "可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip",
+      resumePopover: "可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip。最大大小为20MB",
       checkInfo: "请填写{key}",
       necessary: NecessaryInfoTitle,
       selector: {
