@@ -62,7 +62,10 @@
   });
   $: quicks = $t('user.selector.isQuick') as unknown as string[];
   const downloadResume = () => {
-    getResume(uid,  $userInfo?.applications[0]?.resume?.split('/').pop() || '个人简历');
+    getResume(
+      uid,
+      $userInfo?.applications[0]?.resume?.split('/').pop() || '个人简历'
+    );
   };
   const closeEditMode = () => {
     ({
@@ -156,27 +159,35 @@
       }
       try {
         await updateApplication($userInfo.applications[0].uid, formData);
+        const res = await getInfo();
+        userInfo.setInfo(res.data);
+        latestInfo.updateInfo({
+          rank,
+          referrer,
+          major,
+          institute,
+          group,
+          grade,
+          intro,
+          is_quick: isQuick === $t('user.quick') ? true : false,
+        });
+        Message.success($t('user.saveSuccess'));
       } catch (_err) {
         Message.error('user.saveFailed');
       }
+    } else {
+      latestInfo.updateInfo({
+        rank,
+        referrer,
+        major,
+        institute,
+        group,
+        grade,
+        intro,
+        is_quick: isQuick === $t('user.quick') ? true : false,
+      });
+      Message.success($t('user.saveSuccess'));
     }
-    latestInfo.updateInfo({
-      rank,
-      referrer,
-      major,
-      institute,
-      group,
-      grade,
-      intro,
-      is_quick: isQuick === $t('user.quick') ? true : false,
-    });
-    try {
-      const res = await getInfo();
-      userInfo.setInfo(res.data);
-    } catch (_err) {
-      Message.error($t('user.uploadFailed'));
-    }
-    Message.success($t('user.saveSuccess'));
     editMode = false;
   };
 </script>
@@ -318,15 +329,7 @@
           name={$t('user.group')}
           content={Group[group] || ''}
           onChange={(item) => (group = item.toLowerCase())}
-          selectItems={[
-            'AI',
-            'Design',
-            'Game',
-            'Lab',
-            'Mobile',
-            'PM',
-            'Web',
-          ]}
+          selectItems={['AI', 'Design', 'Game', 'Lab', 'Mobile', 'PM', 'Web']}
         />
         <div class="col-span-2 max-w-full gap-[1rem]">
           <Popover
@@ -400,13 +403,12 @@
           <input
             on:change={() => {
               const file = fileInput.files[0];
-              if(file && file.size > 20 * 1024 * 1024) {
+              if (file && file.size > 20 * 1024 * 1024) {
                 fileInput.value = '';
-                Message.error($t('user.resumeTooLarge'))
+                Message.error($t('user.resumeTooLarge'));
               } else {
                 resume = fileInput.files[0];
               }
-             
             }}
             bind:this={fileInput}
             type="file"
