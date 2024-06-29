@@ -117,7 +117,7 @@
         latestInfo.setApplication(res.data.applications[0]);
       })
       .catch((_err) => {
-        Message.error($t('user.signUpSuccess'));
+        Message.error($t('user.signUpFail'));
       });
   };
   const saveApplicationInfo = async () => {
