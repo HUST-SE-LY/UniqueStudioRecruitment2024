@@ -173,7 +173,7 @@
         });
         Message.success($t('user.saveSuccess'));
       } catch (_err) {
-        Message.error('user.saveFailed');
+        Message.error($t('user.saveFailed'));
       }
     } else {
       latestInfo.updateInfo({
