@@ -8,7 +8,7 @@
 </script>
 
 <div class="flex gap-[1rem] items-center max-lg:my-[1.5rem]">
-  <p class="  max-sm:text-xs shrink-0">{@html necessary ? `<span class="text-blue-300">*</span>` : " "}{name}</p>
+  <p class="  max-sm:text-sm shrink-0">{@html necessary ? `<span class="text-blue-300">*</span>` : " "}{name}</p>
   <input
     disabled={!editMode}
     placeholder={editMode ? $t('user.placeholder') : ""}
