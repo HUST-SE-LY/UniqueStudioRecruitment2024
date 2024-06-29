@@ -35,6 +35,7 @@
   import { isMobile } from '../stores/isMobile';
   let editMode = false;
   let colleges = Object.keys(DEPARTMENTS);
+  let isUploading = false;
   let showSignUpModal = false;
   let resume: File;
   let fileInput: HTMLInputElement;
@@ -124,6 +125,8 @@
       });
   };
   const saveApplicationInfo = async () => {
+    if(isUploading) return;
+    isUploading = true;
     if (
       !$checkNecessaryInfo({
         rank,
@@ -188,6 +191,7 @@
       });
       Message.success($t('user.saveSuccess'));
     }
+    isUploading = false;
     editMode = false;
   };
 </script>
@@ -219,6 +223,7 @@
             <!-- ly: if user applied latest recruitment, "save" button will save info to backend, or will save to localStorage and will not save resume file -->
             <Popover direct="top" questionDirection="end" style="white">
               <Button
+                isLoading={isUploading}
                 onClick={saveApplicationInfo}
                 slot="children"
                 className="sm:p-[7px_30px] max-sm:text-xs max-sm:w-[88px] max-sm:h-[28px] max-sm:leading-[28px] text-sm rounded-full"
