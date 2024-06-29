@@ -222,6 +222,7 @@ export const i18nConstants = {
       email: "邮箱",
       recommender: "推荐人",
       saveSuccess: "保存成功",
+      saveFailed: "保存失败",
       signUpSuccess: "报名成功",
       signUpFail: "报名失败",
       name: "姓名",
