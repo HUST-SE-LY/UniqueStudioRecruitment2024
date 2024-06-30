@@ -21,6 +21,25 @@
   import { i18nConstants } from './config/i18n';
   import SideBar from './components/history/SideBar.svelte';
   import { isMobile } from './stores/isMobile';
+  import font from 'figlet/importable-fonts/3D-ASCII';
+  import figlet from 'figlet';
+  import chalk from 'chalk';
+  import { drawFireWork } from './utils/firework';
+  let canvas = document.createElement('canvas');
+  let deleted = false;
+  const easterEgg = (e: KeyboardEvent) => {
+    if (e.shiftKey && e.ctrlKey && e.code === 'KeyU') {
+      drawFireWork(canvas, deleted);
+      deleted = !deleted;
+    }
+  };
+
+  figlet.parseFont('3d', font);
+  figlet
+    .text('Unique Studio', { font: '3d' }, () => {})
+    .then((text: string) => {
+      console.log(chalk.cyan(text + '\n' + ''));
+    });
 
   let showAvatarDetail = false;
   let showLanguageSelector = false;
@@ -53,8 +72,8 @@
           latestInfo.setApplication(res.data.applications[0]);
       })
       .catch((err) => {
-        if(err.message === "authentication failed could not get uid") {
-          return
+        if (err.message === 'authentication failed could not get uid') {
+          return;
         }
         Message.error($t('header.getInfoFailed'));
       })
@@ -67,8 +86,12 @@
         recruitment.setRecruitments(res.data);
       })
       .catch((err) => {
-        if(err.message === "authentication failed could not get uid" || err.message === `ERROR: invalid input syntax for type uuid: \\"\\" (SQLSTATE 22P02)`) {
-          return
+        if (
+          err.message === 'authentication failed could not get uid' ||
+          err.message ===
+            `ERROR: invalid input syntax for type uuid: \\"\\" (SQLSTATE 22P02)`
+        ) {
+          return;
         }
         Message.error($t('header.getInfoFailed'));
       });
@@ -99,6 +122,7 @@
   });
   onMount(() => {
     window.addEventListener('scroll', handleScroll, false);
+    window.addEventListener('keydown', easterEgg);
     tabLine.style.width = `${$location === '/user' ? user.clientWidth : home.clientWidth}px`;
     tabLine.style.transform =
       $location === '/user'
@@ -110,6 +134,7 @@
     unsubscribeLocaleLanguage();
     unsubscribeLocation();
     window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('keydown', easterEgg)
   });
 </script>
 
@@ -220,7 +245,9 @@
               class="absolute bg-white w-[149px] rounded-[6px] py-[6px] top-[48px] right-0"
             >
               <button
-                on:click={() => window.location.href = "https://sso2024.hustunique.com/login?logout=true&from=join2024.hustunique.com"}
+                on:click={() =>
+                  (window.location.href =
+                    'https://sso2024.hustunique.com/login?logout=true&from=join2024.hustunique.com')}
                 class="text-red-warning max-md:h-[32px] h-[46px] hover:bg-gray-150 leading-[46px] max-md:leading-[32px] text-center w-full"
                 >{$t('header.logout')}</button
               >
@@ -235,8 +262,7 @@
   >
     <Groups />
   </div>
-    <Router {routes} />
-
+  <Router {routes} />
 </div>
 
 <div class="sm:hidden">
@@ -246,7 +272,7 @@
 <style>
   @font-face {
     font-family: 'PingFang';
-    src: url("/PingFangSC-Regular.woff2");
+    src: url('/PingFangSC-Regular.woff2');
   }
 
   * {
