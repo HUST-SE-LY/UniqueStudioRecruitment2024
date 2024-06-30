@@ -15,6 +15,7 @@ export const drawFireWork = (canvas: HTMLCanvasElement, deleted?: boolean) => {
   canvas.style.height = "100%";
   canvas.style.top = "0";
   canvas.style.left = "0";
+  canvas.style.pointerEvents = "none";
 
   canvas.width = canvas.clientWidth;
   canvas.height = canvas.clientHeight;
