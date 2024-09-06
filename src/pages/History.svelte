@@ -10,7 +10,6 @@
   import { parseTitle } from '../utils/parseTitle';
   import { t } from '../utils/t';
   import type { UserStep } from '../types';
-  import { onMount } from 'svelte';
   import { selectedTimes } from '../stores/selectedTimes';
   $: signUpStep = $t(`history.step.SignUp`) as UserStep;
   $: processing = $t('history.processState.PROCESSING') as ProcessStateType;
@@ -33,9 +32,12 @@
     $t(`history.step.${application.step}`) as UserStep;
 
   let applications = [];
+  let isLoading = false;
+  
   $: $userInfo &&
     Promise.all(
       $userInfo.applications.map(async (application) => {
+        isLoading = true;
         const res = await getRecruitmentById(application.recruitment_id);
         const processedApplication = {
           ...application,
@@ -48,27 +50,10 @@
       })
     ).then((res) => {
       applications = res;
+    }).finally(() => {
+      isLoading = false;
     });
-    $: $userInfo && selectedTimes.setTimes($userInfo.applications[0]?.interview_selections?.map(el => el.uid) || []);
-  onMount(async () => {
-    applications = await Promise.all(
-      $userInfo
-        ? $userInfo.applications.map(async (application) => {
-            const res = await getRecruitmentById(application.recruitment_id);
-            const processedApplication = {
-              ...application,
-              title: $parseTitle(res.data.name),
-              end: res.data.end,
-              deadline: res.data.deadline,
-              beginning: res.data.beginning,
-            };
-            return processedApplication;
-          })
-        : []
-    ).catch(() => {
-      return [];
-    });
-  });
+  $: $userInfo && selectedTimes.setTimes($userInfo.applications[0]?.interview_selections?.map(el => el.uid) || []);
 </script>
 
 <div
@@ -94,7 +79,7 @@
           step={signUpStep}
           state={processing}
         />
-      {:else if applications.length === 0}
+      {:else if applications.length === 0 && !isLoading}
         <div
           class="rounded-[20px] mt-[1rem] h-[290px] bg-white max-sm:rounded-[6px] flex justify-center items-center p-[3rem_4rem] max-sm:p-[20px_18px] sm:shadow-card"
         >
@@ -103,16 +88,14 @@
       {/if}
 
       {#each applications as application, i}
-        {#await getRecruitmentById(application.recruitment_id) then res}
           <SingleApplicationItem
             applicationInfo={application}
             index={i}
-            title={$parseTitle(res.data.name)}
+            title={application.title}
             group={Group[application.group]}
             step={getStep(application)}
-            state={getState(application, res.data.end)}
+            state={getState(application, application.end)}
           />
-        {/await}
       {/each}
     {:else}
       <div

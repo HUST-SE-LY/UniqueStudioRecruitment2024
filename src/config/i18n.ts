@@ -37,6 +37,7 @@ export const i18nConstants = {
       },
       writeTest: {
         writtenTest: "written test/questionnaire",
+        loading: "Trying to get test/questionnaire...",
         tips: "Each group will design a written test/questionnaire based on the situation of the group. This is a necessary step for Unique Studio to recruit new members.",
         viewLink: "View the latest {writtenTest}",
         downloadError: "get written questionnaire failed or no questionnaire yet",
@@ -170,6 +171,7 @@ export const i18nConstants = {
           "你已经成功报名{recruitment}{group}组，报名结束前你可以随时修改个人信息。点击修改{changeInfo}",
       },
       writeTest: {
+        loading: "获取笔试/问卷中...",
         writtenTest: "笔试/问卷链接",
         tips: "各组会根据本组情况，设计笔试/问卷，这是联创团队招新的必经环节。",
         viewLink: "查看最新的{writtenTest}",

@@ -25,13 +25,13 @@
   let writtenTestLink = '';
   let file: File;
   let fileInput: HTMLInputElement;
+  let isGettingWrittenTestFile = false;
   const handleClick = (e) => {
     if (e.target.className.includes('go-user')) {
       push('/user');
     }
   };
   export let applicationInfo: Application;
-  console.log($selectedTimes)
   let selectedTimeList = $selectedTimes;
   const uploadAnswer = () => {
     if (!file) {
@@ -52,10 +52,11 @@
   export let step: UserStep;
   onMount(() => {
     if (step === $t('history.step.WrittenTest')) {
+      isGettingWrittenTestFile = true
       getWrittenTest(applicationInfo.recruitment_id, applicationInfo.group)
         .then((res) => {
           if (!res.ok) {
-            Message.error($t('history.writeTest.downloadError'));
+            Message.warning($t('history.writeTest.downloadError'));
             return;
           }
           return res.blob();
@@ -63,6 +64,8 @@
         .then((blob) => {
           const url = URL.createObjectURL(blob);
           writtenTestLink = url;
+        }).finally(() => {
+          isGettingWrittenTestFile = false;
         });
     }
   });
