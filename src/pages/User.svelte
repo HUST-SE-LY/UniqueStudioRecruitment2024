@@ -137,8 +137,11 @@
         intro,
         is_quick: isQuick === $t('user.quick') ? true : false,
       })
-    )
+    ) {
+      isUploading = false;
       return;
+    }
+      
     if (
       $recruitment &&
       $recruitment.uid === $userInfo.applications[0].recruitment_id &&
@@ -343,7 +346,7 @@
             className="w-full max-sm:mt-[-1.5rem]"
           >
             <SingleSelectInfo
-              className="flex-shrink-0 w-[calc(100%_-_24px)]"
+              className="flex-shrink-0 max-sm:w-[calc(100%_-_24px)]"
               slot="children"
               {editMode}
               necessary
