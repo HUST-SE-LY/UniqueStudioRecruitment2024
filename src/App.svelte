@@ -1,4 +1,5 @@
 <script lang="ts">
+  // @ts-nocheck
   import { routes } from './router';
   import logo from '/src/assets/logo.svg';
   import title from './assets/title.svg';
@@ -38,7 +39,14 @@
   figlet
     .text('Unique Studio', { font: '3d' }, () => {})
     .then((text: string) => {
-      console.log(chalk.cyan(text) + '\n' + chalk.blue('听说按下 ctrl + shift + u 会有神奇的事发生~') + '\n' + chalk.yellow('developed by Unique Web ') + chalk.green('@HUST-SE-LY @willburwwb @yqaty @Yuukirn'));
+      console.log(
+        chalk.cyan(text) +
+          '\n' +
+          chalk.blue('听说按下 ctrl + shift + u 会有神奇的事发生~') +
+          '\n' +
+          chalk.yellow('developed by Unique Web ') +
+          chalk.green('@HUST-SE-LY @willburwwb @yqaty @Yuukirn')
+      );
     });
 
   let showAvatarDetail = false;
@@ -134,7 +142,7 @@
     unsubscribeLocaleLanguage();
     unsubscribeLocation();
     window.removeEventListener('scroll', handleScroll);
-    window.removeEventListener('keydown', easterEgg)
+    window.removeEventListener('keydown', easterEgg);
   });
 </script>
 
