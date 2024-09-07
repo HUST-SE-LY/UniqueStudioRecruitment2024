@@ -126,6 +126,7 @@ export const i18nConstants = {
       signUpTips1: "Please confirm that the basic information is filled in correctly and the attachments are uploaded correctly (it can still be modified after sign up)",
       resumePopover: "You can upload resumes, portfolios, etc. If you want to upload multiple files, please compress them into .zip . Maximum size is 20MB",
       checkInfo: "{key} is needed!",
+      checkDeprecatedGroups: "Group is not contained in current recruitment",
       necessary: NecessaryInfoTitleEn,
       selector: {
         rank: RANK_EN,
@@ -258,6 +259,7 @@ export const i18nConstants = {
       signUpTips1: "请确认基本信息填写无误，附件上传正确（报名后仍然可以修改）",
       resumePopover: "可以上传简历，作品集等，若要上传多个文件，请自行压缩成.zip。最大大小为20MB",
       checkInfo: "请填写{key}",
+      checkDeprecatedGroups: "意向组别不在本次招新范围内，请重新选择",
       necessary: NecessaryInfoTitle,
       selector: {
         rank: RANK,

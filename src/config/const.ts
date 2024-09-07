@@ -42,6 +42,8 @@ export const Group = {
   mobile: GROUP.MOBILE,
 };
 
+export const DeprecatedGroups = ["android", "ios"];
+
 export const Step = {
   SignUp: "报名",
   WrittenTest: "笔试/问卷",
