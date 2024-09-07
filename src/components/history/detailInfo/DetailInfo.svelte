@@ -36,6 +36,7 @@
   let file: File;
   let fileInput: HTMLInputElement;
   let writtenTestLink = '';
+  let isGettingWrittenTestFile = true;
   const uploadAnswer = () => {
     if (!file) {
       fileInput.click();
@@ -53,10 +54,11 @@
   };
   onMount(() => {
     if (step === $t('history.step.WrittenTest')) {
+      isGettingWrittenTestFile = true;
       getWrittenTest(applicationInfo.recruitment_id, applicationInfo.group)
         .then((res) => {
           if (!res.ok) {
-            Message.error($t('history.writeTest.downloadError'));
+            Message.warning($t('history.writeTest.downloadError'));
             return;
           }
           return res.blob();
@@ -64,6 +66,9 @@
         .then((blob) => {
           const url = URL.createObjectURL(blob);
           writtenTestLink = url;
+        })
+        .finally(() => {
+          isGettingWrittenTestFile = false;
         });
     }
   });
@@ -107,6 +112,15 @@
       type="file"
       class="hidden"
     />
+    {#if isGettingWrittenTestFile && !writtenTestLink}
+      <p class="mt-[0.5rem]">{$t('history.writeTest.loading')}</p>
+      <Button
+        highlight
+        className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
+        onClick={uploadAnswer}
+        >{$t('history.writeTest.loading')}
+      </Button>
+    {/if}
     {#if writtenTestLink}
       <p class="mt-[0.5rem]">
         {@html $t('history.writeTest.viewLink', {
@@ -143,9 +157,7 @@
       time={applicationInfo.interview_allocations_group.uid
         ? `${$formatDate(
             applicationInfo.interview_allocations_group.date
-          )} ${$formatTime(
-            applicationInfo.interview_allocations_group.start
-          )}`
+          )} ${$formatTime(applicationInfo.interview_allocations_group.start)}`
         : ''}
       type="group"
     />
@@ -171,9 +183,7 @@
       time={applicationInfo.interview_allocations_team.uid
         ? `${$formatDate(
             applicationInfo.interview_allocations_team.date
-          )} ${$formatTime(
-            applicationInfo.interview_allocations_team.start
-          )}`
+          )} ${$formatTime(applicationInfo.interview_allocations_team.start)}`
         : ''}
       type="team"
       group={applicationInfo.group}
