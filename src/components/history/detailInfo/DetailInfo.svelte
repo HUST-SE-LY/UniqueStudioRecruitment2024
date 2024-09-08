@@ -37,18 +37,24 @@
   let fileInput: HTMLInputElement;
   let writtenTestLink = '';
   let isGettingWrittenTestFile = true;
+  let isUploading = false;
   const uploadAnswer = () => {
     if (!file) {
       fileInput.click();
     } else {
+      if (isUploading) return;
+      isUploading = true;
       const formData = new FormData();
       formData.append('file', file);
       uploadWrittenTest(applicationInfo.uid, formData)
         .then(() => {
           Message.success($t('history.writeTest.uploadSuccess'));
+          file = undefined;
         })
         .catch(() => {
           Message.error($t('history.writeTest.uploadError'));
+        }).finally(() => {
+          isUploading = false;
         });
     }
   };
@@ -134,6 +140,7 @@
       <Button
         highlight
         className="mx-auto rounded-full my-[8px] w-full text-[15px] leading-[36px]"
+        isLoading={isUploading}
         onClick={uploadAnswer}
         >{file
           ? $t('history.mobile.uploadWrittenTest')

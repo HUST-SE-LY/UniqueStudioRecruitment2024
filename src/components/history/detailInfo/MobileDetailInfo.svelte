@@ -26,6 +26,7 @@
   let file: File;
   let fileInput: HTMLInputElement;
   let isGettingWrittenTestFile = false;
+  let isUploading = false;
   const handleClick = (e) => {
     if (e.target.className.includes('go-user')) {
       push('/user');
@@ -37,14 +38,19 @@
     if (!file) {
       fileInput.click();
     } else {
+      if(isUploading) return;
+      isUploading = true;
       const formData = new FormData();
       formData.append('file', file);
       uploadWrittenTest(applicationInfo.uid, formData)
         .then(() => {
           Message.success($t('history.writeTest.uploadSuccess'));
+          file = undefined;
         })
         .catch(() => {
           Message.error($t('history.writeTest.uploadError'));
+        }).finally(() => {
+          isUploading = false;
         });
     }
   };
